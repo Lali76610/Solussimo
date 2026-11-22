@@ -59,7 +59,7 @@ select tests.ok(
                 and c.column_name in ('email', 'phone', 'phone_e164', 'birth_date', 'address', 'password', 'search_text')
                 -- Exception justifiée : l'adresse de l'invité (lignes lisibles par owner/admin uniquement).
                 and not (c.table_name = 'invitations' and c.column_name = 'email')
-                and has_column_privilege('authenticated', format('public.%I', c.table_name), c.column_name, 'SELECT')),
+                and has_column_privilege('authenticated', format('%I.%I', c.table_schema, c.table_name), c.column_name, 'SELECT')),
   'RGPD / D2 : aucune coordonnée en clair lisible via l''API (versions masquées uniquement)');
 
 select tests.ok(
