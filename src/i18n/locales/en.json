@@ -1,0 +1,339 @@
+{
+  "app": {
+    "name": "SOLUSSIMO",
+    "tagline": "Elegant management for beauty salons"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "planning": "Schedule",
+    "clients": "Clients",
+    "staff": "Staff",
+    "checkout": "Checkout",
+    "stock": "Inventory",
+    "logout": "Sign out",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "more": "More",
+    "account": "My account",
+    "activeCompany": "Active business"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Access your salon's management workspace.",
+    "email": "Email address",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Sign in",
+    "forgot": "Forgot your password?",
+    "demo": "Explore the demo",
+    "demoHint": "Discover SOLUSSIMO with a fictitious salon. No data is saved.",
+    "secure": "Encrypted connection · Data hosted in the EU",
+    "privacy": "Your data is processed in accordance with the GDPR. No advertising trackers are used.",
+    "heroTitle": "Your salon, orchestrated with elegance.",
+    "heroText": "Schedule, clients, staff, checkout and inventory in a single app, on desktop and mobile.",
+    "errors": {
+      "invalidEmail": "Please enter a valid email address.",
+      "passwordLength": "Password must be at least 8 characters long.",
+      "locked": "Too many attempts. Try again in {{seconds}} s."
+    },
+    "demoTitle": "Demo mode",
+    "noAccount": "No account yet?",
+    "createAccount": "Create an account",
+    "notConfigured": "Sign-in to real accounts is not enabled on this environment yet. Please use demo mode.",
+    "submitting": "Signing in…"
+  },
+  "dashboard": {
+    "greeting": "Hello {{name}}",
+    "summary": "Here is today's activity at {{salon}}.",
+    "kpi": {
+      "revenue": "Revenue",
+      "appointments": "Appointments",
+      "newClients": "New clients",
+      "occupancy": "Occupancy rate"
+    },
+    "vsLastWeek": "vs last week",
+    "upcoming": "Upcoming appointments",
+    "seeAll": "See all",
+    "weekRevenue": "Revenue — last 7 days",
+    "stockAlerts": "Stock alerts",
+    "teamToday": "Today's team",
+    "present": "Present",
+    "absent": "Absent",
+    "noAlerts": "No alerts.",
+    "quickActions": "Quick actions",
+    "newAppointment": "New booking",
+    "newSale": "New sale",
+    "newClient": "New client",
+    "remaining": "{{count}} remaining",
+    "noUpcoming": "No more appointments today."
+  },
+  "status": {
+    "confirmed": "Confirmed",
+    "pending": "Pending",
+    "done": "Completed"
+  },
+  "roles": {
+    "manager": "Manager",
+    "stylist": "Stylist",
+    "colorist": "Colourist",
+    "beautician": "Beautician",
+    "apprentice": "Apprentice",
+    "barber": "Barber",
+    "receptionist": "Receptionist"
+  },
+  "services": {
+    "cut": "Haircut",
+    "cutBlowdry": "Cut & blow-dry",
+    "color": "Colour",
+    "highlights": "Highlights / balayage",
+    "beard": "Beard trim",
+    "manicure": "Manicure",
+    "facial": "Facial",
+    "kidsCut": "Kids' haircut"
+  },
+  "products": {
+    "shampoo": "Repair shampoo 1 L",
+    "conditioner": "Conditioner 1 L",
+    "mask": "Nourishing mask 500 ml",
+    "colorTube": "Hair colour tube 60 ml",
+    "oxidant": "Developer 20 vol. 1 L",
+    "serum": "Ends serum 100 ml",
+    "nailPolish": "Nail polish",
+    "gloves": "Nitrile gloves (box)"
+  },
+  "categories": {
+    "hair": "Hair care",
+    "color": "Colour",
+    "care": "Treatments",
+    "consumable": "Consumables"
+  },
+  "payment": {
+    "card": "Card",
+    "cash": "Cash",
+    "contactless": "Contactless"
+  },
+  "segments": {
+    "vip": "Loyal",
+    "regular": "Regular",
+    "new": "New"
+  },
+  "planning": {
+    "title": "Schedule",
+    "subtitle": "Today's appointments by team member.",
+    "today": "Today",
+    "day": "Day",
+    "week": "Week",
+    "newAppointment": "New appointment",
+    "previous": "Previous day",
+    "next": "Next day"
+  },
+  "clients": {
+    "title": "Clients",
+    "subtitle": "Client records and history.",
+    "search": "Search clients…",
+    "visits": "Visits",
+    "lastVisit": "Last visit",
+    "totalSpent": "Total spent",
+    "daysAgo": "{{count}} d ago",
+    "today": "Today",
+    "newClient": "New client",
+    "privacyNote": "Data minimisation: only information needed to provide the service is kept. Right of access, rectification and erasure on request.",
+    "noResult": "No clients found."
+  },
+  "staff": {
+    "title": "Staff",
+    "subtitle": "Team, roles and attendance.",
+    "addMember": "Add member",
+    "appointmentsToday": "{{count}} bookings today",
+    "role": "Role",
+    "status": "Status"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "subtitle": "Today's payments.",
+    "todayTotal": "Total collected",
+    "transactions": "Transactions",
+    "average": "Average ticket",
+    "newSale": "New sale",
+    "time": "Time",
+    "service": "Service",
+    "method": "Payment",
+    "amount": "Amount",
+    "closeRegister": "Close register",
+    "byMethod": "Breakdown by payment method"
+  },
+  "stock": {
+    "title": "Inventory",
+    "subtitle": "Products, thresholds and restocking.",
+    "product": "Product",
+    "category": "Category",
+    "quantity": "Quantity",
+    "minimum": "Threshold",
+    "status": "Status",
+    "low": "Reorder",
+    "ok": "OK",
+    "order": "Order",
+    "totalValue": "Stock value",
+    "lowCount": "Products below threshold",
+    "references": "Items"
+  },
+  "common": {
+    "demoData": "Fictitious data",
+    "moduleInDev": "Module under development — base structure.",
+    "language": "Language",
+    "minutes": "{{count}} min",
+    "salon": "Salon",
+    "privacy": "Privacy & GDPR",
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "back": "Back",
+    "optional": "optional",
+    "retry": "Retry",
+    "saved": "Changes saved."
+  },
+  "companyRoles": {
+    "owner": "Owner",
+    "admin": "Administrator",
+    "manager": "Manager",
+    "staff": "Team member"
+  },
+  "kinds": {
+    "hair_salon": "Hair salon",
+    "beauty_institute": "Beauty salon",
+    "barbershop": "Barbershop",
+    "nail_salon": "Nail salon",
+    "spa": "Spa"
+  },
+  "signup": {
+    "title": "Create an account",
+    "subtitle": "Manage your salon in minutes.",
+    "displayName": "Your first name or display name",
+    "passwordHint": "At least 10 characters, including an uppercase letter, a lowercase letter and a digit.",
+    "consent": "I have read the {{link}} and agree to the processing of my data to manage my account.",
+    "consentLink": "privacy policy",
+    "submit": "Create my account",
+    "submitting": "Creating…",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "checkEmailTitle": "Check your inbox",
+    "checkEmailText": "If this address can be used, a confirmation link has just been sent to it. Click it to activate your account, then create your salon.",
+    "errors": {
+      "passwordRules": "Password must be at least 10 characters long and include an uppercase letter, a lowercase letter and a digit.",
+      "consent": "Your consent is required to create an account.",
+      "displayName": "Enter a display name (80 characters max)."
+    }
+  },
+  "forgot": {
+    "title": "Forgot password",
+    "subtitle": "Enter your address: if an account exists, you will receive a reset link.",
+    "submit": "Send link",
+    "sent": "If an account matches this address, an email has just been sent.",
+    "back": "Back to sign in"
+  },
+  "resetPassword": {
+    "title": "New password",
+    "subtitle": "Choose a new password for your account.",
+    "newPassword": "New password",
+    "submit": "Update",
+    "done": "Password updated.",
+    "invalidLink": "This link is no longer valid. Please request a new reset."
+  },
+  "onboarding": {
+    "title": "Create your salon",
+    "subtitle": "This information sets up your workspace. You will be its owner.",
+    "companyName": "Business name",
+    "companyHint": "Legal or trading name.",
+    "establishmentName": "Location name",
+    "kind": "Type of business",
+    "country": "Country",
+    "city": "City",
+    "timezone": "Time zone",
+    "language": "Default language",
+    "currency": "Currency",
+    "submit": "Create my salon",
+    "submitting": "Creating…",
+    "privacy": "Your workspace is strictly isolated: no other business can access your data."
+  },
+  "live": {
+    "yourRole": "Your role: {{role}}",
+    "establishments": "Locations",
+    "team": "Team",
+    "teamCount": "{{count}} team member(s)",
+    "modulesTitle": "Module progress",
+    "connected": "Connected",
+    "soon": "Coming soon",
+    "emptyModuleTitle": "Module coming soon",
+    "emptyModuleText": "This module will be connected to your data in an upcoming release. Meanwhile, you can explore it in demo mode.",
+    "loadError": "Unable to load data. Check your connection.",
+    "securityNote": "Your data is isolated: no other business can access it."
+  },
+  "staffLive": {
+    "addTitle": "New team member",
+    "name": "Display name",
+    "job": "Job",
+    "establishment": "Location",
+    "color": "Schedule colour",
+    "add": "Add",
+    "adding": "Adding…",
+    "active": "Active",
+    "inactive": "Inactive",
+    "deactivate": "Deactivate",
+    "reactivate": "Reactivate",
+    "empty": "No team members yet.",
+    "readOnly": "You can view the team; changes are reserved for managers.",
+    "linkedAccount": "Linked account",
+    "minimization": "Only a display name is required: no personal contact details are needed."
+  },
+  "account": {
+    "title": "My account",
+    "subtitle": "Profile, privacy and personal data.",
+    "profileTitle": "Profile",
+    "email": "Email address",
+    "language": "Interface language",
+    "privacyTitle": "My data (GDPR)",
+    "exportTitle": "Download my data",
+    "exportText": "Get a copy of your personal data in JSON format (right of access and portability).",
+    "exportButton": "Download",
+    "deleteTitle": "Delete my account",
+    "deleteText": "Permanently deletes your account and profile. If you are the sole owner of a business, transfer or delete it first.",
+    "deleteConfirmLabel": "Type {{word}} to confirm",
+    "deleteWord": "DELETE",
+    "deleteButton": "Delete permanently",
+    "demoUnavailable": "Account management is not available in demo mode."
+  },
+  "demo": {
+    "banner": "Demo mode — fictitious data, nothing is saved.",
+    "exit": "Exit demo"
+  },
+  "privacy": {
+    "title": "Privacy & GDPR",
+    "intro": "SOLUSSIMO applies data protection by design.",
+    "data": "Data processed: email address and password (handled by the authentication service, password hashed), display name, language, and your salon's management data.",
+    "purpose": "Purpose: to provide the salon management service. No resale, no advertising trackers, no profiling.",
+    "isolation": "Isolation: each business has a separate workspace; access rules are enforced directly in the database.",
+    "storage": "Storage: hosting planned in the European Union. Data is kept while the account is active, then deleted.",
+    "rights": "Your rights: access, rectification, export and erasure directly from \"My account\"; objection and restriction on request.",
+    "draft": "Preliminary version: the final text (data controller, DPO contact, exact retention periods) will be approved before commercial launch."
+  },
+  "errors": {
+    "credentials": "Incorrect credentials.",
+    "emailNotConfirmed": "Please confirm your email address using the link you received.",
+    "weakPassword": "This password is too weak.",
+    "rateLimited": "Too many attempts. Please wait a moment.",
+    "samePassword": "Choose a password different from your current one.",
+    "companyLimit": "Maximum number of businesses reached for this account.",
+    "invalidTimezone": "Invalid time zone.",
+    "soleOwner": "You are the sole owner of a business: transfer or delete it first.",
+    "confirmationMismatch": "The confirmation does not match.",
+    "forbidden": "You are not allowed to perform this action.",
+    "invalidInput": "Some information is invalid.",
+    "network": "Unable to connect. Check your network.",
+    "generic": "Something went wrong. Please try again.",
+    "notConfigured": "Account service not configured."
+  }
+}

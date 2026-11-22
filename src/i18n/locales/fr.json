@@ -1,0 +1,339 @@
+{
+  "app": {
+    "name": "SOLUSSIMO",
+    "tagline": "La gestion élégante des salons de beauté"
+  },
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "planning": "Planning",
+    "clients": "Clients",
+    "staff": "Personnel",
+    "checkout": "Caisse",
+    "stock": "Stock",
+    "logout": "Se déconnecter",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "mainNav": "Navigation principale",
+    "more": "Plus",
+    "account": "Mon compte",
+    "activeCompany": "Entreprise active"
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Accédez à l'espace de gestion de votre établissement.",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "submit": "Se connecter",
+    "forgot": "Mot de passe oublié ?",
+    "demo": "Explorer la démonstration",
+    "demoHint": "Découvrez SOLUSSIMO avec un salon fictif. Aucune donnée n'est enregistrée.",
+    "secure": "Connexion chiffrée · Données hébergées dans l'UE",
+    "privacy": "Vos données sont traitées conformément au RGPD. Aucun traceur publicitaire n'est utilisé.",
+    "heroTitle": "Votre salon, orchestré avec élégance.",
+    "heroText": "Planning, clients, personnel, caisse et stock réunis dans une seule application, sur ordinateur comme sur mobile.",
+    "errors": {
+      "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères.",
+      "locked": "Trop de tentatives. Réessayez dans {{seconds}} s."
+    },
+    "demoTitle": "Mode démonstration",
+    "noAccount": "Pas encore de compte ?",
+    "createAccount": "Créer un compte",
+    "notConfigured": "La connexion aux comptes réels n'est pas encore activée sur cet environnement. Utilisez le mode démonstration.",
+    "submitting": "Connexion…"
+  },
+  "dashboard": {
+    "greeting": "Bonjour {{name}}",
+    "summary": "Voici l'activité de {{salon}} aujourd'hui.",
+    "kpi": {
+      "revenue": "Chiffre d'affaires",
+      "appointments": "Rendez-vous",
+      "newClients": "Nouveaux clients",
+      "occupancy": "Taux d'occupation"
+    },
+    "vsLastWeek": "vs semaine dernière",
+    "upcoming": "Prochains rendez-vous",
+    "seeAll": "Tout voir",
+    "weekRevenue": "Chiffre d'affaires — 7 derniers jours",
+    "stockAlerts": "Alertes de stock",
+    "teamToday": "Équipe du jour",
+    "present": "Présent·e",
+    "absent": "Absent·e",
+    "noAlerts": "Aucune alerte.",
+    "quickActions": "Actions rapides",
+    "newAppointment": "Nouveau RDV",
+    "newSale": "Encaisser",
+    "newClient": "Nouveau client",
+    "remaining": "{{count}} restant(s)",
+    "noUpcoming": "Plus aucun rendez-vous aujourd'hui."
+  },
+  "status": {
+    "confirmed": "Confirmé",
+    "pending": "En attente",
+    "done": "Terminé"
+  },
+  "roles": {
+    "manager": "Gérante",
+    "stylist": "Coiffeur",
+    "colorist": "Coloriste",
+    "beautician": "Esthéticienne",
+    "apprentice": "Apprenti",
+    "barber": "Barbier",
+    "receptionist": "Réceptionniste"
+  },
+  "services": {
+    "cut": "Coupe",
+    "cutBlowdry": "Coupe & brushing",
+    "color": "Coloration",
+    "highlights": "Mèches / balayage",
+    "beard": "Taille de barbe",
+    "manicure": "Manucure",
+    "facial": "Soin du visage",
+    "kidsCut": "Coupe enfant"
+  },
+  "products": {
+    "shampoo": "Shampooing réparateur 1 L",
+    "conditioner": "Après-shampooing 1 L",
+    "mask": "Masque nutrition 500 ml",
+    "colorTube": "Tube de coloration 60 ml",
+    "oxidant": "Oxydant 20 vol. 1 L",
+    "serum": "Sérum pointes 100 ml",
+    "nailPolish": "Vernis à ongles",
+    "gloves": "Gants nitrile (boîte)"
+  },
+  "categories": {
+    "hair": "Capillaire",
+    "color": "Coloration",
+    "care": "Soins",
+    "consumable": "Consommables"
+  },
+  "payment": {
+    "card": "Carte",
+    "cash": "Espèces",
+    "contactless": "Sans contact"
+  },
+  "segments": {
+    "vip": "Fidèle",
+    "regular": "Régulier",
+    "new": "Nouveau"
+  },
+  "planning": {
+    "title": "Planning",
+    "subtitle": "Rendez-vous du jour par collaborateur.",
+    "today": "Aujourd'hui",
+    "day": "Jour",
+    "week": "Semaine",
+    "newAppointment": "Nouveau rendez-vous",
+    "previous": "Jour précédent",
+    "next": "Jour suivant"
+  },
+  "clients": {
+    "title": "Clients",
+    "subtitle": "Fichier clients et historique.",
+    "search": "Rechercher un client…",
+    "visits": "Visites",
+    "lastVisit": "Dernière visite",
+    "totalSpent": "Total dépensé",
+    "daysAgo": "il y a {{count}} j",
+    "today": "Aujourd'hui",
+    "newClient": "Nouveau client",
+    "privacyNote": "Données minimisées : seules les informations nécessaires au service sont conservées. Droit d'accès, de rectification et d'effacement sur demande.",
+    "noResult": "Aucun client trouvé."
+  },
+  "staff": {
+    "title": "Personnel",
+    "subtitle": "Équipe, rôles et présence.",
+    "addMember": "Ajouter un membre",
+    "appointmentsToday": "{{count}} RDV aujourd'hui",
+    "role": "Rôle",
+    "status": "Statut"
+  },
+  "checkout": {
+    "title": "Caisse",
+    "subtitle": "Encaissements du jour.",
+    "todayTotal": "Total encaissé",
+    "transactions": "Transactions",
+    "average": "Panier moyen",
+    "newSale": "Nouvel encaissement",
+    "time": "Heure",
+    "service": "Prestation",
+    "method": "Paiement",
+    "amount": "Montant",
+    "closeRegister": "Clôturer la caisse",
+    "byMethod": "Répartition par moyen de paiement"
+  },
+  "stock": {
+    "title": "Stock",
+    "subtitle": "Produits, seuils et réapprovisionnement.",
+    "product": "Produit",
+    "category": "Catégorie",
+    "quantity": "Quantité",
+    "minimum": "Seuil",
+    "status": "État",
+    "low": "À commander",
+    "ok": "OK",
+    "order": "Commander",
+    "totalValue": "Valeur du stock",
+    "lowCount": "Produits sous le seuil",
+    "references": "Références"
+  },
+  "common": {
+    "demoData": "Données fictives",
+    "moduleInDev": "Module en cours de développement — structure de base.",
+    "language": "Langue",
+    "minutes": "{{count}} min",
+    "salon": "Salon",
+    "privacy": "Confidentialité & RGPD",
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "optional": "facultatif",
+    "retry": "Réessayer",
+    "saved": "Modifications enregistrées."
+  },
+  "companyRoles": {
+    "owner": "Propriétaire",
+    "admin": "Administrateur",
+    "manager": "Responsable",
+    "staff": "Collaborateur"
+  },
+  "kinds": {
+    "hair_salon": "Salon de coiffure",
+    "beauty_institute": "Institut de beauté",
+    "barbershop": "Barbier",
+    "nail_salon": "Onglerie",
+    "spa": "Spa"
+  },
+  "signup": {
+    "title": "Créer un compte",
+    "subtitle": "Gérez votre salon en quelques minutes.",
+    "displayName": "Votre prénom ou nom affiché",
+    "passwordHint": "10 caractères minimum, avec une majuscule, une minuscule et un chiffre.",
+    "consent": "J'ai lu la {{link}} et j'accepte le traitement de mes données pour la gestion de mon compte.",
+    "consentLink": "politique de confidentialité",
+    "submit": "Créer mon compte",
+    "submitting": "Création…",
+    "haveAccount": "Déjà un compte ?",
+    "signIn": "Se connecter",
+    "checkEmailTitle": "Vérifiez votre boîte e-mail",
+    "checkEmailText": "Si cette adresse peut être utilisée, un lien de confirmation vient d'y être envoyé. Cliquez dessus pour activer votre compte, puis créez votre salon.",
+    "errors": {
+      "passwordRules": "Le mot de passe doit contenir au moins 10 caractères, dont une majuscule, une minuscule et un chiffre.",
+      "consent": "Votre accord est nécessaire pour créer un compte.",
+      "displayName": "Indiquez un nom affiché (80 caractères maximum)."
+    }
+  },
+  "forgot": {
+    "title": "Mot de passe oublié",
+    "subtitle": "Saisissez votre adresse : si un compte existe, vous recevrez un lien de réinitialisation.",
+    "submit": "Envoyer le lien",
+    "sent": "Si un compte correspond à cette adresse, un e-mail vient d'être envoyé.",
+    "back": "Retour à la connexion"
+  },
+  "resetPassword": {
+    "title": "Nouveau mot de passe",
+    "subtitle": "Choisissez un nouveau mot de passe pour votre compte.",
+    "newPassword": "Nouveau mot de passe",
+    "submit": "Mettre à jour",
+    "done": "Mot de passe mis à jour.",
+    "invalidLink": "Ce lien n'est plus valide. Refaites une demande de réinitialisation."
+  },
+  "onboarding": {
+    "title": "Créez votre salon",
+    "subtitle": "Ces informations définissent votre espace. Vous en serez le propriétaire.",
+    "companyName": "Nom de l'entreprise",
+    "companyHint": "Raison sociale ou nom commercial.",
+    "establishmentName": "Nom de l'établissement",
+    "kind": "Type d'établissement",
+    "country": "Pays",
+    "city": "Ville",
+    "timezone": "Fuseau horaire",
+    "language": "Langue par défaut",
+    "currency": "Devise",
+    "submit": "Créer mon salon",
+    "submitting": "Création…",
+    "privacy": "Votre espace est strictement isolé : aucune autre entreprise ne peut accéder à vos données."
+  },
+  "live": {
+    "yourRole": "Votre rôle : {{role}}",
+    "establishments": "Établissements",
+    "team": "Équipe",
+    "teamCount": "{{count}} collaborateur(s)",
+    "modulesTitle": "Avancement des modules",
+    "connected": "Connecté",
+    "soon": "Bientôt",
+    "emptyModuleTitle": "Module bientôt disponible",
+    "emptyModuleText": "Ce module sera relié à vos données dans une prochaine version. En attendant, vous pouvez l'explorer en mode démonstration.",
+    "loadError": "Impossible de charger les données. Vérifiez votre connexion.",
+    "securityNote": "Vos données sont isolées : aucune autre entreprise ne peut y accéder."
+  },
+  "staffLive": {
+    "addTitle": "Nouveau collaborateur",
+    "name": "Nom affiché",
+    "job": "Métier",
+    "establishment": "Établissement",
+    "color": "Couleur dans le planning",
+    "add": "Ajouter",
+    "adding": "Ajout…",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "deactivate": "Désactiver",
+    "reactivate": "Réactiver",
+    "empty": "Aucun collaborateur pour le moment.",
+    "readOnly": "Vous pouvez consulter l'équipe ; les modifications sont réservées aux responsables.",
+    "linkedAccount": "Compte lié",
+    "minimization": "Seul un nom affiché est demandé : aucune coordonnée personnelle n'est nécessaire."
+  },
+  "account": {
+    "title": "Mon compte",
+    "subtitle": "Profil, confidentialité et données personnelles.",
+    "profileTitle": "Profil",
+    "email": "Adresse e-mail",
+    "language": "Langue de l'interface",
+    "privacyTitle": "Mes données (RGPD)",
+    "exportTitle": "Télécharger mes données",
+    "exportText": "Obtenez une copie de vos données personnelles au format JSON (droit d'accès et de portabilité).",
+    "exportButton": "Télécharger",
+    "deleteTitle": "Supprimer mon compte",
+    "deleteText": "Suppression définitive de votre compte et de votre profil. Si vous êtes seul propriétaire d'une entreprise, transférez-la ou supprimez-la d'abord.",
+    "deleteConfirmLabel": "Tapez {{word}} pour confirmer",
+    "deleteWord": "SUPPRIMER",
+    "deleteButton": "Supprimer définitivement",
+    "demoUnavailable": "La gestion du compte n'est pas disponible en mode démonstration."
+  },
+  "demo": {
+    "banner": "Mode démonstration — données fictives, rien n'est enregistré.",
+    "exit": "Quitter la démo"
+  },
+  "privacy": {
+    "title": "Confidentialité & RGPD",
+    "intro": "SOLUSSIMO applique la protection des données dès la conception.",
+    "data": "Données traitées : adresse e-mail et mot de passe (gérés par le service d'authentification, mot de passe chiffré), nom affiché, langue, et les données de gestion de votre établissement.",
+    "purpose": "Finalité : fournir le service de gestion du salon. Aucune revente, aucun traceur publicitaire, aucun profilage.",
+    "isolation": "Isolation : chaque entreprise dispose d'un espace cloisonné ; les règles d'accès sont appliquées directement dans la base de données.",
+    "storage": "Stockage : hébergement prévu dans l'Union européenne. Données conservées tant que le compte est actif, puis supprimées.",
+    "rights": "Vos droits : accès, rectification, export et suppression directement depuis « Mon compte » ; opposition et limitation sur demande.",
+    "draft": "Version préliminaire : le texte définitif (responsable de traitement, contact DPO, durées précises) sera validé avant l'ouverture commerciale."
+  },
+  "errors": {
+    "credentials": "Identifiants incorrects.",
+    "emailNotConfirmed": "Confirmez d'abord votre adresse e-mail grâce au lien reçu.",
+    "weakPassword": "Ce mot de passe est trop faible.",
+    "rateLimited": "Trop de tentatives. Patientez quelques instants.",
+    "samePassword": "Choisissez un mot de passe différent de l'actuel.",
+    "companyLimit": "Nombre maximal d'entreprises atteint pour ce compte.",
+    "invalidTimezone": "Fuseau horaire invalide.",
+    "soleOwner": "Vous êtes seul propriétaire d'une entreprise : transférez-la ou supprimez-la d'abord.",
+    "confirmationMismatch": "La confirmation ne correspond pas.",
+    "forbidden": "Vous n'avez pas l'autorisation d'effectuer cette action.",
+    "invalidInput": "Certaines informations sont invalides.",
+    "network": "Connexion impossible. Vérifiez votre réseau.",
+    "generic": "Une erreur est survenue. Réessayez.",
+    "notConfigured": "Service de comptes non configuré."
+  }
+}

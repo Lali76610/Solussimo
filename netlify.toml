@@ -1,0 +1,16 @@
+# Configuration Netlify — projet de DÉMONSTRATION « solussimo-demo ».
+# Données fictives uniquement. Aucun secret ni variable d'environnement requis.
+# La future production devra utiliser un projet Netlify distinct.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Démo non indexée par les moteurs de recherche.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
