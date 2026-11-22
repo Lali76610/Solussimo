@@ -42,4 +42,8 @@ for f in "$ROOT"/supabase/tests/sql/*.sql; do
   echo "$out" | sed -n 's/^.*NOTICE:  \(ok .*\)$/     \1/p'
   total=$((total + $(echo "$out" | grep -c 'NOTICE:  ok ' || true)))
 done
+echo "  ── concurrence (sessions parallèles)"
+conc="$("$ROOT/supabase/tests/concurrency/run.sh" "$TEST_URL")" || { echo "$conc"; exit 1; }
+echo "$conc" | grep -v CONCURRENCE_OK
+total=$((total + $(echo "$conc" | sed -n 's/^CONCURRENCE_OK //p')))
 echo "✔ ${total} assertions de sécurité réussies"

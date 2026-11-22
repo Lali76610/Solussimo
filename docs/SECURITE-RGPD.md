@@ -41,9 +41,18 @@
 | Pas de traceurs | Aucun outil d'analyse, polices système, aucune ressource tierce. |
 | Données fictives | Démo et tests : domaine réservé `.example`, aucun client réel. |
 
+### Personnel & Planning (V0.3)
+| Mesure | Mise en œuvre |
+| --- | --- |
+| Cloisonnement par établissement | Managers / collaborateurs limités aux établissements de leur fiche (RLS). |
+| Absences | Types neutres (congés, absence, formation, autre) : **aucun motif médical** (art. 9 RGPD). |
+| Invitations | Jeton 256 bits, usage unique, 72 h ; seul le hachage SHA-256 est stocké ; lien dans le fragment `#` (absent des journaux serveur) ; acceptation réservée à l'e-mail confirmé. |
+| Rendez-vous | Écriture uniquement par RPC serveur (permissions, horaires, congés) ; contraintes d'exclusion contre la double réservation ; journal d'audit. |
+| Clients | Libellé minimal (80 caractères), aucune coordonnée, en attendant le module Clients. |
+
 ## Reste à faire avant des données clients réelles
 - Projet Supabase en **région UE**, DPA Supabase signé, SMTP personnalisé.
-- Flux d'**invitation** de membres (avec acceptation explicite).
+- Envoi automatique des invitations par e-mail (SMTP personnalisé / fonction serveur) — aujourd'hui partagé par l'appli Mail du gérant.
 - **MFA** (TOTP) pour owners/admins.
 - Textes juridiques définitifs (responsable de traitement, DPO, durées de conservation) et registre des traitements.
 - Purge automatique des comptes inactifs / journaux d'audit au-delà de la durée de conservation.

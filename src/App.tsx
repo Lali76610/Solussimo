@@ -17,6 +17,10 @@ const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage').then(
 const LiveDashboardPage = lazy(() => import('./pages/live/LiveDashboardPage').then((m) => ({ default: m.LiveDashboardPage })))
 const LiveModulePage = lazy(() => import('./pages/live/LiveModulePage').then((m) => ({ default: m.LiveModulePage })))
 const LiveStaffPage = lazy(() => import('./pages/live/LiveStaffPage').then((m) => ({ default: m.LiveStaffPage })))
+const StaffDetailPage = lazy(() => import('./pages/live/StaffDetailPage').then((m) => ({ default: m.StaffDetailPage })))
+const LivePlanningPage = lazy(() => import('./pages/live/planning/LivePlanningPage').then((m) => ({ default: m.LivePlanningPage })))
+const ServicesPage = lazy(() => import('./pages/live/planning/ServicesPage').then((m) => ({ default: m.ServicesPage })))
+const InvitationPage = lazy(() => import('./pages/InvitationPage').then((m) => ({ default: m.InvitationPage })))
 const OnboardingPage = lazy(() => import('./pages/OnboardingPage').then((m) => ({ default: m.OnboardingPage })))
 const PlanningPage = lazy(() => import('./pages/PlanningPage').then((m) => ({ default: m.PlanningPage })))
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then((m) => ({ default: m.PrivacyPage })))
@@ -47,6 +51,7 @@ export default function App() {
             <Route path="/mot-de-passe-oublie" element={<ForgotPasswordPage />} />
             <Route path="/nouveau-mot-de-passe" element={<ResetPasswordPage />} />
             <Route path="/confidentialite" element={<PrivacyPage />} />
+            <Route path="/invitation" element={<InvitationPage />} />
 
             {/* Création du salon (compte réel, sans entreprise) */}
             <Route path="/creer-salon" element={<RequireLiveAuth><OnboardingPage /></RequireLiveAuth>} />
@@ -54,9 +59,11 @@ export default function App() {
             {/* Application */}
             <Route element={<RequireAuth><RequireCompany><AppLayout /></RequireCompany></RequireAuth>}>
               <Route index element={<ByMode demo={<DashboardPage />} live={<LiveDashboardPage />} />} />
-              <Route path="planning" element={<ByMode demo={<PlanningPage />} live={<LiveModulePage titleKey="nav.planning" />} />} />
+              <Route path="planning" element={<ByMode demo={<PlanningPage />} live={<LivePlanningPage />} />} />
+              <Route path="planning/prestations" element={<ByMode demo={<Navigate to="/planning" replace />} live={<ServicesPage />} />} />
               <Route path="clients" element={<ByMode demo={<ClientsPage />} live={<LiveModulePage titleKey="nav.clients" />} />} />
               <Route path="personnel" element={<ByMode demo={<StaffPage />} live={<LiveStaffPage />} />} />
+              <Route path="personnel/:id" element={<ByMode demo={<Navigate to="/personnel" replace />} live={<StaffDetailPage />} />} />
               <Route path="caisse" element={<ByMode demo={<CheckoutPage />} live={<LiveModulePage titleKey="nav.checkout" />} />} />
               <Route path="stock" element={<ByMode demo={<StockPage />} live={<LiveModulePage titleKey="nav.stock" />} />} />
               <Route path="compte" element={<AccountPage />} />

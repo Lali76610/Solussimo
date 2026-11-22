@@ -11,6 +11,7 @@ import { SUPPORTED_LANGUAGES } from '../i18n'
 import type { AppLocale, EstablishmentKind } from '../lib/database.types'
 import { authErrorKey } from '../lib/authErrors'
 import { COUNTRIES, countryName, CURRENCIES, defaultCurrency, defaultTimezone, ESTABLISHMENT_KINDS, listTimezones } from '../lib/regional'
+import { readPendingInvitation } from '../lib/invitations'
 import { supabase } from '../lib/supabase'
 import { useTenant } from '../tenant/useTenant'
 
@@ -34,6 +35,8 @@ export function OnboardingPage() {
   const timezones = useMemo(() => listTimezones(), [])
 
   if (loading) return <FullPageSpinner />
+  // Invité en cours : il rejoint une entreprise existante au lieu d'en créer une.
+  if (memberships.length === 0 && readPendingInvitation()) return <Navigate to="/invitation" replace />
   // Un salon existe déjà : on rejoint l'application (la création d'autres salons viendra ensuite).
   if (memberships.length > 0 && !submitting) return <Navigate to="/" replace />
 

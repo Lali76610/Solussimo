@@ -10,7 +10,7 @@ import { useCompanyData } from './useCompanyData'
 
 const MODULES = [
   { key: 'nav.staff', to: '/personnel', icon: UserRound, ready: true },
-  { key: 'nav.planning', to: '/planning', icon: CalendarDays, ready: false },
+  { key: 'nav.planning', to: '/planning', icon: CalendarDays, ready: true },
   { key: 'nav.clients', to: '/clients', icon: Users, ready: false },
   { key: 'nav.checkout', to: '/caisse', icon: Receipt, ready: false },
   { key: 'nav.stock', to: '/stock', icon: Package, ready: false },

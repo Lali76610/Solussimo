@@ -56,13 +56,42 @@ select tests.ok(
 select tests.ok(
   not exists (select 1 from information_schema.columns
               where table_schema = 'public'
-                and column_name in ('email', 'phone', 'birth_date', 'address', 'password')),
-  'minimisation RGPD : aucune colonne e-mail/téléphone/adresse/mot de passe dans public');
+                and column_name in ('email', 'phone', 'birth_date', 'address', 'password')
+                -- Seule exception justifiée : l'adresse de l'invité (lien réservé à ce compte),
+                -- lisible uniquement par owner/admin (testé dans 04_staff_invitations).
+                and not (table_name = 'invitations' and column_name = 'email')),
+  'minimisation RGPD : aucune colonne e-mail/téléphone/adresse/mot de passe dans public (hors invitations.email)');
+
+select tests.ok(
+  not has_column_privilege('authenticated', 'public.invitations', 'token_hash', 'SELECT'),
+  'invitations : le hachage du jeton n''est jamais lisible via l''API');
+
+select tests.ok(
+  not has_table_privilege('authenticated', 'public.appointments', 'INSERT')
+  and not has_table_privilege('authenticated', 'public.appointments', 'UPDATE')
+  and not has_table_privilege('authenticated', 'public.appointments', 'DELETE'),
+  'rendez-vous : aucune écriture directe (RPC contrôlées uniquement)');
+
+select tests.ok(
+  not has_table_privilege('authenticated', 'public.staff_working_hours', 'INSERT')
+  and not has_table_privilege('authenticated', 'public.staff_working_hours', 'DELETE'),
+  'horaires : écriture uniquement via RPC');
+
+select tests.ok(
+  exists (select 1 from pg_constraint where conname = 'appointments_no_staff_overlap' and contype = 'x')
+  and exists (select 1 from pg_constraint where conname = 'appointments_no_resource_overlap' and contype = 'x'),
+  'contraintes d''exclusion anti-double réservation présentes (collaborateur + ressource)');
 
 select tests.ok(
   not exists (
     select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace
     where n.nspname = 'public' and p.prosecdef),
   'aucune fonction SECURITY DEFINER exposée par l''API (schéma public)');
+
+select tests.ok(
+  not exists (
+    select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('public', 'private') and p.prosrc ~ 'errcode\s*=\s*''(40001|40P01)'''),
+  'aucune erreur métier levée avec un code réessayé automatiquement par PostgREST (40001/40P01)');
 
 rollback;

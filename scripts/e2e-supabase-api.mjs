@@ -67,6 +67,8 @@ async function createUsers() {
 async function cleanup() {
   const ids = users.map((u) => lit(u.id)).join(',')
   await sql(`
+    delete from public.appointments where company_id in (select id from public.companies where created_by in (${ids}));
+    delete from public.services where company_id in (select id from public.companies where created_by in (${ids}));
     delete from public.companies where created_by in (${ids});
     delete from auth.users where id in (${ids});`)
   const [left] = await sql(`select (select count(*) from auth.users where email like 'e2e-%@test.example') as users,
@@ -127,6 +129,41 @@ try {
   ok(Boolean(delA.error), 'Bob : suppression de l\'entreprise d\'Alice refusée')
   const exp = await bob.rpc('export_my_data')
   ok(!exp.error && !JSON.stringify(exp.data).includes('Salon A'), 'Bob : export RGPD sans aucune donnée d\'Alice')
+
+  // ----- V0.3 : Personnel & Planning via l'API réelle
+  const { data: staffA } = await alice.from('staff_members').select('id').eq('company_id', companyA).eq('display_name', 'E2E Collaborateur').single()
+  const sch = await alice.rpc('set_staff_week_schedule', { p_staff_id: staffA.id, p_establishment_id: estA.id,
+    p_slots: [1, 2, 3, 4, 5, 6].flatMap((d) => [{ weekday: d, start: '09:00', end: '12:30' }, { weekday: d, start: '13:30', end: '19:00' }]) })
+  ok(!sch.error, 'Planning : horaires hebdomadaires enregistrés (RPC)')
+  const svc = await alice.from('services').insert({ company_id: companyA, name: 'E2E Coupe', duration_minutes: 30, price_cents: 3200 }).select('id').single()
+  ok(!svc.error, 'Planning : prestation créée')
+  const book = (c, time, label) => c.rpc('book_appointment', { p_establishment_id: estA.id, p_staff_id: staffA.id, p_service_id: svc.data.id, p_start_local: time, p_client_label: label })
+  const b1 = await book(alice, '2030-01-07T10:00:00', 'E2E Client 1')
+  ok(!b1.error, 'Planning : rendez-vous réservé (lundi 07/01/2030 10:00)')
+  const { data: appt } = await alice.from('appointments').select('starts_at, version').eq('id', b1.data).single()
+  ok(appt && new Date(appt.starts_at).toISOString() === '2030-01-07T09:00:00.000Z', 'Planning : heure de Paris convertie côté serveur (09:00 UTC)')
+  const dbl = await book(alice, '2030-01-07T10:15:00', 'E2E Doublon')
+  ok(/slot_unavailable/.test(dbl.error?.message ?? ''), 'Planning : double réservation refusée par le serveur')
+  const brk = await book(alice, '2030-01-07T12:30:00', 'E2E Pause')
+  ok(/outside_working_hours/.test(brk.error?.message ?? ''), 'Planning : réservation pendant la pause refusée')
+  const mv = await alice.rpc('reschedule_appointment', { p_appointment_id: b1.data, p_start_local: '2030-01-07T15:00:00', p_expected_version: appt.version })
+  ok(!mv.error && mv.data === appt.version + 1, 'Planning : déplacement avec contrôle de version')
+  const stale = await alice.rpc('cancel_appointment', { p_appointment_id: b1.data, p_expected_version: appt.version })
+  ok(/version_conflict/.test(stale.error?.message ?? ''), 'Planning : version périmée refusée (concurrence optimiste)')
+  const ba = await bob.from('appointments').select('id').eq('company_id', companyA)
+  ok(!ba.error && ba.data.length === 0, 'Bob : rendez-vous d\'Alice invisibles')
+  const bb = await book(bob, '2030-01-08T10:00:00', 'E2E Intrus')
+  ok(Boolean(bb.error), 'Bob : réservation chez Alice refusée')
+  const bh = await bob.from('staff_working_hours').select('id').eq('company_id', companyA)
+  ok(!bh.error && bh.data.length === 0, 'Bob : horaires d\'Alice invisibles')
+  const bi = await bob.rpc('create_invitation', { p_company_id: companyA, p_email: 'x@test.example', p_role: 'staff' })
+  ok(Boolean(bi.error), 'Bob : invitation dans l\'entreprise d\'Alice refusée')
+  const ai = await alice.rpc('create_invitation', { p_company_id: companyA, p_email: `e2e-invite-${run}@test.example`, p_role: 'staff' })
+  ok(!ai.error && /^[0-9a-f]{64}$/.test(ai.data?.[0]?.token ?? ''), 'Invitation : jeton sécurisé généré')
+  const leak = await alice.from('invitations').select('token_hash')
+  ok(Boolean(leak.error), 'Invitation : hachage du jeton illisible via l\'API')
+  const direct = await alice.from('appointments').insert({ company_id: companyA })
+  ok(Boolean(direct.error), 'Rendez-vous : écriture directe refusée (RPC obligatoire)')
 
   // ----- Visiteur anonyme
   const an = await anon.from('companies').select('*')

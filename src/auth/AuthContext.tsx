@@ -1,6 +1,7 @@
 import type { Session } from '@supabase/supabase-js'
 import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { AppLocale, ProfileRow } from '../lib/database.types'
+import { readPendingInvitation } from '../lib/invitations'
 import { supabase } from '../lib/supabase'
 import { clearDemoSession, DEMO_USER, readDemoSession, SESSION_TTL_MS, writeDemoSession, type DemoUser } from './session'
 
@@ -127,7 +128,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password,
       options: {
         data: { display_name: displayName.trim(), locale },
-        emailRedirectTo: `${window.location.origin}/creer-salon`,
+        // Un invité revient sur son invitation après confirmation de l'e-mail.
+        emailRedirectTo: `${window.location.origin}${readPendingInvitation() ? '/invitation' : '/creer-salon'}`,
       },
     })
     if (error) throw error

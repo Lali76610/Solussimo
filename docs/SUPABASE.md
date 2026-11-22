@@ -38,9 +38,17 @@ audit_log (qui / quoi / quand — sans données personnelles)
 | `membership.manage`    |   ✔   |   ✔¹  |         |       |
 | `staff.write`          |   ✔   |   ✔   |    ✔    |       |
 | `audit.read`           |   ✔   |   ✔   |         |       |
+| `invitation.manage`    |   ✔   |   ✔²  |         |       |
+| `schedule.write`       |   ✔   |   ✔   |   ✔³    |       |
+| `service.write`        |   ✔   |   ✔   |         |       |
+| `resource.write`       |   ✔   |   ✔   |         |       |
+| `appointment.write`    |   ✔   |   ✔   |   ✔³    |  ✔³   |
 
 ¹ Un admin ne peut jamais créer, modifier ou retirer un owner, ni changer son propre rôle.
 Une entreprise garde toujours au moins un owner.
+² Un admin invite uniquement des managers et des collaborateurs.
+³ **Cloisonnement par établissement (V0.3)** : managers et collaborateurs ne voient et
+n'agissent que dans les établissements auxquels leur fiche est affectée. Owner/admin : tous.
 
 Source unique : `private.permission_roles()` (SQL). L'interface lit les permissions
 effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
@@ -54,6 +62,12 @@ effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
 | `20261122100200_permissions_and_rls.sql` | fonctions d'autorisation, garde-fous, RLS, privilèges |
 | `20261122100300_audit_log.sql` | journal d'audit non falsifiable |
 | `20261122100400_onboarding_and_gdpr_rpc.sql` | création de salon, export / effacement RGPD |
+| `20261122100500_harden_rpc_exposure.sql` | RPC privilégiées déplacées dans `private`, enveloppes `SECURITY INVOKER` |
+| `20261123100000_staff_scheduling.sql` | V0.3 — fonctions multiples, réservable, affectations multi-établissements, horaires, absences, RLS par établissement |
+| `20261123100100_invitations.sql` | V0.3 — invitations à usage unique (72 h, jeton haché, e-mail confirmé) |
+| `20261123100200_planning.sql` | V0.3 — prestations, ressources (cabines), rendez-vous par RPC, contraintes d'exclusion, fuseaux / DST |
+| `20261123100400_staff_select_policy_returning.sql` | V0.3 — lecture des fiches compatible `INSERT … RETURNING` (constaté sur Supabase : création refusée) |
+| `20261123100300_conflict_errcode_and_indexes.sql` | V0.3 — conflit de version signalé sans code réessayé par PostgREST (constaté sur Supabase : boucle → HTTP 504) ; index |
 
 ## Tests de sécurité
 
@@ -62,9 +76,13 @@ effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres npm run test:db
 ```
 
-94 assertions : RLS sur toutes les tables, aucun privilège `anon`, isolation complète
-entre deux entreprises (lecture, modification, suppression, insertion, transfert,
-élévation de privilèges), matrice des rôles, création de salon, RGPD.
+198 assertions : RLS sur toutes les tables, aucun privilège `anon`, isolation complète
+entre deux entreprises et entre établissements, matrice des rôles, création de salon,
+RGPD, Personnel (affectations, horaires, absences), invitations (usage unique,
+expiration, révocation, mauvais compte), Planning (disponibilités, pauses, congés,
+double réservation, déplacement, annulation, concurrence optimiste, fuseaux, changement
+d'heure, cabines) et **concurrence réelle** (sessions parallèles : 20 réservations
+simultanées du même créneau → 1 seule acceptée).
 Exécutées automatiquement en CI (job « Base de données »).
 
 > ⚠️ Ne jamais pointer `DATABASE_URL` vers une base de production : le script recrée une base `solussimo_test`.
@@ -74,9 +92,9 @@ Exécutées automatiquement en CI (job « Base de données »).
 | Élément | Valeur |
 | --- | --- |
 | Projet | `solussimo-dev` — ref `iipymibdmazppggymvwn` — région `eu-west-1` (Irlande, UE) |
-| Migrations | 6/6 appliquées (`npm run db:migrate -- iipymibdmazppggymvwn`) |
-| Tests SQL sur le projet réel | 95/95 (transactions annulées, aucune donnée conservée) |
-| Tests API de bout en bout | 24/24 (`npm run test:api -- iipymibdmazppggymvwn`) |
+| Migrations | 11/11 appliquées (`npm run db:migrate -- iipymibdmazppggymvwn`) |
+| Tests SQL sur le projet réel | 195/195 (transactions annulées, aucune donnée conservée) ; concurrence : local + CI |
+| Tests API de bout en bout | 39/39 (`npm run test:api -- iipymibdmazppggymvwn`) |
 | Security / Performance Advisor | 0 alerte |
 | Auth | confirmation e-mail, mot de passe ≥ 10 (a-z, A-Z, 0-9), ré-authentification pour changer de mot de passe, inscriptions anonymes désactivées |
 | Site Netlify associé | `solussimo-dev.netlify.app` (projet Netlify distinct de la démo, protection d'accès active) |
