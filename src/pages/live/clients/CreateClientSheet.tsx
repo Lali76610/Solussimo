@@ -38,7 +38,9 @@ export function CreateClientSheet({ establishments, defaultEstablishmentId, init
   const [dupes, setDupes] = useState<Candidate[]>([])
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
-  const country = establishments.find((e) => e.id === estId)?.country_code ?? active?.company.country_code ?? 'FR'
+  // Établissement effectif : la feuille peut s'ouvrir avant la fin du chargement de la liste.
+  const effEstId = estId || defaultEstablishmentId || establishments[0]?.id || ''
+  const country = establishments.find((e) => e.id === effEstId)?.country_code ?? active?.company.country_code ?? 'FR'
 
   // Détection des doublons pendant la saisie (serveur, résultats masqués).
   const check = useMemo(() => debounce((f: string, l: string, p: string, e: string, c: string) => {
@@ -54,7 +56,7 @@ export function CreateClientSheet({ establishments, defaultEstablishmentId, init
 
   async function submit(ev: FormEvent) {
     ev.preventDefault()
-    if (!supabase || !active || busy) return
+    if (!supabase || !active || busy || !effEstId) return
     setError(null)
     if (!firstName.trim() && !lastName.trim()) return setError(t('clientsLive.errors.nameRequired'))
     const e164 = phone.trim() ? toE164(phone, country) : null
@@ -63,7 +65,7 @@ export function CreateClientSheet({ establishments, defaultEstablishmentId, init
     if ((bDay && !bMonth) || (!bDay && bMonth)) return setError(t('clientsLive.errors.birthday'))
     setBusy(true)
     const { data, error: err } = await supabase.from('clients').insert({
-      company_id: active.company.id, home_establishment_id: estId,
+      company_id: active.company.id, home_establishment_id: effEstId,
       first_name: firstName.trim() || null, last_name: lastName.trim() || null,
       phone_e164: e164, email: email.trim() || null,
       birthday_day: bDay ? Number(bDay) : null, birthday_month: bMonth ? Number(bMonth) : null,
@@ -135,7 +137,7 @@ export function CreateClientSheet({ establishments, defaultEstablishmentId, init
         </fieldset>
         {establishments.length > 1 && (
           <Field id="cEst" label={t('clientsLive.homeEstablishment')}>
-            <select id="cEst" value={estId} onChange={(e) => setEstId(e.target.value)} className="input">
+            <select id="cEst" value={effEstId} onChange={(e) => setEstId(e.target.value)} className="input">
               {establishments.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
             </select>
           </Field>
@@ -151,8 +153,8 @@ export function CreateClientSheet({ establishments, defaultEstablishmentId, init
           <p className="text-xs text-slate-500">{t('consents.uncheckedByDefault')}</p>
         </fieldset>
         <FormMessage kind="error">{error}</FormMessage>
-        <button type="submit" className="btn-primary w-full" disabled={busy}>
-          <UserPlus className="size-4" aria-hidden="true" />{busy ? t('common.saving') : t('clientsLive.create')}
+        <button type="submit" className="btn-primary w-full" disabled={busy || !effEstId}>
+          <UserPlus className="size-4" aria-hidden="true" />{!effEstId ? t('common.loading') : busy ? t('common.saving') : t('clientsLive.create')}
         </button>
       </form>
     </Sheet>
