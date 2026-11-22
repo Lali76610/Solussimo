@@ -82,6 +82,7 @@ Exécutées automatiquement en CI (job « Base de données »).
 | Site Netlify associé | `solussimo-dev.netlify.app` (projet Netlify distinct de la démo, protection d'accès active) |
 | Redirections autorisées | `localhost:5173`, `solussimo-dev.netlify.app` (+ aperçus `*--solussimo-dev`) |
 | Clé navigateur | clé **publishable** (`sb_publishable_…`), fournie par variable d'environnement |
+| Signature des jetons | clé asymétrique **ES256** uniquement ; ancien secret HS256 **révoqué**, clés legacy `anon` / `service_role` **désactivées** (22/11/2026) |
 
 Les scripts `db:migrate` et `test:api` utilisent l'API de gestion Supabase
 (`SUPABASE_ACCESS_TOKEN`, jamais versionné). `db:migrate` refuse tout projet
