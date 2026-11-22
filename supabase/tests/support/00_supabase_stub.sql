@@ -66,3 +66,20 @@ grant execute on function auth.uid(), auth.role(), auth.jwt() to anon, authentic
 alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
 alter default privileges in schema public grant all on functions to anon, authenticated, service_role;
 alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
+
+-- Stub minimal de Supabase Vault (le vrai Vault chiffre les secrets au repos).
+create schema if not exists vault;
+create table if not exists vault.secrets (
+  id uuid primary key default gen_random_uuid(),
+  name text unique,
+  description text not null default '',
+  secret text not null,
+  created_at timestamptz not null default now()
+);
+create or replace function vault.create_secret(new_secret text, new_name text default null, new_description text default '', new_key_id uuid default null)
+returns uuid language sql as $$
+  insert into vault.secrets (name, description, secret) values (new_name, coalesce(new_description, ''), new_secret) returning id;
+$$;
+create or replace view vault.decrypted_secrets as select id, name, description, secret, secret as decrypted_secret, created_at from vault.secrets;
+revoke all on schema vault from public, anon, authenticated;
+revoke all on all tables in schema vault from public, anon, authenticated;

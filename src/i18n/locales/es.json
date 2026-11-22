@@ -325,7 +325,9 @@
     "role": "Función",
     "removeAccess": "Retirar el acceso",
     "removeAccessConfirm": "¿Retirar el acceso de este colaborador a la empresa?",
-    "editDay": "Modificar el horario"
+    "editDay": "Modificar el horario",
+    "healthPractitioner": "Profesional de cuidados (datos de salud)",
+    "healthPractitionerHint": "Permite acceder a los datos de salud de los clientes. Solo modificable por el propietario o un administrador."
   },
   "account": {
     "title": "Mi cuenta",
@@ -389,7 +391,15 @@
     "alreadyMember": "Esta persona ya forma parte de la empresa.",
     "forbiddenRole": "No puedes asignar esta función.",
     "primaryEstablishment": "No se puede quitar el establecimiento principal.",
-    "staffNotAssigned": "El colaborador no está asignado a este establecimiento."
+    "staffNotAssigned": "El colaborador no está asignado a este establecimiento.",
+    "clientRequired": "Elige un cliente o escribe el nombre de un cliente de paso.",
+    "healthConsentRequired": "Se requiere el consentimiento explícito de salud.",
+    "healthDisabled": "Los datos de salud no están activados para este salón.",
+    "legalAckRequired": "Las tres verificaciones legales son obligatorias.",
+    "queryTooShort": "Escribe al menos 2 letras.",
+    "clientUnavailable": "Este cliente no está disponible.",
+    "clientEmailExists": "Ya existe una ficha con este correo.",
+    "clientPhoneExists": "Ya existe una ficha con este teléfono."
   },
   "timeOff": {
     "vacation": "Vacaciones",
@@ -430,7 +440,7 @@
     "cancelConfirm": "¿Cancelar esta cita?",
     "editTitle": "Cita",
     "client": "Cliente",
-    "clientHint": "Basta con el nombre y una inicial (datos ficticios para las pruebas).",
+    "clientHint": "Busca una ficha de cliente o escribe un nombre para un cliente de paso.",
     "service": "Servicio",
     "staff": "Colaborador",
     "date": "Fecha",
@@ -446,7 +456,10 @@
     "noServices": "Añade primero tus servicios (duración y precio).",
     "noStaff": "Ningún colaborador reservable en este establecimiento.",
     "freeSlot": "Hueco libre",
-    "unavailable": "No disponible"
+    "unavailable": "No disponible",
+    "changeClient": "Cambiar de cliente",
+    "clientSearch": "Buscar un cliente o escribir un nombre",
+    "walkInHint": "Sin selección: cliente de paso (sin ficha)."
   },
   "catalog": {
     "title": "Servicios",
@@ -469,5 +482,193 @@
     "cabin": "Cabina",
     "chair": "Sillón",
     "equipment": "Equipo"
+  },
+  "clientsLive": {
+    "addNote": "Añadir la nota",
+    "birthday": "Cumpleaños",
+    "birthdayHint": "Solo día y mes, sin año.",
+    "birthdayMonth": "Cumpleaños este mes",
+    "book": "Reservar",
+    "call": "Llamar",
+    "contact": "Datos de contacto",
+    "create": "Crear la ficha",
+    "current": "Actual: {{value}}",
+    "day": "Día",
+    "deleteNote": "Eliminar la nota",
+    "duplicateFound": "Ya existe una ficha similar:",
+    "edit": "Modificar",
+    "empty": "Todavía no hay clientes. Toca «+» para crear uno.",
+    "errors": {
+      "birthday": "Indica el día Y el mes, o ninguno de los dos.",
+      "nameRequired": "Indica al menos un nombre o un apellido.",
+      "phoneInvalid": "Número de teléfono no válido."
+    },
+    "favoriteServices": "Servicios habituales",
+    "filters": "Filtros",
+    "firstName": "Nombre",
+    "habits": "Hábitos",
+    "homeEstablishment": "Establecimiento de referencia",
+    "lastName": "Apellido",
+    "lastVisit": "última visita {{date}}",
+    "loadMore": "Mostrar más",
+    "mail": "Correo",
+    "marketingOk": "Acepta marketing",
+    "maskedForRole": "Datos de contacto ocultos para tu función.",
+    "month": "Mes",
+    "nameHint": "Basta con un nombre O un apellido. Teléfono y correo son opcionales.",
+    "neverCame": "nunca ha venido",
+    "newClient": "Nuevo cliente",
+    "newEmail": "Nuevo correo (vacío para conservar)",
+    "newPhone": "Nuevo teléfono (vacío para conservar)",
+    "noContact": "Sin datos de contacto",
+    "noHistory": "Todavía no hay citas.",
+    "noMarketing": "Sin consentimiento de marketing",
+    "noShows": "Ausencias",
+    "notFound": "Cliente no encontrado o no autorizado.",
+    "note": "Nota",
+    "noteHint": "Solo información práctica — ningún dato de salud aquí.",
+    "phone": "Teléfono",
+    "preferredDays": "Días preferidos",
+    "preferredStaff": "Colaborador preferido",
+    "preferredTime": "Momento preferido",
+    "reveal": "Mostrar los datos de contacto completos",
+    "revealLogged": "Acceso registrado en el registro de accesos.",
+    "searchPlaceholder": "Nombre, teléfono o correo…",
+    "sections": "Secciones de la ficha",
+    "settings": "Ajustes",
+    "spent": "Total",
+    "tags": "Etiquetas",
+    "tagsHint": "Separadas por comas (p. ej. VIP, Estudiante). Máximo 10.",
+    "technicalHint": "Fórmulas de coloración, tipo de cabello, material… (no sensible).",
+    "typeToSearch": "Escribe al menos 2 letras para buscar un cliente.",
+    "visits": "Visitas",
+    "tabs": {
+      "overview": "Resumen",
+      "history": "Historial",
+      "preferences": "Preferencias",
+      "technical": "Ficha técnica",
+      "health": "Salud",
+      "consents": "Consentimientos",
+      "data": "Datos"
+    },
+    "noteKind": {
+      "color_formula": "Fórmula de coloración",
+      "hair": "Cabello",
+      "skin_type": "Tipo de piel",
+      "nails": "Uñas",
+      "other": "Otro"
+    },
+    "time": {
+      "morning": "Mañana",
+      "afternoon": "Tarde",
+      "evening": "Noche"
+    },
+    "visit": {
+      "lt1m": "Vino hace < 1 mes",
+      "1to6m": "1 a 6 meses",
+      "gt6m": "Más de 6 meses",
+      "never": "Nunca ha venido"
+    }
+  },
+  "consents": {
+    "agreeEmail": "Acepta recibir ofertas por correo",
+    "agreeSms": "Acepta recibir ofertas por SMS",
+    "healthGrant": "Registrar el consentimiento de salud",
+    "healthSigned": "El cliente ha firmado el consentimiento explícito",
+    "healthText": "Datos de salud (alergias, contraindicaciones…): solo con el consentimiento explícito y firmado del cliente. La retirada borra inmediatamente estos datos.",
+    "healthTitle": "Consentimiento de salud",
+    "healthWithdraw": "Retirar el consentimiento de salud",
+    "healthWithdrawConfirm": "¿Retirar el consentimiento? Los datos de salud se borrarán inmediatamente.",
+    "history": "Historial de consentimientos",
+    "marketingTitle": "Consentimientos de marketing",
+    "none": "Ningún consentimiento registrado.",
+    "proofNote": "Cada cambio queda fechado y conservado como prueba (nunca se modifica ni se elimina).",
+    "uncheckedByDefault": "Casillas sin marcar por defecto: márcalas solo con el acuerdo del cliente.",
+    "channel": {
+      "email": "Correo",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp",
+      "postal": "Correo postal",
+      "none": "—"
+    },
+    "purpose": {
+      "marketing": "Ofertas y promociones",
+      "newsletter": "Boletín",
+      "appointment_reminders": "Recordatorios de citas",
+      "health_data": "Datos de salud"
+    },
+    "status": {
+      "granted": "Otorgado",
+      "withdrawn": "Retirado"
+    }
+  },
+  "apptStatus": {
+    "upcoming": "Próxima",
+    "booked": "Vino",
+    "completed": "Terminada",
+    "cancelled": "Cancelada",
+    "no_show": "Ausente"
+  },
+  "gdpr": {
+    "accessText": "Fichero completo (contacto, historial, preferencias, consentimientos) para entregar al cliente.",
+    "accessTitle": "Derecho de acceso y portabilidad",
+    "erase": "Eliminar definitivamente",
+    "eraseText": "Anonimización: se borran datos de contacto, notas, preferencias y datos de salud. Las citas pasadas se conservan como «—» por obligaciones contables ({{years}} años).",
+    "eraseTitle": "Derecho de supresión",
+    "export": "Exportar los datos del cliente",
+    "exported": "Exportación lista.",
+    "ownerOnly": "Reservado al propietario y a los administradores.",
+    "rectifyText": "Modifica la ficha desde «Resumen» → «Modificar». Cada cambio queda registrado.",
+    "rectifyTitle": "Derecho de rectificación"
+  },
+  "health": {
+    "title": "Datos de salud",
+    "notice": "Datos sensibles cifrados. Cada consulta queda registrada. Acceso reservado a personas habilitadas.",
+    "show": "Mostrar los datos de salud",
+    "hide": "Ocultar",
+    "consentFirst": "Registra primero el consentimiento explícito en la pestaña «Consentimientos».",
+    "pregnancy": "Embarazo en curso",
+    "allergies": "Alergias",
+    "contraindications": "Contraindicaciones",
+    "treatments": "Tratamientos en curso",
+    "other": "Otra información útil para el tratamiento"
+  },
+  "merge": {
+    "chooseFields": "Elige, para cada campo, el valor que se conserva.",
+    "confirm": "Fusionar las fichas",
+    "consentRule": "Se conserva el historial; en los consentimientos prevalece la opción más restrictiva. Las citas se agrupan.",
+    "done": "Fichas fusionadas.",
+    "keep": "Esta ficha",
+    "noCandidate": "Ningún duplicado probable. Busca una ficha.",
+    "other": "Duplicado",
+    "start": "Buscar un duplicado",
+    "text": "Agrupa dos fichas de la misma persona sin perder el historial.",
+    "title": "Fusionar un duplicado"
+  },
+  "settingsClients": {
+    "accountingYears": "Documentos contables (años)",
+    "checklist": "Verificaciones legales previas",
+    "countryDefault": "Valores por defecto para el país {{country}} — a validar por tu asesor.",
+    "disable": "Desactivar y borrar los datos de salud",
+    "disableConfirm": "¿Desactivar? Todos los datos de salud de la empresa se borrarán definitivamente.",
+    "enable": "Activar los datos de salud",
+    "enabledSince": "Activado desde el {{date}}",
+    "healthText": "Opcional y desactivado por defecto: alergias, contraindicaciones y tratamientos útiles para los cuidados estéticos, cifrados y accesibles solo a personas habilitadas.",
+    "healthTitle": "Datos de salud",
+    "legalNote": "La certificación HDS (Francia) no suele aplicarse a los centros de estética: a confirmar por tu asesor jurídico.",
+    "ownerOnly": "Solo el propietario puede activar esta función.",
+    "retentionText": "Ninguna supresión automática: las fichas inactivas solo se proponen para revisión.",
+    "retentionTitle": "Conservación de datos",
+    "reviewEmpty": "Ninguna ficha que revisar.",
+    "reviewMonths": "Revisión tras (meses)",
+    "reviewText": "Fichas sin actividad durante el periodo elegido: revísalas y anonimízalas si ya no son útiles.",
+    "reviewTitle": "A revisar (inactivas desde hace {{months}} meses)",
+    "subtitle": "Datos de salud, conservación y revisión de fichas.",
+    "title": "Ajustes de clientes",
+    "ack": {
+      "consent": "Obtendré el consentimiento explícito y firmado de cada cliente antes de registrar cualquier dato (art. 9.2.a RGPD).",
+      "dpia": "He realizado o evaluado la evaluación de impacto (EIPD) relativa a estos datos.",
+      "information": "Informo a mis clientes de este tratamiento (aviso de privacidad expuesto o entregado)."
+    }
   }
 }

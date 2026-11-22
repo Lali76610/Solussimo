@@ -104,15 +104,17 @@ function CreateStaffSheet({ establishments, onClose, onCreated }: {
   const [color, setColor] = useState(STAFF_COLORS[0]!)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  // Établissement effectif : la feuille peut s'ouvrir avant la fin du chargement de la liste.
+  const effEstId = estId || establishments[0]?.id || ''
 
   async function submit(e: FormEvent) {
     e.preventDefault()
-    if (!supabase || !active || busy) return
+    if (!supabase || !active || busy || !effEstId) return
     setError(null)
-    if (!isValidDisplayName(name) || !estId) return setError(t('errors.invalidInput'))
+    if (!isValidDisplayName(name)) return setError(t('errors.invalidInput'))
     setBusy(true)
     const { data, error: err } = await supabase.from('staff_members')
-      .insert({ company_id: active.company.id, establishment_id: estId, display_name: name.trim(), job, jobs: [job], color })
+      .insert({ company_id: active.company.id, establishment_id: effEstId, display_name: name.trim(), job, jobs: [job], color })
       .select('id').single()
     setBusy(false)
     if (err || !data) return setError(t(authErrorKey(err)))
@@ -131,7 +133,7 @@ function CreateStaffSheet({ establishments, onClose, onCreated }: {
           </select>
         </Field>
         <Field id="staffEst" label={t('staffLive.primaryEstablishment')}>
-          <select id="staffEst" value={estId} onChange={(e) => setEstId(e.target.value)} className="input">
+          <select id="staffEst" value={effEstId} onChange={(e) => setEstId(e.target.value)} className="input">
             {establishments.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
           </select>
         </Field>
@@ -145,7 +147,7 @@ function CreateStaffSheet({ establishments, onClose, onCreated }: {
           </div>
         </fieldset>
         <FormMessage kind="error">{error}</FormMessage>
-        <button type="submit" className="btn-primary w-full" disabled={busy}>{busy ? t('staffLive.adding') : t('staffLive.add')}</button>
+        <button type="submit" className="btn-primary w-full" disabled={busy || !effEstId}>{!effEstId ? t('common.loading') : busy ? t('staffLive.adding') : t('staffLive.add')}</button>
       </form>
     </Sheet>
   )

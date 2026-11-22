@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { Field } from '../../../components/Field'
 import { FormMessage } from '../../../components/FormMessage'
 import { Sheet } from '../../../components/Sheet'
-import type { AppointmentRow, ResourceRow, ServiceRow, StaffMemberRow } from '../../../lib/database.types'
+import type { AppointmentRow, EstablishmentRow, ResourceRow, ServiceRow, StaffMemberRow } from '../../../lib/database.types'
 import { authErrorKey } from '../../../lib/authErrors'
 import { formatCurrency } from '../../../lib/format'
 import { supabase } from '../../../lib/supabase'
+import { ClientPicker, type PickedClient } from './ClientPicker'
 import { dateKeyOf, hhmmToMinutes, localTimestamp, minutesOf, minutesToHHMM, type DateKey } from '../../../lib/tz'
 
 export interface SheetTarget {
@@ -15,27 +16,32 @@ export interface SheetTarget {
   staffId?: string
   date: DateKey
   minutes: number
+  client?: PickedClient
 }
 
 interface Props {
   target: SheetTarget
   establishmentId: string
+  establishment?: EstablishmentRow
   timezone: string
   currency: string
   staff: StaffMemberRow[]
   services: ServiceRow[]
   resources: ResourceRow[]
   canWrite: boolean
+  /** false tant que les listes (collaborateurs, prestations) se chargent */
+  ready?: boolean
   onClose: () => void
   onSaved: () => Promise<void>
 }
 
-export function AppointmentSheet({ target, establishmentId, timezone, currency, staff, services, resources, canWrite, onClose, onSaved }: Props) {
+export function AppointmentSheet({ target, establishmentId, establishment, timezone, currency, staff, services, resources, canWrite, ready = true, onClose, onSaved }: Props) {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage ?? 'fr'
   const appt = target.appointment
   const activeServices = services.filter((s) => s.active || s.id === appt?.service_id)
-  const [clientLabel, setClientLabel] = useState(appt?.client_label ?? '')
+  const [client, setClient] = useState<PickedClient>(
+    appt ? { id: appt.client_id, label: appt.client_label } : target.client ?? { id: null, label: '' })
   const [serviceId, setServiceId] = useState(appt?.service_id ?? activeServices[0]?.id ?? '')
   const [staffId, setStaffId] = useState(appt?.staff_id ?? target.staffId ?? staff[0]?.id ?? '')
   const [date, setDate] = useState<DateKey>(appt ? dateKeyOf(new Date(appt.starts_at), timezone) : target.date)
@@ -43,23 +49,30 @@ export function AppointmentSheet({ target, establishmentId, timezone, currency, 
   const [resourceId, setResourceId] = useState(appt?.resource_id ?? '')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
-  const service = services.find((s) => s.id === serviceId)
+  // Valeurs effectives : la feuille peut s'ouvrir avant la fin du chargement des listes
+  // (ex. « Prendre RDV » depuis une fiche client) ; on retient alors la première option.
+  const effServiceId = serviceId || activeServices[0]?.id || ''
+  const effStaffId = staffId || staff[0]?.id || ''
+  const service = services.find((s) => s.id === effServiceId)
 
   async function submit(e: FormEvent) {
     e.preventDefault()
     if (!supabase || busy) return
     setError(null)
-    if (!clientLabel.trim() || !serviceId || !staffId) return setError(t('errors.invalidInput'))
+    if (!client.id && !client.label.trim()) return setError(t('errors.clientRequired'))
+    if (!effServiceId || !effStaffId) return setError(t('errors.invalidInput'))
     const start = localTimestamp(date, hhmmToMinutes(time))
     setBusy(true)
     const { error: err } = appt
       ? await supabase.rpc('reschedule_appointment', {
           p_appointment_id: appt.id, p_start_local: start, p_expected_version: appt.version,
-          p_staff_id: staffId, p_service_id: serviceId, p_resource_id: resourceId || null, p_client_label: clientLabel.trim(),
+          p_staff_id: effStaffId, p_service_id: effServiceId, p_resource_id: resourceId || null,
+          p_client_label: client.id ? null : client.label.trim(), p_client_id: client.id,
         })
       : await supabase.rpc('book_appointment', {
-          p_establishment_id: establishmentId, p_staff_id: staffId, p_service_id: serviceId,
-          p_start_local: start, p_client_label: clientLabel.trim(), p_resource_id: resourceId || null,
+          p_establishment_id: establishmentId, p_staff_id: effStaffId, p_service_id: effServiceId,
+          p_start_local: start, p_client_label: client.id ? null : client.label.trim(), p_resource_id: resourceId || null,
+          p_client_id: client.id,
         })
     setBusy(false)
     if (err) {
@@ -84,12 +97,12 @@ export function AppointmentSheet({ target, establishmentId, timezone, currency, 
   return (
     <Sheet title={appt ? t('planningLive.editTitle') : t('planning.newAppointment')} onClose={onClose}>
       <form onSubmit={submit} noValidate className="space-y-4">
-        <Field id="apClient" label={t('planningLive.client')} hint={t('planningLive.clientHint')}>
-          <input id="apClient" maxLength={80} value={clientLabel} onChange={(e) => setClientLabel(e.target.value)} disabled={!canWrite}
-            className="input" aria-describedby="apClient-hint" autoFocus={!appt} />
-        </Field>
+        <div>
+          <p className="mb-1.5 text-sm font-medium text-slate-700">{t('planningLive.client')}</p>
+          <ClientPicker value={client} onChange={setClient} establishment={establishment} disabled={!canWrite} />
+        </div>
         <Field id="apService" label={t('planningLive.service')}>
-          <select id="apService" value={serviceId} onChange={(e) => setServiceId(e.target.value)} disabled={!canWrite} className="input">
+          <select id="apService" value={effServiceId} onChange={(e) => setServiceId(e.target.value)} disabled={!canWrite} className="input">
             {activeServices.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name} · {t('common.minutes', { count: s.duration_minutes })} · {formatCurrency(s.price_cents / 100, lang, currency)}
@@ -98,7 +111,7 @@ export function AppointmentSheet({ target, establishmentId, timezone, currency, 
           </select>
         </Field>
         <Field id="apStaff" label={t('planningLive.staff')}>
-          <select id="apStaff" value={staffId} onChange={(e) => setStaffId(e.target.value)} disabled={!canWrite} className="input">
+          <select id="apStaff" value={effStaffId} onChange={(e) => setStaffId(e.target.value)} disabled={!canWrite} className="input">
             {staff.map((s) => <option key={s.id} value={s.id}>{s.display_name}</option>)}
             {appt && !staff.some((s) => s.id === appt.staff_id) && <option value={appt.staff_id} disabled>—</option>}
           </select>
@@ -127,7 +140,9 @@ export function AppointmentSheet({ target, establishmentId, timezone, currency, 
         <FormMessage kind="error">{error}</FormMessage>
         {canWrite && (
           <div className="flex flex-col gap-2 sm:flex-row-reverse">
-            <button type="submit" className="btn-primary flex-1" disabled={busy}>{busy ? t('common.saving') : appt ? t('planningLive.saveChanges') : t('planningLive.book')}</button>
+            <button type="submit" className="btn-primary flex-1" disabled={busy || !ready || !effStaffId || !effServiceId}>
+              {!ready ? t('common.loading') : busy ? t('common.saving') : appt ? t('planningLive.saveChanges') : t('planningLive.book')}
+            </button>
             {appt && (
               <button type="button" onClick={() => void cancelAppointment()} disabled={busy}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-rose-600 hover:bg-rose-50">

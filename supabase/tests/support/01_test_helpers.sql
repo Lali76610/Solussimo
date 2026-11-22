@@ -54,6 +54,36 @@ returns uuid language sql stable security definer set search_path = '' as $$
   select id from public.appointments where client_label = p_label;
 $$;
 
+create function tests.client(p_first_name text)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select id from public.clients where first_name = p_first_name and status = 'active' order by created_at limit 1;
+$$;
+
+create function tests.client_any(p_id uuid)
+returns public.clients language sql stable security definer set search_path = '' as $$
+  select * from public.clients where id = p_id;
+$$;
+
+-- Jeu de données Clients : établissement Nord + fiches fictives (numéros ARCEP « fiction » 06 39 98).
+create function tests.seed_clients()
+returns void language plpgsql security definer set search_path = '' as $$
+begin
+  perform set_config('request.jwt.claims', json_build_object('sub', tests.uid('alice'))::text, true);
+  insert into public.establishments (company_id, name, country_code, timezone)
+  values (tests.company('Salon A'), 'Salon A Nord', 'FR', 'Europe/Paris');
+  insert into public.clients (company_id, home_establishment_id, first_name, last_name, email, phone_e164, birthday_month, birthday_day)
+  values (tests.company('Salon A'), tests.establishment('Salon A'), 'Léa', 'Bernard', 'lea@exemple.example', '+33639980001', 3, 14),
+         (tests.company('Salon A'), tests.establishment_named('Salon A Nord'), 'Nina', 'Nord', 'nina@exemple.example', '+33639980002', null, null);
+  insert into public.services (company_id, name, duration_minutes, price_cents) values (tests.company('Salon A'), 'Coupe', 30, 3200);
+  perform public.set_staff_week_schedule(tests.staff('Collaborateur A1'), tests.establishment('Salon A'),
+    '[{"weekday":1,"start":"09:00","end":"19:00"},{"weekday":2,"start":"09:00","end":"19:00"}]');
+  perform set_config('request.jwt.claims', json_build_object('sub', tests.uid('bob'))::text, true);
+  insert into public.clients (company_id, home_establishment_id, first_name, last_name, email)
+  values (tests.company('Salon B'), tests.establishment('Salon B'), 'Bruno', 'Bob', 'bruno@exemple.example');
+  perform set_config('request.jwt.claims', '', true);
+end;
+$$;
+
 -- Simule le JWT transmis par PostgREST (doit être suivi de SET LOCAL ROLE dans le script).
 create function tests.authenticate_as(p_key text)
 returns void language plpgsql as $$

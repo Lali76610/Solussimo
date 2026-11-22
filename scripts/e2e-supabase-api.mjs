@@ -68,6 +68,8 @@ async function cleanup() {
   const ids = users.map((u) => lit(u.id)).join(',')
   await sql(`
     delete from public.appointments where company_id in (select id from public.companies where created_by in (${ids}));
+    delete from public.client_health_notes where company_id in (select id from public.companies where created_by in (${ids}));
+    delete from public.client_consents where company_id in (select id from public.companies where created_by in (${ids}));
     delete from public.services where company_id in (select id from public.companies where created_by in (${ids}));
     delete from public.companies where created_by in (${ids});
     delete from auth.users where id in (${ids});`)
@@ -164,6 +166,48 @@ try {
   ok(Boolean(leak.error), 'Invitation : hachage du jeton illisible via l\'API')
   const direct = await alice.from('appointments').insert({ company_id: companyA })
   ok(Boolean(direct.error), 'Rendez-vous : écriture directe refusée (RPC obligatoire)')
+
+  // ----- V0.4 : Clients via l'API réelle
+  const cl = await alice.from('clients').insert({ company_id: companyA, home_establishment_id: estA.id, first_name: 'E2E Léa', last_name: 'Bernard',
+    email: `e2e-client-${run}@exemple.example`, phone_e164: '+33639980001' }).select('id, email_masked, phone_masked').single()
+  ok(!cl.error && cl.data.phone_masked === '+33 •• •• 00 01', 'Clients : fiche créée, coordonnées masquées renvoyées')
+  const raw = await alice.from('clients').select('email').eq('id', cl.data.id)
+  ok(Boolean(raw.error), 'Clients (D2) : e-mail en clair illisible via l\'API, même pour le propriétaire')
+  const rv = await alice.rpc('reveal_client_contact', { p_client_id: cl.data.id })
+  ok(!rv.error && rv.data?.[0]?.phone_e164 === '+33639980001', 'Clients (D2) : affichage complet par le serveur (journalisé)')
+  const sr = await alice.rpc('search_clients', { p_company_id: companyA, p_query: 'lea bernrd' })
+  ok(!sr.error && sr.data.some((c) => c.id === cl.data.id), 'Clients : recherche tolérante (accents, faute de frappe)')
+  const bc2 = await bob.from('clients').select('id').eq('company_id', companyA)
+  ok(!bc2.error && bc2.data.length === 0, 'Bob : clients d\'Alice invisibles')
+  const br = await bob.rpc('reveal_client_contact', { p_client_id: cl.data.id })
+  ok(Boolean(br.error), 'Bob : coordonnées d\'un client d\'Alice refusées')
+  const bs = await bob.rpc('search_clients', { p_company_id: companyA, p_query: 'lea' })
+  ok(Boolean(bs.error), 'Bob : recherche dans le fichier d\'Alice refusée')
+  const ks = await alice.from('client_consents').insert({ company_id: companyA, client_id: cl.data.id, purpose: 'marketing', channel: 'sms', status: 'granted' })
+  ok(!ks.error, 'Clients : consentement SMS enregistré')
+  const kd = await alice.from('client_consents').delete().eq('client_id', cl.data.id).select()
+  ok(Boolean(kd.error) || kd.data.length === 0, 'Clients : consentements non supprimables (ajout seul)')
+  const hs = await alice.rpc('set_client_health_notes', { p_client_id: cl.data.id, p_notes: { allergies: 'test' } })
+  ok(Boolean(hs.error), 'Santé (D1) : refusé tant que la fonction n\'est pas activée')
+  const he = await alice.rpc('set_health_data_enabled', { p_company_id: companyA, p_enabled: true, p_ack_consent: true, p_ack_dpia: true, p_ack_information: true })
+  ok(!he.error, 'Santé (D1) : activation par le propriétaire avec confirmations légales')
+  await alice.from('client_consents').insert({ company_id: companyA, client_id: cl.data.id, purpose: 'health_data', channel: 'none', status: 'granted', method: 'in_salon_signed' })
+  const hw = await alice.rpc('set_client_health_notes', { p_client_id: cl.data.id, p_notes: { allergies: 'arachide-e2e' } })
+  const hr = await alice.rpc('get_client_health_notes', { p_client_id: cl.data.id })
+  ok(!hw.error && hr.data?.allergies === 'arachide-e2e', 'Santé (D3) : écriture chiffrée puis lecture déchiffrée (Vault réel)')
+  const [enc] = await sql(`select position('arachide-e2e' in encode(ciphertext, 'escape')) as p from public.client_health_notes where client_id = ${lit(cl.data.id)}`)
+  ok(Number(enc.p) === 0, 'Santé (D3) : aucun texte en clair stocké en base')
+  const hb = await bob.rpc('get_client_health_notes', { p_client_id: cl.data.id })
+  ok(Boolean(hb.error), 'Bob : données de santé d\'Alice refusées')
+  const bk2 = await alice.rpc('book_appointment', { p_establishment_id: estA.id, p_staff_id: staffA.id, p_service_id: svc.data.id, p_start_local: '2030-01-08T10:00:00', p_client_id: cl.data.id })
+  ok(!bk2.error, 'Planning : rendez-vous lié à la fiche client')
+  const ex = await alice.rpc('export_client_data', { p_client_id: cl.data.id })
+  ok(!ex.error && ex.data?.client?.phone === '+33639980001' && ex.data.appointments.length === 1, 'RGPD : export complet')
+  const er = await alice.rpc('erase_client', { p_client_id: cl.data.id, p_confirm: true })
+  const [anonRow] = await sql(`select status, first_name, email from public.clients where id = ${lit(cl.data.id)}`)
+  ok(!er.error && anonRow.status === 'anonymized' && anonRow.first_name === null && anonRow.email === null, 'RGPD : anonymisation effective')
+  const [logs] = await sql(`select count(*) filter (where action = 'contact_reveal') r, count(*) filter (where action = 'health_read') h, count(*) filter (where action = 'export') e from public.client_access_log where company_id = ${lit(companyA)}`)
+  ok(Number(logs.r) >= 1 && Number(logs.h) >= 1 && Number(logs.e) >= 1, 'Journal des accès sensibles alimenté (affichage, santé, export)')
 
   // ----- Visiteur anonyme
   const an = await anon.from('companies').select('*')
