@@ -79,7 +79,8 @@ Exécutées automatiquement en CI (job « Base de données »).
 | Tests API de bout en bout | 24/24 (`npm run test:api -- iipymibdmazppggymvwn`) |
 | Security / Performance Advisor | 0 alerte |
 | Auth | confirmation e-mail, mot de passe ≥ 10 (a-z, A-Z, 0-9), ré-authentification pour changer de mot de passe, inscriptions anonymes désactivées |
-| Redirections autorisées | `localhost:5173`, `solussimo-demo.netlify.app` (+ aperçus `*--solussimo-demo`) |
+| Site Netlify associé | `solussimo-dev.netlify.app` (projet Netlify distinct de la démo, protection d'accès active) |
+| Redirections autorisées | `localhost:5173`, `solussimo-dev.netlify.app` (+ aperçus `*--solussimo-dev`) |
 | Clé navigateur | clé **publishable** (`sb_publishable_…`), fournie par variable d'environnement |
 
 Les scripts `db:migrate` et `test:api` utilisent l'API de gestion Supabase

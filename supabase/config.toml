@@ -22,8 +22,8 @@ enabled = true
 site_url = "http://localhost:5173"
 additional_redirect_urls = [
   "http://localhost:5173/**",
-  "https://solussimo-demo.netlify.app/**",
-  "https://*--solussimo-demo.netlify.app/**",
+  "https://solussimo-dev.netlify.app/**",
+  "https://*--solussimo-dev.netlify.app/**",
 ]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
