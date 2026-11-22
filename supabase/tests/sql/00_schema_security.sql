@@ -59,4 +59,10 @@ select tests.ok(
                 and column_name in ('email', 'phone', 'birth_date', 'address', 'password')),
   'minimisation RGPD : aucune colonne e-mail/téléphone/adresse/mot de passe dans public');
 
+select tests.ok(
+  not exists (
+    select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public' and p.prosecdef),
+  'aucune fonction SECURITY DEFINER exposée par l''API (schéma public)');
+
 rollback;

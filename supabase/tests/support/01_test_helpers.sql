@@ -13,8 +13,8 @@ grant usage on sequence tests.counter to anon, authenticated;
 -- Utilisateur fictif (domaine réservé .example, RFC 2606).
 create function tests.create_user(p_key text, p_display_name text)
 returns uuid language sql security definer set search_path = '' as $$
-  insert into auth.users (email, raw_user_meta_data)
-  values (p_key || '@test.example', jsonb_build_object('display_name', p_display_name, 'locale', 'fr'))
+  insert into auth.users (id, aud, role, email, raw_user_meta_data)
+  values (gen_random_uuid(), 'authenticated', 'authenticated', p_key || '@test.example', jsonb_build_object('display_name', p_display_name, 'locale', 'fr'))
   returning id;
 $$;
 

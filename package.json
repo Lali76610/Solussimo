@@ -14,7 +14,9 @@
     "test": "vitest run",
     "test:db": "./scripts/test-db.sh",
     "check:secrets": "node scripts/check-secrets.mjs",
-    "verify": "npm run typecheck && npm run lint && npm run test && npm run build && npm run check:secrets"
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build && npm run check:secrets",
+    "db:migrate": "node scripts/supabase-migrate.mjs",
+    "test:api": "node scripts/e2e-supabase-api.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.2",

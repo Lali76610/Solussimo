@@ -69,7 +69,24 @@ Exécutées automatiquement en CI (job « Base de données »).
 
 > ⚠️ Ne jamais pointer `DATABASE_URL` vers une base de production : le script recrée une base `solussimo_test`.
 
-## Mise en service (à réaliser avec le titulaire du compte)
+## Environnement de développement (en service)
+
+| Élément | Valeur |
+| --- | --- |
+| Projet | `solussimo-dev` — ref `iipymibdmazppggymvwn` — région `eu-west-1` (Irlande, UE) |
+| Migrations | 6/6 appliquées (`npm run db:migrate -- iipymibdmazppggymvwn`) |
+| Tests SQL sur le projet réel | 95/95 (transactions annulées, aucune donnée conservée) |
+| Tests API de bout en bout | 24/24 (`npm run test:api -- iipymibdmazppggymvwn`) |
+| Security / Performance Advisor | 0 alerte |
+| Auth | confirmation e-mail, mot de passe ≥ 10 (a-z, A-Z, 0-9), ré-authentification pour changer de mot de passe, inscriptions anonymes désactivées |
+| Redirections autorisées | `localhost:5173`, `solussimo-demo.netlify.app` (+ aperçus `*--solussimo-demo`) |
+| Clé navigateur | clé **publishable** (`sb_publishable_…`), fournie par variable d'environnement |
+
+Les scripts `db:migrate` et `test:api` utilisent l'API de gestion Supabase
+(`SUPABASE_ACCESS_TOKEN`, jamais versionné). `db:migrate` refuse tout projet
+dont le nom ne finit pas par `-dev`, `-demo` ou `-staging` (garde-fou production).
+
+## Mise en service d'un nouvel environnement
 
 1. **Créer le projet** sur supabase.com — région **UE** (ex. Francfort `eu-central-1` ou Paris `eu-west-3`).
    Un projet distinct par environnement : `solussimo-demo` / `solussimo-staging` / `solussimo-prod`.

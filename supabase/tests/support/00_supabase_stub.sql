@@ -26,7 +26,9 @@ grant usage on schema auth to anon, authenticated, service_role;
 grant usage on schema public to anon, authenticated, service_role;
 
 create table if not exists auth.users (
-  id uuid primary key default gen_random_uuid(),
+  id uuid primary key,
+  aud varchar(255),
+  role varchar(255),
   email text unique,
   raw_user_meta_data jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now()
