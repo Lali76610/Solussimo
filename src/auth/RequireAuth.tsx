@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router'
 import type { ReactNode } from 'react'
 import { FullPageSpinner } from '../components/FullPageSpinner'
+import { readPendingInvitation } from '../lib/invitations'
 import { useTenant } from '../tenant/useTenant'
 import { useAuth } from './useAuth'
 
@@ -27,6 +28,8 @@ export function RequireCompany({ children }: { children: ReactNode }) {
   const { loading, memberships, error } = useTenant()
   if (!isLive) return <>{children}</>
   if (loading) return <FullPageSpinner />
-  if (!error && memberships.length === 0) return <Navigate to="/creer-salon" replace />
+  if (!error && memberships.length === 0) {
+    return <Navigate to={readPendingInvitation() ? '/invitation' : '/creer-salon'} replace />
+  }
   return <>{children}</>
 }
