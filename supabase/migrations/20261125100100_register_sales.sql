@@ -408,7 +408,7 @@ declare
   v_s public.register_sessions%rowtype;
   v_id uuid;
 begin
-  select * into v_s from public.register_sessions s where s.id = p_session_id;
+  select * into v_s from public.register_sessions s where s.id = p_session_id for share;
   if not found or not private.can_in_establishment(v_s.establishment_id, 'cash.movement') then
     raise exception 'forbidden' using errcode = '42501';
   end if;
@@ -803,7 +803,7 @@ begin
   if v_orig.kind = 'deposit' and exists (select 1 from public.deposit_applications d where d.deposit_sale_id = v_orig.id) then
     raise exception 'deposit_already_applied' using errcode = 'P0001';
   end if;
-  select * into v_session from public.register_sessions s where s.id = (p_payload ->> 'session_id')::uuid;
+  select * into v_session from public.register_sessions s where s.id = (p_payload ->> 'session_id')::uuid for share;
   if not found or v_session.establishment_id <> v_orig.establishment_id or v_session.status <> 'open' then
     raise exception 'register_closed' using errcode = 'P0001';
   end if;

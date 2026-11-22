@@ -126,5 +126,16 @@ wins=$(cat "$d"/* | grep -c OK || true)
 notes=$("${PSQL[@]}" -c "select count(*) from public.sales where original_sale_id = '$orig'")
 ok "$([[ $wins -eq 1 && $notes -eq 1 ]] && echo true)" "5 remboursements simultanés du même ticket → 1 seul avoir ($notes), aucun sur-remboursement"
 
+# 9) Clôture Z pendant 10 encaissements en cours → le Z inclut exactement les ventes de la session, aucune après.
+d=$(newdir)
+for i in $(seq 1 10); do sale "$(cat /proc/sys/kernel/random/uuid)" > "$d/$i" & done
+( "${PSQL[@]}" -c "begin; set local role authenticated; select tests.authenticate_as('alice');
+    select public.close_register('$sess', 0, null, 'Test de concurrence'); commit;" >/dev/null 2>&1 && echo OK || echo KO ) > "$d/z" &
+wait
+zok=$(cat "$d/z")
+coherent=$("${PSQL[@]}" -c "select (c.totals ->> 'total_cents')::bigint = (select sum(total_cents) from public.sales where register_session_id = '$sess')
+  from public.closures c where c.session_id = '$sess'")
+ok "$([[ $zok == OK && $coherent == t ]] && echo true)" "clôture Z pendant 10 encaissements simultanés → Z cohérent, aucune vente hors clôture"
+
 rm -rf /var/tmp/solussimo-concurrency
 echo "CONCURRENCE_OK $pass"
