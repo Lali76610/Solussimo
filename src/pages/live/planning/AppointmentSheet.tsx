@@ -1,6 +1,8 @@
-import { CalendarX } from 'lucide-react'
+import { CalendarX, Wallet } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
+import { useTenant } from '../../../tenant/useTenant'
 import { Field } from '../../../components/Field'
 import { FormMessage } from '../../../components/FormMessage'
 import { Sheet } from '../../../components/Sheet'
@@ -38,6 +40,8 @@ interface Props {
 export function AppointmentSheet({ target, establishmentId, establishment, timezone, currency, staff, services, resources, canWrite, ready = true, onClose, onSaved }: Props) {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage ?? 'fr'
+  const navigate = useNavigate()
+  const { can } = useTenant()
   const appt = target.appointment
   const activeServices = services.filter((s) => s.active || s.id === appt?.service_id)
   const [client, setClient] = useState<PickedClient>(
@@ -143,6 +147,11 @@ export function AppointmentSheet({ target, establishmentId, establishment, timez
             <button type="submit" className="btn-primary flex-1" disabled={busy || !ready || !effStaffId || !effServiceId}>
               {!ready ? t('common.loading') : busy ? t('common.saving') : appt ? t('planningLive.saveChanges') : t('planningLive.book')}
             </button>
+            {appt && appt.status === 'booked' && can('register.operate') && (
+              <button type="button" onClick={() => navigate(`/caisse?rdv=${appt.id}`)} className="btn-secondary" data-testid="appointment-checkout">
+                <Wallet className="size-4" aria-hidden="true" />{t('planningLive.checkout')}
+              </button>
+            )}
             {appt && (
               <button type="button" onClick={() => void cancelAppointment()} disabled={busy}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-rose-600 hover:bg-rose-50">

@@ -53,3 +53,14 @@
 .pt-safe {
   padding-top: env(safe-area-inset-top);
 }
+
+/* Barre de total de la caisse : au-dessus des onglets mobiles (et de l'encoche iPhone). */
+.checkout-bar {
+  bottom: calc(3.5rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+  .checkout-bar {
+    bottom: 0;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+}

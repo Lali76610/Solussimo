@@ -84,6 +84,9 @@ effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
 | `20261124100200_client_health.sql` | V0.4 — données de santé chiffrées (AES-256, clé dans Supabase Vault), activation légale, accès journalisés |
 | `20261124100300_appointments_clients.sql` | V0.4 — rendez-vous liés aux fiches, clients de passage |
 | `20261124100400_client_search_merge_gdpr.sql` | V0.4 — recherche, doublons, fusion, coordonnées complètes journalisées, export, anonymisation, réexamen |
+| `20261125100000_fiscal_settings.sql` | V0.5 — profils fiscaux par établissement (mode non certifié imposé), taux de TVA par pays (FR, ES, BE, CH, DE), moyens de paiement (dont Bizum, TWINT, Payconiq), produits, permissions Caisse |
+| `20261125100100_register_sales.sql` | V0.5 — caisses et sessions, `complete_sale` atomique et idempotent (prix et TVA calculés serveur), remises plafonnées + code d'approbation, numérotation continue, empreintes SHA-256 chaînées, journal fiscal, avoirs, acomptes, inaltérabilité |
+| `20261125100200_invoices_closures_reports.sql` | V0.5 — factures nominatives, ticket Z, clôtures mensuelles / annuelles, grand total perpétuel, données PDF (DUPLICATA), rapports, exports CSV / FEC, contrôle d'intégrité |
 | `20261123100400_staff_select_policy_returning.sql` | V0.3 — lecture des fiches compatible `INSERT … RETURNING` (constaté sur Supabase : création refusée) |
 | `20261123100300_conflict_errcode_and_indexes.sql` | V0.3 — conflit de version signalé sans code réessayé par PostgREST (constaté sur Supabase : boucle → HTTP 504) ; index |
 
@@ -145,3 +148,19 @@ dont le nom ne finit pas par `-dev`, `-demo` ou `-staging` (garde-fou production
 
 La clé `service_role` ne doit **jamais** quitter le tableau de bord Supabase ni
 apparaître dans le dépôt, Netlify (variables `VITE_*`) ou le navigateur.
+
+## Caisse (V0.5) — Edge Function PDF
+
+`supabase/functions/generate-document-pdf` génère les reçus, factures, avoirs et tickets Z **côté serveur** à partir de
+`get_document` (droits, isolation et journal appliqués), avec le module de rendu partagé
+`supabase/functions/_shared/renderDocument.ts` (testé dans `src/lib/documentPdf.test.ts`). Elle s'exécute avec le JWT de
+l'utilisateur, **jamais** avec la clé `service_role`, et ne stocke aucun fichier.
+
+Tant qu'elle n'est pas déployée, l'application produit le **même PDF** dans le navigateur à partir des mêmes données
+serveur. Après déploiement (sur autorisation) : variable de build `VITE_PDF_EDGE=1` et secret de fonction
+`ALLOWED_ORIGINS` (origines autorisées, séparées par des virgules).
+
+```bash
+supabase functions deploy generate-document-pdf --project-ref <ref-dev>
+```
+

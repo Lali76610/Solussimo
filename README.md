@@ -2,7 +2,7 @@
 
 Plateforme SaaS internationale de gestion pour salons de coiffure et instituts d'esthétique.
 
-> **Statut : V0.4 — Clients.** (V0.3 — Personnel & Planning.) (Socle V0.2 : Authentification réelle (Supabase Auth), architecture multi-tenant protégée par RLS, et **mode démonstration** séparé (salon fictif « Maison Élégance »).) V0.3 : fiches collaborateurs, horaires, absences, invitations sécurisées, planning de réservation réel. Aucune donnée client réelle.
+> **Statut : V0.5 — Caisse, encaissements et facturation (mode NON CERTIFIÉ, données fictives uniquement).** (V0.4 — Clients. V0.3 — Personnel & Planning.) (Socle V0.2 : Authentification réelle (Supabase Auth), architecture multi-tenant protégée par RLS, et **mode démonstration** séparé (salon fictif « Maison Élégance »).) V0.3 : fiches collaborateurs, horaires, absences, invitations sécurisées, planning de réservation réel. Aucune donnée client réelle.
 
 ## Stack
 

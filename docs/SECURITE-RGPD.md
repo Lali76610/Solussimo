@@ -62,6 +62,19 @@
 | Anti-aspiration | Recherche limitée à 50 résultats ; pas de liste complète pour le rôle collaborateur |
 | Fusion (D7) | Responsables dans leurs établissements, verrous ordonnés (concurrence testée), consentement le plus restrictif conservé, journal |
 
+### Caisse et facturation (V0.5)
+| Mesure | Mise en œuvre |
+| --- | --- |
+| Mode NON certifié (D1) | `fiscal_mode` limité à `demo` / `uncertified` par contrainte ; bandeau permanent dans l'appli et mention sur chaque PDF. **Aucune vraie vente** en France (certification NF525/LNE exigée) ni en Allemagne (TSE, KassenSichV) avant mise en conformité |
+| Calcul serveur | Prix, TVA, remises, totaux et rendu monnaie recalculés par `complete_sale` ; les prix envoyés par le navigateur sont ignorés (sauf ligne libre, réservée aux responsables) |
+| Inaltérabilité | Ventes, lignes, paiements, factures, clôtures et journal **ni modifiables ni supprimables** (déclencheurs, même pour le propriétaire de la base) ; corrections uniquement par avoir |
+| Traçabilité | Numérotation continue sans trou par établissement / série / année ; empreintes SHA-256 chaînées (ventes, clôtures, journal) ; contrôle d'intégrité ; journal fiscal en ajout seul (sans données personnelles) |
+| Concurrence | Verrous ordonnés (session puis tête de chaîne) ; idempotence par clé (double appui, réseau instable) ; 20 encaissements simultanés, 10 envois identiques, 5 remboursements simultanés et clôture pendant des ventes testés |
+| Fraude interne (D5, D6) | Remises plafonnées par rôle (10 % / 30 %), motif obligatoire, code d'approbation à usage unique (15 min, haché, 5 essais / 15 min) ; avoirs, mouvements d'espèces, rapports globaux et exports réservés aux responsables ; un collaborateur ne voit que ses ventes |
+| Paiements | Aucun numéro de carte stocké (référence du terminal uniquement, contrôle serveur) ; rendu monnaie uniquement en espèces |
+| Conservation comptable | Suppression d'une entreprise ayant des pièces refusée ; la facture conserve l'identité de l'acheteur (obligation légale) même si la fiche client est anonymisée ; exports CSV sans données personnelles |
+| Pays | FR complet (TVA, FEC), ES / BE / CH taux et moyens locaux ; DE : taux seulement (TSE à intégrer). Facturation électronique (FR 2026-2027, DE 2027-2028) **non couverte** en V0.5 |
+
 ## Reste à faire avant des données clients réelles
 - Projet Supabase en **région UE**, DPA Supabase signé, SMTP personnalisé.
 - Envoi automatique des invitations par e-mail (SMTP personnalisé / fonction serveur) — aujourd'hui partagé par l'appli Mail du gérant.
@@ -69,3 +82,4 @@
 - Textes juridiques définitifs (responsable de traitement, DPO, durées de conservation) et registre des traitements.
 - Purge automatique des comptes inactifs / journaux d'audit au-delà de la durée de conservation.
 - **AIPD** à réaliser avant d'activer les données de santé ; validation juridique du point HDS (France) / § 22 BDSG (Allemagne).
+- **Caisse** : certification NF525 / LNE (France), intégration d'une TSE certifiée et DSFinV-K (Allemagne), validation du plan de comptes FEC par un expert-comptable, plateforme agréée de facturation électronique, archivage fiscal périodique signé.

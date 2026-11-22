@@ -23,6 +23,11 @@ const ServicesPage = lazy(() => import('./pages/live/planning/ServicesPage').the
 const ClientsPage = lazy(() => import('./pages/live/clients/ClientsPage').then((m) => ({ default: m.ClientsPage })))
 const ClientDetailPage = lazy(() => import('./pages/live/clients/ClientDetailPage').then((m) => ({ default: m.ClientDetailPage })))
 const ClientsSettingsPage = lazy(() => import('./pages/live/clients/ClientsSettingsPage').then((m) => ({ default: m.ClientsSettingsPage })))
+const LiveCheckoutPage = lazy(() => import('./pages/live/checkout/LiveCheckoutPage').then((m) => ({ default: m.LiveCheckoutPage })))
+const TicketsPage = lazy(() => import('./pages/live/checkout/TicketsPage').then((m) => ({ default: m.TicketsPage })))
+const ClosingPage = lazy(() => import('./pages/live/checkout/ClosingPage').then((m) => ({ default: m.ClosingPage })))
+const ReportsPage = lazy(() => import('./pages/live/checkout/ReportsPage').then((m) => ({ default: m.ReportsPage })))
+const CheckoutSettingsPage = lazy(() => import('./pages/live/checkout/CheckoutSettingsPage').then((m) => ({ default: m.CheckoutSettingsPage })))
 const InvitationPage = lazy(() => import('./pages/InvitationPage').then((m) => ({ default: m.InvitationPage })))
 const OnboardingPage = lazy(() => import('./pages/OnboardingPage').then((m) => ({ default: m.OnboardingPage })))
 const PlanningPage = lazy(() => import('./pages/PlanningPage').then((m) => ({ default: m.PlanningPage })))
@@ -69,7 +74,11 @@ export default function App() {
               <Route path="clients/:id" element={<ByMode demo={<Navigate to="/clients" replace />} live={<ClientDetailPage />} />} />
               <Route path="personnel" element={<ByMode demo={<StaffPage />} live={<LiveStaffPage />} />} />
               <Route path="personnel/:id" element={<ByMode demo={<Navigate to="/personnel" replace />} live={<StaffDetailPage />} />} />
-              <Route path="caisse" element={<ByMode demo={<CheckoutPage />} live={<LiveModulePage titleKey="nav.checkout" />} />} />
+              <Route path="caisse" element={<ByMode demo={<CheckoutPage />} live={<LiveCheckoutPage />} />} />
+              <Route path="caisse/tickets" element={<ByMode demo={<Navigate to="/caisse" replace />} live={<TicketsPage />} />} />
+              <Route path="caisse/cloture" element={<ByMode demo={<Navigate to="/caisse" replace />} live={<ClosingPage />} />} />
+              <Route path="caisse/rapports" element={<ByMode demo={<Navigate to="/caisse" replace />} live={<ReportsPage />} />} />
+              <Route path="caisse/reglages" element={<ByMode demo={<Navigate to="/caisse" replace />} live={<CheckoutSettingsPage />} />} />
               <Route path="stock" element={<ByMode demo={<StockPage />} live={<LiveModulePage titleKey="nav.stock" />} />} />
               <Route path="compte" element={<AccountPage />} />
             </Route>
