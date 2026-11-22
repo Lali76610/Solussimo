@@ -217,6 +217,7 @@ export function LivePlanningPage() {
           services={data.services}
           resources={data.resources}
           canWrite={canWrite}
+          ready={!data.loading}
           onClose={() => setSheet(null)}
           onSaved={data.reload}
         />

@@ -29,11 +29,13 @@ interface Props {
   services: ServiceRow[]
   resources: ResourceRow[]
   canWrite: boolean
+  /** false tant que les listes (collaborateurs, prestations) se chargent */
+  ready?: boolean
   onClose: () => void
   onSaved: () => Promise<void>
 }
 
-export function AppointmentSheet({ target, establishmentId, establishment, timezone, currency, staff, services, resources, canWrite, onClose, onSaved }: Props) {
+export function AppointmentSheet({ target, establishmentId, establishment, timezone, currency, staff, services, resources, canWrite, ready = true, onClose, onSaved }: Props) {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage ?? 'fr'
   const appt = target.appointment
@@ -138,7 +140,9 @@ export function AppointmentSheet({ target, establishmentId, establishment, timez
         <FormMessage kind="error">{error}</FormMessage>
         {canWrite && (
           <div className="flex flex-col gap-2 sm:flex-row-reverse">
-            <button type="submit" className="btn-primary flex-1" disabled={busy}>{busy ? t('common.saving') : appt ? t('planningLive.saveChanges') : t('planningLive.book')}</button>
+            <button type="submit" className="btn-primary flex-1" disabled={busy || !ready || !effStaffId || !effServiceId}>
+              {!ready ? t('common.loading') : busy ? t('common.saving') : appt ? t('planningLive.saveChanges') : t('planningLive.book')}
+            </button>
             {appt && (
               <button type="button" onClick={() => void cancelAppointment()} disabled={busy}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold text-rose-600 hover:bg-rose-50">
