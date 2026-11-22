@@ -85,5 +85,46 @@ wins=$(cat "$d"/* | grep -c OK || true)
 rows=$("${PSQL[@]}" -c "select count(*) from public.clients where email = 'course@exemple.example'")
 ok "$([[ $wins -eq 1 && $rows -eq 1 ]] && echo true)" "10 créations simultanées du même e-mail → 1 seule fiche ($wins)"
 
+# --- Caisse (V0.5) -------------------------------------------------------------------------------------
+sess=$("${PSQL[@]}" -c "select set_config('request.jwt.claims', json_build_object('sub', tests.uid('alice'))::text, false);
+  select public.open_register(tests.register(tests.establishment('Salon A')), 10000);" | tail -1)
+sale() { # $1 = clé d'idempotence
+  "${PSQL[@]}" -c "begin; set local role authenticated; select tests.authenticate_as('alice');
+    select public.complete_sale(jsonb_build_object('establishment_id', tests.establishment('Salon A'), 'session_id', '$sess',
+      'idempotency_key', '$1', 'lines', jsonb_build_array(jsonb_build_object('kind', 'service', 'service_id', tests.service('Coupe'), 'quantity', 1)),
+      'payments', jsonb_build_array(jsonb_build_object('method_id', tests.method('Salon A', 'card'), 'amount_cents', 3200))));
+    select pg_sleep(0.2); commit;" >/dev/null 2>&1 && echo OK || echo KO
+}
+
+# 6) 20 encaissements simultanés → 20 tickets, numéros 1…20 sans trou ni doublon, chaîne intègre.
+d=$(newdir)
+for i in $(seq 1 20); do sale "$(cat /proc/sys/kernel/random/uuid)" > "$d/$i" & done; wait
+wins=$(cat "$d"/* | grep -c OK || true)
+seq_ok=$("${PSQL[@]}" -c "select count(*) = 20 and min(number) = 1 and max(number) = 20 and count(distinct number) = 20 from public.sales where series = 'T'")
+chain=$("${PSQL[@]}" -c "select set_config('request.jwt.claims', json_build_object('sub', tests.uid('alice'))::text, false);
+  select first_broken is null and documents = 20 from public.verify_fiscal_chain(tests.establishment('Salon A'));" | tail -1)
+ok "$([[ $wins -eq 20 && $seq_ok == t && $chain == t ]] && echo true)" "20 encaissements simultanés → $wins tickets, numérotation continue 1…20, chaîne SHA-256 intègre"
+
+# 7) Même clé d'idempotence envoyée 10 fois en parallèle (double tap, réseau instable) → 1 seul ticket.
+key=$(cat /proc/sys/kernel/random/uuid)
+d=$(newdir)
+for i in $(seq 1 10); do sale "$key" > "$d/$i" & done; wait
+wins=$(cat "$d"/* | grep -c OK || true)
+rows=$("${PSQL[@]}" -c "select count(*) from public.sales where idempotency_key = '$key'")
+ok "$([[ $wins -eq 10 && $rows -eq 1 ]] && echo true)" "10 envois simultanés de la même vente → 1 seul ticket ($rows), réponses identiques"
+
+# 8) 5 remboursements intégraux simultanés du même ticket → 1 seul avoir.
+orig=$("${PSQL[@]}" -c "select id from public.sales where series = 'T' order by number limit 1")
+d=$(newdir)
+for i in 1 2 3 4 5; do
+  ( "${PSQL[@]}" -c "begin; set local role authenticated; select tests.authenticate_as('alice');
+      select public.refund_sale(jsonb_build_object('original_sale_id', '$orig', 'session_id', '$sess', 'idempotency_key', gen_random_uuid(),
+        'reason', 'Concurrence', 'payments', jsonb_build_array(jsonb_build_object('method_id', tests.method('Salon A', 'card'), 'amount_cents', 3200))));
+      select pg_sleep(0.2); commit;" >/dev/null 2>&1 && echo OK || echo KO ) > "$d/$i" &
+done; wait
+wins=$(cat "$d"/* | grep -c OK || true)
+notes=$("${PSQL[@]}" -c "select count(*) from public.sales where original_sale_id = '$orig'")
+ok "$([[ $wins -eq 1 && $notes -eq 1 ]] && echo true)" "5 remboursements simultanés du même ticket → 1 seul avoir ($notes), aucun sur-remboursement"
+
 rm -rf /var/tmp/solussimo-concurrency
 echo "CONCURRENCE_OK $pass"

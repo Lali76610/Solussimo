@@ -64,6 +64,18 @@ returns public.clients language sql stable security definer set search_path = ''
   select * from public.clients where id = p_id;
 $$;
 
+-- Caisse (V0.5) : caisse par défaut d'un établissement, moyen de paiement par type.
+create function tests.register(p_establishment_id uuid)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select id from public.cash_registers where establishment_id = p_establishment_id order by created_at limit 1;
+$$;
+
+create function tests.method(p_company_name text, p_kind text)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select m.id from public.payment_methods m join public.companies c on c.id = m.company_id
+  where c.name = p_company_name and m.kind::text = p_kind order by m.sort limit 1;
+$$;
+
 -- Jeu de données Clients : établissement Nord + fiches fictives (numéros ARCEP « fiction » 06 39 98).
 create function tests.seed_clients()
 returns void language plpgsql security definer set search_path = '' as $$

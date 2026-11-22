@@ -15,7 +15,7 @@ select tests.throws(format($$insert into public.staff_members (company_id, estab
   tests.company('Salon A'), tests.establishment('Salon A')), 'staff : ne peut pas ajouter de collaborateur', '42501');
 select tests.ok(tests.affected(format($$update public.memberships set role = 'admin' where user_id = %L$$, tests.uid('carol'))) = 0,
   'staff : ne peut pas s''auto-promouvoir (0 ligne modifiée)');
-select tests.ok(public.my_permissions(tests.company('Salon A')) = '{appointment.write,client.read,client.write,company.read,consent.write}', 'staff : rendez-vous + clients de ses établissements, sans coordonnées complètes ni export');
+select tests.ok(public.my_permissions(tests.company('Salon A')) = '{appointment.write,client.read,client.write,company.read,consent.write,register.operate}', 'staff : rendez-vous, clients et encaissement dans ses établissements ; ni coordonnées complètes, ni export, ni avoir');
 reset role;
 
 -- ---------------------------------------------------------- manager (Erin) --
