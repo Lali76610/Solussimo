@@ -1,0 +1,77 @@
+{
+  "app": { "name": "SOLUSSIMO", "tagline": "La gestion élégante des salons de beauté" },
+  "nav": {
+    "home": "Accueil", "dashboard": "Tableau de bord", "planning": "Planning", "clients": "Clients", "staff": "Personnel",
+    "checkout": "Caisse", "stock": "Stock", "logout": "Se déconnecter", "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu", "mainNav": "Navigation principale", "more": "Plus"
+  },
+  "login": {
+    "title": "Connexion", "subtitle": "Accédez à l'espace de gestion de votre établissement.",
+    "email": "Adresse e-mail", "password": "Mot de passe", "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe", "submit": "Se connecter", "submitting": "Connexion…",
+    "forgot": "Mot de passe oublié ?", "demo": "Utiliser le compte de démonstration",
+    "demoHint": "Version de démonstration : toutes les données affichées sont fictives.",
+    "secure": "Connexion chiffrée · Données hébergées dans l'UE",
+    "privacy": "Vos données sont traitées conformément au RGPD. Aucun traceur publicitaire n'est utilisé.",
+    "heroTitle": "Votre salon, orchestré avec élégance.",
+    "heroText": "Planning, clients, personnel, caisse et stock réunis dans une seule application, sur ordinateur comme sur mobile.",
+    "errors": {
+      "invalidEmail": "Veuillez saisir une adresse e-mail valide.",
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères.",
+      "credentials": "Identifiants incorrects.",
+      "locked": "Trop de tentatives. Réessayez dans {{seconds}} s."
+    }
+  },
+  "dashboard": {
+    "greeting": "Bonjour {{name}}", "summary": "Voici l'activité de {{salon}} aujourd'hui.",
+    "kpi": { "revenue": "Chiffre d'affaires", "appointments": "Rendez-vous", "newClients": "Nouveaux clients", "occupancy": "Taux d'occupation" },
+    "vsLastWeek": "vs semaine dernière", "upcoming": "Prochains rendez-vous", "seeAll": "Tout voir",
+    "weekRevenue": "Chiffre d'affaires — 7 derniers jours", "stockAlerts": "Alertes de stock",
+    "teamToday": "Équipe du jour", "present": "Présent·e", "absent": "Absent·e", "noAlerts": "Aucune alerte.",
+    "quickActions": "Actions rapides", "newAppointment": "Nouveau RDV", "newSale": "Encaisser", "newClient": "Nouveau client",
+    "remaining": "{{count}} restant(s)", "noUpcoming": "Plus aucun rendez-vous aujourd'hui."
+  },
+  "status": { "confirmed": "Confirmé", "pending": "En attente", "done": "Terminé" },
+  "roles": { "manager": "Gérante", "stylist": "Coiffeur", "colorist": "Coloriste", "beautician": "Esthéticienne", "apprentice": "Apprenti" },
+  "services": {
+    "cut": "Coupe", "cutBlowdry": "Coupe & brushing", "color": "Coloration", "highlights": "Mèches / balayage",
+    "beard": "Taille de barbe", "manicure": "Manucure", "facial": "Soin du visage", "kidsCut": "Coupe enfant"
+  },
+  "products": {
+    "shampoo": "Shampooing réparateur 1 L", "conditioner": "Après-shampooing 1 L", "mask": "Masque nutrition 500 ml",
+    "colorTube": "Tube de coloration 60 ml", "oxidant": "Oxydant 20 vol. 1 L", "serum": "Sérum pointes 100 ml",
+    "nailPolish": "Vernis à ongles", "gloves": "Gants nitrile (boîte)"
+  },
+  "categories": { "hair": "Capillaire", "color": "Coloration", "care": "Soins", "consumable": "Consommables" },
+  "payment": { "card": "Carte", "cash": "Espèces", "contactless": "Sans contact" },
+  "segments": { "vip": "Fidèle", "regular": "Régulier", "new": "Nouveau" },
+  "planning": {
+    "title": "Planning", "subtitle": "Rendez-vous du jour par collaborateur.", "today": "Aujourd'hui",
+    "day": "Jour", "week": "Semaine", "newAppointment": "Nouveau rendez-vous", "previous": "Jour précédent", "next": "Jour suivant"
+  },
+  "clients": {
+    "title": "Clients", "subtitle": "Fichier clients et historique.", "search": "Rechercher un client…",
+    "visits": "Visites", "lastVisit": "Dernière visite", "totalSpent": "Total dépensé",
+    "daysAgo": "il y a {{count}} j", "today": "Aujourd'hui", "newClient": "Nouveau client",
+    "privacyNote": "Données minimisées : seules les informations nécessaires au service sont conservées. Droit d'accès, de rectification et d'effacement sur demande.",
+    "noResult": "Aucun client trouvé."
+  },
+  "staff": {
+    "title": "Personnel", "subtitle": "Équipe, rôles et présence.", "addMember": "Ajouter un membre",
+    "appointmentsToday": "{{count}} RDV aujourd'hui", "role": "Rôle", "status": "Statut"
+  },
+  "checkout": {
+    "title": "Caisse", "subtitle": "Encaissements du jour.", "todayTotal": "Total encaissé", "transactions": "Transactions",
+    "average": "Panier moyen", "newSale": "Nouvel encaissement", "time": "Heure", "service": "Prestation",
+    "method": "Paiement", "amount": "Montant", "closeRegister": "Clôturer la caisse", "byMethod": "Répartition par moyen de paiement"
+  },
+  "stock": {
+    "title": "Stock", "subtitle": "Produits, seuils et réapprovisionnement.", "product": "Produit", "category": "Catégorie",
+    "quantity": "Quantité", "minimum": "Seuil", "status": "État", "low": "À commander", "ok": "OK",
+    "order": "Commander", "totalValue": "Valeur du stock", "lowCount": "Produits sous le seuil", "references": "Références"
+  },
+  "common": {
+    "demoData": "Données fictives", "moduleInDev": "Module en cours de développement — structure de base.",
+    "language": "Langue", "minutes": "{{count}} min", "salon": "Salon", "privacy": "Confidentialité & RGPD"
+  }
+}
