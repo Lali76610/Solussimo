@@ -325,7 +325,9 @@
     "role": "Rolle",
     "removeAccess": "Zugang entziehen",
     "removeAccessConfirm": "Diesem Mitarbeiter den Zugang zum Unternehmen entziehen?",
-    "editDay": "Zeiten bearbeiten"
+    "editDay": "Zeiten bearbeiten",
+    "healthPractitioner": "Behandler/in (Gesundheitsdaten)",
+    "healthPractitionerHint": "Erlaubt den Zugriff auf Gesundheitsdaten der Kunden. Nur durch Inhaber oder Administrator änderbar."
   },
   "account": {
     "title": "Mein Konto",
@@ -389,7 +391,15 @@
     "alreadyMember": "Diese Person gehört bereits zum Unternehmen.",
     "forbiddenRole": "Sie können diese Rolle nicht vergeben.",
     "primaryEstablishment": "Der Hauptstandort kann nicht entfernt werden.",
-    "staffNotAssigned": "Der Mitarbeiter ist diesem Standort nicht zugeordnet."
+    "staffNotAssigned": "Der Mitarbeiter ist diesem Standort nicht zugeordnet.",
+    "clientRequired": "Wählen Sie einen Kunden oder geben Sie den Namen eines Laufkunden ein.",
+    "healthConsentRequired": "Ausdrückliche Gesundheits-Einwilligung erforderlich.",
+    "healthDisabled": "Gesundheitsdaten sind für diesen Salon nicht aktiviert.",
+    "legalAckRequired": "Alle drei rechtlichen Prüfungen sind erforderlich.",
+    "queryTooShort": "Geben Sie mindestens 2 Buchstaben ein.",
+    "clientUnavailable": "Dieser Kunde ist nicht verfügbar.",
+    "clientEmailExists": "Es gibt bereits eine Karte mit dieser E-Mail.",
+    "clientPhoneExists": "Es gibt bereits eine Karte mit dieser Telefonnummer."
   },
   "timeOff": {
     "vacation": "Urlaub",
@@ -430,7 +440,7 @@
     "cancelConfirm": "Diesen Termin absagen?",
     "editTitle": "Termin",
     "client": "Kunde",
-    "clientHint": "Vorname und Initiale genügen (fiktive Daten für Tests).",
+    "clientHint": "Suchen Sie eine Kundenkarte oder geben Sie einen Namen für einen Laufkunden ein.",
     "service": "Leistung",
     "staff": "Mitarbeiter",
     "date": "Datum",
@@ -446,7 +456,10 @@
     "noServices": "Legen Sie zuerst Ihre Leistungen an (Dauer und Preis).",
     "noStaff": "Kein buchbarer Mitarbeiter an diesem Standort.",
     "freeSlot": "Freier Termin",
-    "unavailable": "Nicht verfügbar"
+    "unavailable": "Nicht verfügbar",
+    "changeClient": "Kunde ändern",
+    "clientSearch": "Kunden suchen oder Namen eingeben",
+    "walkInHint": "Ohne Auswahl: Laufkunde (ohne Karte)."
   },
   "catalog": {
     "title": "Leistungen",
@@ -469,5 +482,193 @@
     "cabin": "Kabine",
     "chair": "Stuhl",
     "equipment": "Gerät"
+  },
+  "clientsLive": {
+    "addNote": "Notiz hinzufügen",
+    "birthday": "Geburtstag",
+    "birthdayHint": "Nur Tag und Monat, ohne Jahr.",
+    "birthdayMonth": "Geburtstag in diesem Monat",
+    "book": "Termin buchen",
+    "call": "Anrufen",
+    "contact": "Kontaktdaten",
+    "create": "Kundenkarte anlegen",
+    "current": "Aktuell: {{value}}",
+    "day": "Tag",
+    "deleteNote": "Notiz löschen",
+    "duplicateFound": "Es gibt bereits eine ähnliche Karte:",
+    "edit": "Bearbeiten",
+    "empty": "Noch keine Kunden. Tippen Sie auf „+“, um einen anzulegen.",
+    "errors": {
+      "birthday": "Geben Sie Tag UND Monat an – oder keines von beiden.",
+      "nameRequired": "Geben Sie mindestens einen Vor- oder Nachnamen an.",
+      "phoneInvalid": "Ungültige Telefonnummer."
+    },
+    "favoriteServices": "Übliche Leistungen",
+    "filters": "Filter",
+    "firstName": "Vorname",
+    "habits": "Gewohnheiten",
+    "homeEstablishment": "Stammstandort",
+    "lastName": "Nachname",
+    "lastVisit": "zuletzt am {{date}}",
+    "loadMore": "Mehr anzeigen",
+    "mail": "E-Mail",
+    "marketingOk": "Marketing erlaubt",
+    "maskedForRole": "Kontaktdaten für Ihre Rolle maskiert.",
+    "month": "Monat",
+    "nameHint": "Ein Vor- ODER Nachname genügt. Telefon und E-Mail sind optional.",
+    "neverCame": "noch nie da",
+    "newClient": "Neuer Kunde",
+    "newEmail": "Neue E-Mail (leer lassen zum Beibehalten)",
+    "newPhone": "Neue Telefonnummer (leer lassen zum Beibehalten)",
+    "noContact": "Keine Kontaktdaten",
+    "noHistory": "Noch keine Termine.",
+    "noMarketing": "Keine Marketing-Einwilligung",
+    "noShows": "Nicht erschienen",
+    "notFound": "Kunde nicht gefunden oder nicht berechtigt.",
+    "note": "Notiz",
+    "noteHint": "Nur praktische Informationen – hier keine Gesundheitsdaten.",
+    "phone": "Telefon",
+    "preferredDays": "Bevorzugte Tage",
+    "preferredStaff": "Bevorzugter Mitarbeiter",
+    "preferredTime": "Bevorzugte Tageszeit",
+    "reveal": "Vollständige Kontaktdaten anzeigen",
+    "revealLogged": "Zugriff im Zugriffsprotokoll erfasst.",
+    "searchPlaceholder": "Name, Telefon oder E-Mail…",
+    "sections": "Bereiche der Kundenkarte",
+    "settings": "Einstellungen",
+    "spent": "Gesamt",
+    "tags": "Schlagwörter",
+    "tagsHint": "Durch Kommas getrennt (z. B. VIP, Student). Max. 10.",
+    "technicalHint": "Farbrezepturen, Haartyp, Material… (nicht sensibel).",
+    "typeToSearch": "Geben Sie mindestens 2 Buchstaben ein, um einen Kunden zu suchen.",
+    "visits": "Besuche",
+    "tabs": {
+      "overview": "Übersicht",
+      "history": "Verlauf",
+      "preferences": "Vorlieben",
+      "technical": "Technische Karte",
+      "health": "Gesundheit",
+      "consents": "Einwilligungen",
+      "data": "Daten"
+    },
+    "noteKind": {
+      "color_formula": "Farbrezeptur",
+      "hair": "Haare",
+      "skin_type": "Hauttyp",
+      "nails": "Nägel",
+      "other": "Sonstiges"
+    },
+    "time": {
+      "morning": "Vormittag",
+      "afternoon": "Nachmittag",
+      "evening": "Abend"
+    },
+    "visit": {
+      "lt1m": "Besuch < 1 Monat",
+      "1to6m": "1–6 Monate",
+      "gt6m": "Über 6 Monate",
+      "never": "Noch nie da"
+    }
+  },
+  "consents": {
+    "agreeEmail": "Möchte Angebote per E-Mail erhalten",
+    "agreeSms": "Möchte Angebote per SMS erhalten",
+    "healthGrant": "Gesundheits-Einwilligung erfassen",
+    "healthSigned": "Der Kunde hat die ausdrückliche Einwilligung unterschrieben",
+    "healthText": "Gesundheitsdaten (Allergien, Kontraindikationen…): nur mit ausdrücklicher, unterschriebener Einwilligung des Kunden. Ein Widerruf löscht diese Daten sofort.",
+    "healthTitle": "Gesundheits-Einwilligung",
+    "healthWithdraw": "Gesundheits-Einwilligung widerrufen",
+    "healthWithdrawConfirm": "Einwilligung widerrufen? Die Gesundheitsdaten werden sofort gelöscht.",
+    "history": "Verlauf der Einwilligungen",
+    "marketingTitle": "Marketing-Einwilligungen",
+    "none": "Keine Einwilligung erfasst.",
+    "proofNote": "Jede Änderung wird mit Zeitstempel als Nachweis gespeichert (nie geändert oder gelöscht).",
+    "uncheckedByDefault": "Standardmäßig nicht angekreuzt: nur mit Zustimmung des Kunden ankreuzen.",
+    "channel": {
+      "email": "E-Mail",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp",
+      "postal": "Post",
+      "none": "—"
+    },
+    "purpose": {
+      "marketing": "Angebote und Aktionen",
+      "newsletter": "Newsletter",
+      "appointment_reminders": "Terminerinnerungen",
+      "health_data": "Gesundheitsdaten"
+    },
+    "status": {
+      "granted": "Erteilt",
+      "withdrawn": "Widerrufen"
+    }
+  },
+  "apptStatus": {
+    "upcoming": "Bevorstehend",
+    "booked": "Erschienen",
+    "completed": "Abgeschlossen",
+    "cancelled": "Abgesagt",
+    "no_show": "Nicht erschienen"
+  },
+  "gdpr": {
+    "accessText": "Vollständige Datei (Kontakt, Verlauf, Vorlieben, Einwilligungen) zur Übergabe an den Kunden.",
+    "accessTitle": "Recht auf Auskunft und Datenübertragbarkeit",
+    "erase": "Endgültig löschen",
+    "eraseText": "Anonymisierung: Kontaktdaten, Notizen, Vorlieben und Gesundheitsdaten werden gelöscht. Vergangene Termine bleiben als „—“ für Buchhaltungspflichten erhalten ({{years}} Jahre).",
+    "eraseTitle": "Recht auf Löschung",
+    "export": "Kundendaten exportieren",
+    "exported": "Export bereit.",
+    "ownerOnly": "Inhaber und Administratoren vorbehalten.",
+    "rectifyText": "Bearbeiten Sie die Karte unter „Übersicht“ → „Bearbeiten“. Jede Änderung wird protokolliert.",
+    "rectifyTitle": "Recht auf Berichtigung"
+  },
+  "health": {
+    "title": "Gesundheitsdaten",
+    "notice": "Verschlüsselte sensible Daten. Jeder Zugriff wird protokolliert. Nur für berechtigte Personen.",
+    "show": "Gesundheitsdaten anzeigen",
+    "hide": "Ausblenden",
+    "consentFirst": "Erfassen Sie zuerst die ausdrückliche Einwilligung im Bereich „Einwilligungen“.",
+    "pregnancy": "Aktuelle Schwangerschaft",
+    "allergies": "Allergien",
+    "contraindications": "Kontraindikationen",
+    "treatments": "Laufende Behandlungen",
+    "other": "Sonstige behandlungsrelevante Informationen"
+  },
+  "merge": {
+    "chooseFields": "Wählen Sie für jedes Feld den zu behaltenden Wert.",
+    "confirm": "Karten zusammenführen",
+    "consentRule": "Der Verlauf bleibt erhalten; bei Einwilligungen gilt die restriktivste Wahl. Termine werden zusammengeführt.",
+    "done": "Karten zusammengeführt.",
+    "keep": "Diese Karte",
+    "noCandidate": "Kein wahrscheinliches Duplikat. Suchen Sie eine Karte.",
+    "other": "Duplikat",
+    "start": "Duplikat suchen",
+    "text": "Führen Sie zwei Karten derselben Person zusammen, ohne Verlauf zu verlieren.",
+    "title": "Duplikat zusammenführen"
+  },
+  "settingsClients": {
+    "accountingYears": "Buchhaltungsunterlagen (Jahre)",
+    "checklist": "Rechtliche Vorabprüfungen",
+    "countryDefault": "Standardwerte für das Land {{country}} – von Ihrer Beratung zu bestätigen.",
+    "disable": "Deaktivieren und Gesundheitsdaten löschen",
+    "disableConfirm": "Deaktivieren? Alle Gesundheitsdaten des Unternehmens werden endgültig gelöscht.",
+    "enable": "Gesundheitsdaten aktivieren",
+    "enabledSince": "Aktiviert seit {{date}}",
+    "healthText": "Optional und standardmäßig deaktiviert: für kosmetische Behandlungen relevante Allergien, Kontraindikationen und Behandlungen, verschlüsselt und nur für berechtigte Personen zugänglich.",
+    "healthTitle": "Gesundheitsdaten",
+    "legalNote": "Die französische HDS-Zertifizierung gilt in der Regel nicht für Kosmetikinstitute; in Deutschland ist § 22 BDSG zu prüfen: von Ihrer Rechtsberatung zu bestätigen.",
+    "ownerOnly": "Nur der Inhaber kann diese Funktion aktivieren.",
+    "retentionText": "Keine automatische Löschung: Inaktive Karten werden nur zur Überprüfung vorgeschlagen.",
+    "retentionTitle": "Aufbewahrung der Daten",
+    "reviewEmpty": "Keine Karten zu überprüfen.",
+    "reviewMonths": "Überprüfung nach (Monaten)",
+    "reviewText": "Karten ohne Aktivität im gewählten Zeitraum: prüfen und anonymisieren, wenn nicht mehr benötigt.",
+    "reviewTitle": "Zu überprüfen (seit {{months}} Monaten inaktiv)",
+    "subtitle": "Gesundheitsdaten, Aufbewahrung und Überprüfung der Karten.",
+    "title": "Kundeneinstellungen",
+    "ack": {
+      "consent": "Ich hole vor jeder Erfassung die ausdrückliche, unterschriebene Einwilligung jedes Kunden ein (Art. 9 Abs. 2 lit. a DSGVO).",
+      "dpia": "Ich habe die Datenschutz-Folgenabschätzung (DSFA) für diese Daten durchgeführt oder geprüft.",
+      "information": "Ich informiere meine Kunden über diese Verarbeitung (Datenschutzhinweis ausgehängt oder ausgehändigt)."
+    }
   }
 }

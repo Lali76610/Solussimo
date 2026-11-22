@@ -84,6 +84,9 @@ function ProfileSection({ member, canWrite, onSaved }: { member: StaffMemberRow;
   const [color, setColor] = useState(member.color)
   const [activeFlag, setActiveFlag] = useState(member.active)
   const [bookable, setBookable] = useState(member.bookable)
+  const [practitioner, setPractitioner] = useState(member.health_practitioner)
+  const { active } = useTenant()
+  const isAdmin = active?.role === 'owner' || active?.role === 'admin'
   const [msg, setMsg] = useState<Msg>(null)
   const [busy, setBusy] = useState(false)
 
@@ -98,7 +101,8 @@ function ProfileSection({ member, canWrite, onSaved }: { member: StaffMemberRow;
     setBusy(true)
     const mainJob = jobs.includes(member.job) ? member.job : jobs[0]!
     const { error } = await supabase.from('staff_members')
-      .update({ display_name: name.trim(), jobs, job: mainJob, color, active: activeFlag, bookable })
+      .update({ display_name: name.trim(), jobs, job: mainJob, color, active: activeFlag, bookable,
+        ...(isAdmin && practitioner !== member.health_practitioner ? { health_practitioner: practitioner } : {}) })
       .eq('id', member.id)
     setBusy(false)
     if (error) return setMsg({ kind: 'error', text: t(authErrorKey(error)) })
@@ -135,6 +139,9 @@ function ProfileSection({ member, canWrite, onSaved }: { member: StaffMemberRow;
         <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 px-4">
           <Toggle checked={bookable} onChange={setBookable} disabled={!canWrite} label={t('staffLive.bookable')} description={t('staffLive.bookableHint')} />
           <Toggle checked={activeFlag} onChange={setActiveFlag} disabled={!canWrite} label={t('staffLive.active')} description={t('staffLive.activeHint')} />
+          {active?.company.health_data_enabled && (
+            <Toggle checked={practitioner} onChange={setPractitioner} disabled={!isAdmin} label={t('staffLive.healthPractitioner')} description={t('staffLive.healthPractitionerHint')} />
+          )}
         </div>
         <FormMessage kind={msg?.kind ?? 'error'}>{msg?.text}</FormMessage>
         {canWrite && <button type="submit" className="btn-primary" disabled={busy}>{busy ? t('common.saving') : t('common.save')}</button>}

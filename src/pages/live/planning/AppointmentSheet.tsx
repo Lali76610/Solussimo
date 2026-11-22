@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { Field } from '../../../components/Field'
 import { FormMessage } from '../../../components/FormMessage'
 import { Sheet } from '../../../components/Sheet'
-import type { AppointmentRow, ResourceRow, ServiceRow, StaffMemberRow } from '../../../lib/database.types'
+import type { AppointmentRow, EstablishmentRow, ResourceRow, ServiceRow, StaffMemberRow } from '../../../lib/database.types'
 import { authErrorKey } from '../../../lib/authErrors'
 import { formatCurrency } from '../../../lib/format'
 import { supabase } from '../../../lib/supabase'
+import { ClientPicker, type PickedClient } from './ClientPicker'
 import { dateKeyOf, hhmmToMinutes, localTimestamp, minutesOf, minutesToHHMM, type DateKey } from '../../../lib/tz'
 
 export interface SheetTarget {
@@ -15,11 +16,13 @@ export interface SheetTarget {
   staffId?: string
   date: DateKey
   minutes: number
+  client?: PickedClient
 }
 
 interface Props {
   target: SheetTarget
   establishmentId: string
+  establishment?: EstablishmentRow
   timezone: string
   currency: string
   staff: StaffMemberRow[]
@@ -30,12 +33,13 @@ interface Props {
   onSaved: () => Promise<void>
 }
 
-export function AppointmentSheet({ target, establishmentId, timezone, currency, staff, services, resources, canWrite, onClose, onSaved }: Props) {
+export function AppointmentSheet({ target, establishmentId, establishment, timezone, currency, staff, services, resources, canWrite, onClose, onSaved }: Props) {
   const { t, i18n } = useTranslation()
   const lang = i18n.resolvedLanguage ?? 'fr'
   const appt = target.appointment
   const activeServices = services.filter((s) => s.active || s.id === appt?.service_id)
-  const [clientLabel, setClientLabel] = useState(appt?.client_label ?? '')
+  const [client, setClient] = useState<PickedClient>(
+    appt ? { id: appt.client_id, label: appt.client_label } : target.client ?? { id: null, label: '' })
   const [serviceId, setServiceId] = useState(appt?.service_id ?? activeServices[0]?.id ?? '')
   const [staffId, setStaffId] = useState(appt?.staff_id ?? target.staffId ?? staff[0]?.id ?? '')
   const [date, setDate] = useState<DateKey>(appt ? dateKeyOf(new Date(appt.starts_at), timezone) : target.date)
@@ -49,17 +53,19 @@ export function AppointmentSheet({ target, establishmentId, timezone, currency, 
     e.preventDefault()
     if (!supabase || busy) return
     setError(null)
-    if (!clientLabel.trim() || !serviceId || !staffId) return setError(t('errors.invalidInput'))
+    if ((!client.id && !client.label.trim()) || !serviceId || !staffId) return setError(t('errors.clientRequired'))
     const start = localTimestamp(date, hhmmToMinutes(time))
     setBusy(true)
     const { error: err } = appt
       ? await supabase.rpc('reschedule_appointment', {
           p_appointment_id: appt.id, p_start_local: start, p_expected_version: appt.version,
-          p_staff_id: staffId, p_service_id: serviceId, p_resource_id: resourceId || null, p_client_label: clientLabel.trim(),
+          p_staff_id: staffId, p_service_id: serviceId, p_resource_id: resourceId || null,
+          p_client_label: client.id ? null : client.label.trim(), p_client_id: client.id,
         })
       : await supabase.rpc('book_appointment', {
           p_establishment_id: establishmentId, p_staff_id: staffId, p_service_id: serviceId,
-          p_start_local: start, p_client_label: clientLabel.trim(), p_resource_id: resourceId || null,
+          p_start_local: start, p_client_label: client.id ? null : client.label.trim(), p_resource_id: resourceId || null,
+          p_client_id: client.id,
         })
     setBusy(false)
     if (err) {
@@ -84,10 +90,10 @@ export function AppointmentSheet({ target, establishmentId, timezone, currency, 
   return (
     <Sheet title={appt ? t('planningLive.editTitle') : t('planning.newAppointment')} onClose={onClose}>
       <form onSubmit={submit} noValidate className="space-y-4">
-        <Field id="apClient" label={t('planningLive.client')} hint={t('planningLive.clientHint')}>
-          <input id="apClient" maxLength={80} value={clientLabel} onChange={(e) => setClientLabel(e.target.value)} disabled={!canWrite}
-            className="input" aria-describedby="apClient-hint" autoFocus={!appt} />
-        </Field>
+        <div>
+          <p className="mb-1.5 text-sm font-medium text-slate-700">{t('planningLive.client')}</p>
+          <ClientPicker value={client} onChange={setClient} establishment={establishment} disabled={!canWrite} />
+        </div>
         <Field id="apService" label={t('planningLive.service')}>
           <select id="apService" value={serviceId} onChange={(e) => setServiceId(e.target.value)} disabled={!canWrite} className="input">
             {activeServices.map((s) => (

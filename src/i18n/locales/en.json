@@ -325,7 +325,9 @@
     "role": "Role",
     "removeAccess": "Remove access",
     "removeAccessConfirm": "Remove this team member's access to the business?",
-    "editDay": "Edit hours"
+    "editDay": "Edit hours",
+    "healthPractitioner": "Care practitioner (health data)",
+    "healthPractitionerHint": "Grants access to clients' health data. Can only be changed by the owner or an administrator."
   },
   "account": {
     "title": "My account",
@@ -389,7 +391,15 @@
     "alreadyMember": "This person is already part of the business.",
     "forbiddenRole": "You cannot assign this role.",
     "primaryEstablishment": "The main location cannot be removed.",
-    "staffNotAssigned": "The team member is not assigned to this location."
+    "staffNotAssigned": "The team member is not assigned to this location.",
+    "clientRequired": "Choose a client or type a walk-in client's name.",
+    "healthConsentRequired": "Explicit health consent required.",
+    "healthDisabled": "Health data is not enabled for this salon.",
+    "legalAckRequired": "All three legal checks are required.",
+    "queryTooShort": "Type at least 2 letters.",
+    "clientUnavailable": "This client is not available.",
+    "clientEmailExists": "A record already exists with this email.",
+    "clientPhoneExists": "A record already exists with this phone number."
   },
   "timeOff": {
     "vacation": "Leave",
@@ -430,7 +440,7 @@
     "cancelConfirm": "Cancel this appointment?",
     "editTitle": "Appointment",
     "client": "Client",
-    "clientHint": "First name and initial are enough (fictitious data for tests).",
+    "clientHint": "Search for a client record, or type a name for a walk-in client.",
     "service": "Service",
     "staff": "Team member",
     "date": "Date",
@@ -446,7 +456,10 @@
     "noServices": "First add your services (duration and price).",
     "noStaff": "No bookable team member at this location.",
     "freeSlot": "Free slot",
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "changeClient": "Change client",
+    "clientSearch": "Search for a client or type a name",
+    "walkInHint": "No selection: walk-in client (no record)."
   },
   "catalog": {
     "title": "Services",
@@ -469,5 +482,193 @@
     "cabin": "Treatment room",
     "chair": "Chair",
     "equipment": "Equipment"
+  },
+  "clientsLive": {
+    "addNote": "Add note",
+    "birthday": "Birthday",
+    "birthdayHint": "Day and month only, no year.",
+    "birthdayMonth": "Birthday this month",
+    "book": "Book",
+    "call": "Call",
+    "contact": "Contact details",
+    "create": "Create client",
+    "current": "Current: {{value}}",
+    "day": "Day",
+    "deleteNote": "Delete note",
+    "duplicateFound": "A similar client already exists:",
+    "edit": "Edit",
+    "empty": "No clients yet. Tap “+” to create one.",
+    "errors": {
+      "birthday": "Enter both day AND month, or neither.",
+      "nameRequired": "Enter at least a first name or a last name.",
+      "phoneInvalid": "Invalid phone number."
+    },
+    "favoriteServices": "Usual services",
+    "filters": "Filters",
+    "firstName": "First name",
+    "habits": "Habits",
+    "homeEstablishment": "Home location",
+    "lastName": "Last name",
+    "lastVisit": "last visit {{date}}",
+    "loadMore": "Show more",
+    "mail": "Email",
+    "marketingOk": "Accepts marketing",
+    "maskedForRole": "Contact details masked for your role.",
+    "month": "Month",
+    "nameHint": "A first name OR a last name is enough. Phone and email are optional.",
+    "neverCame": "never visited",
+    "newClient": "New client",
+    "newEmail": "New email (leave empty to keep)",
+    "newPhone": "New phone (leave empty to keep)",
+    "noContact": "No contact details",
+    "noHistory": "No appointments yet.",
+    "noMarketing": "No marketing consent",
+    "noShows": "No-shows",
+    "notFound": "Client not found or not allowed.",
+    "note": "Note",
+    "noteHint": "Practical information only — no health data here.",
+    "phone": "Phone",
+    "preferredDays": "Preferred days",
+    "preferredStaff": "Preferred team member",
+    "preferredTime": "Preferred time",
+    "reveal": "Show full contact details",
+    "revealLogged": "Access recorded in the access log.",
+    "searchPlaceholder": "Name, phone or email…",
+    "sections": "Client record sections",
+    "settings": "Settings",
+    "spent": "Total",
+    "tags": "Tags",
+    "tagsHint": "Comma-separated (e.g. VIP, Student). 10 max.",
+    "technicalHint": "Colour formulas, hair type, equipment… (non-sensitive).",
+    "typeToSearch": "Type at least 2 letters to search for a client.",
+    "visits": "Visits",
+    "tabs": {
+      "overview": "Overview",
+      "history": "History",
+      "preferences": "Preferences",
+      "technical": "Technical notes",
+      "health": "Health",
+      "consents": "Consents",
+      "data": "Data"
+    },
+    "noteKind": {
+      "color_formula": "Colour formula",
+      "hair": "Hair",
+      "skin_type": "Skin type",
+      "nails": "Nails",
+      "other": "Other"
+    },
+    "time": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    },
+    "visit": {
+      "lt1m": "Visited < 1 month",
+      "1to6m": "1–6 months",
+      "gt6m": "Over 6 months",
+      "never": "Never visited"
+    }
+  },
+  "consents": {
+    "agreeEmail": "Agrees to receive offers by email",
+    "agreeSms": "Agrees to receive offers by SMS",
+    "healthGrant": "Record health consent",
+    "healthSigned": "The client has signed the explicit consent",
+    "healthText": "Health data (allergies, contraindications…): only with the client's explicit, signed consent. Withdrawal immediately erases this data.",
+    "healthTitle": "Health consent",
+    "healthWithdraw": "Withdraw health consent",
+    "healthWithdrawConfirm": "Withdraw consent? Health data will be erased immediately.",
+    "history": "Consent history",
+    "marketingTitle": "Marketing consents",
+    "none": "No consent recorded.",
+    "proofNote": "Every change is timestamped and kept as proof (never edited or deleted).",
+    "uncheckedByDefault": "Unchecked by default: tick only with the client's agreement.",
+    "channel": {
+      "email": "Email",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp",
+      "postal": "Post",
+      "none": "—"
+    },
+    "purpose": {
+      "marketing": "Offers and promotions",
+      "newsletter": "Newsletter",
+      "appointment_reminders": "Appointment reminders",
+      "health_data": "Health data"
+    },
+    "status": {
+      "granted": "Granted",
+      "withdrawn": "Withdrawn"
+    }
+  },
+  "apptStatus": {
+    "upcoming": "Upcoming",
+    "booked": "Visited",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "no_show": "No-show"
+  },
+  "gdpr": {
+    "accessText": "Full file (contact details, history, preferences, consents) to give to the client.",
+    "accessTitle": "Right of access and portability",
+    "erase": "Delete permanently",
+    "eraseText": "Anonymisation: contact details, notes, preferences and health data are erased. Past appointments remain as “—” for accounting obligations ({{years}} years).",
+    "eraseTitle": "Right to erasure",
+    "export": "Export client data",
+    "exported": "Export ready.",
+    "ownerOnly": "Reserved for the owner and administrators.",
+    "rectifyText": "Edit the record from “Overview” → “Edit”. Every change is tracked.",
+    "rectifyTitle": "Right to rectification"
+  },
+  "health": {
+    "title": "Health data",
+    "notice": "Encrypted sensitive data. Every access is recorded. Restricted to authorised people.",
+    "show": "Show health data",
+    "hide": "Hide",
+    "consentFirst": "First record the explicit consent in the “Consents” tab.",
+    "pregnancy": "Currently pregnant",
+    "allergies": "Allergies",
+    "contraindications": "Contraindications",
+    "treatments": "Current treatments",
+    "other": "Other information relevant to treatment"
+  },
+  "merge": {
+    "chooseFields": "For each field, choose the value to keep.",
+    "confirm": "Merge records",
+    "consentRule": "History is kept; for consents, the most restrictive choice wins. Appointments are combined.",
+    "done": "Records merged.",
+    "keep": "This record",
+    "noCandidate": "No likely duplicate. Search for a record.",
+    "other": "Duplicate",
+    "start": "Find a duplicate",
+    "text": "Combine two records of the same person without losing history.",
+    "title": "Merge a duplicate"
+  },
+  "settingsClients": {
+    "accountingYears": "Accounting records (years)",
+    "checklist": "Prior legal checks",
+    "countryDefault": "Default values for country {{country}} — to be confirmed by your adviser.",
+    "disable": "Disable and erase health data",
+    "disableConfirm": "Disable? All of the business's health data will be permanently erased.",
+    "enable": "Enable health data",
+    "enabledSince": "Enabled since {{date}}",
+    "healthText": "Optional and disabled by default: allergies, contraindications and treatments relevant to beauty care, encrypted and accessible only to authorised people.",
+    "healthTitle": "Health data",
+    "legalNote": "French HDS certification generally does not apply to beauty salons: to be confirmed by your legal adviser.",
+    "ownerOnly": "Only the owner can enable this feature.",
+    "retentionText": "No automatic deletion: inactive records are only suggested for review.",
+    "retentionTitle": "Data retention",
+    "reviewEmpty": "No records to review.",
+    "reviewMonths": "Review after (months)",
+    "reviewText": "Records with no activity for the chosen period: check them, then anonymise them if no longer needed.",
+    "reviewTitle": "To review (inactive for {{months}} months)",
+    "subtitle": "Health data, retention and record review.",
+    "title": "Client settings",
+    "ack": {
+      "consent": "I will obtain each client's explicit, signed consent before entering any data (GDPR art. 9(2)(a)).",
+      "dpia": "I have carried out or assessed the data protection impact assessment (DPIA) for this data.",
+      "information": "I inform my clients about this processing (privacy notice displayed or handed out)."
+    }
   }
 }

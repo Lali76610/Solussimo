@@ -1,7 +1,8 @@
 import { CalendarPlus, ChevronLeft, ChevronRight, Settings2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
+import { supabase } from '../../../lib/supabase'
 import { Avatar } from '../../../components/Avatar'
 import { FormMessage } from '../../../components/FormMessage'
 import { PageHeader } from '../../../components/PageHeader'
@@ -36,6 +37,17 @@ export function LivePlanningPage() {
   const [day, setDay] = useState<DateKey>(() => todayKey(tz))
   const [weekStaffId, setWeekStaffId] = useState<string | null>(null)
   const [sheet, setSheet] = useState<SheetTarget | null>(null)
+  const [params, setParams] = useSearchParams()
+
+  // « Prendre rendez-vous » depuis une fiche client : ouvre la feuille avec le client prérempli.
+  useEffect(() => {
+    const clientId = params.get('client')
+    if (!clientId || !supabase) return
+    void supabase.from('clients').select('id, first_name, last_name').eq('id', clientId).maybeSingle().then(({ data }) => {
+      if (data) setSheet({ date: day, minutes: 10 * 60, client: { id: data.id, label: [data.first_name, data.last_name].filter(Boolean).join(' ') } })
+      setParams({}, { replace: true })
+    })
+  }, [params, setParams, day])
 
   useEffect(() => {
     // Recalage sur « aujourd'hui » dans le fuseau de l'établissement choisi.
@@ -198,6 +210,7 @@ export function LivePlanningPage() {
         <AppointmentSheet
           target={sheet}
           establishmentId={establishment.id}
+          establishment={establishment}
           timezone={tz}
           currency={active.company.currency}
           staff={data.bookableStaff}

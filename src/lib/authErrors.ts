@@ -32,6 +32,17 @@ export function authErrorKey(error: unknown): string {
     ['invalid_staff', 'errors.invalidInput'],
     ['cannot_remove_primary_establishment', 'errors.primaryEstablishment'],
     ['staff_not_assigned', 'errors.staffNotAssigned'],
+    ['health_consent_required', 'errors.healthConsentRequired'],
+    ['health_data_disabled', 'errors.healthDisabled'],
+    ['legal_acknowledgement_required', 'errors.legalAckRequired'],
+    ['invalid_health_notes', 'errors.invalidInput'],
+    ['query_too_short', 'errors.queryTooShort'],
+    ['client_unavailable', 'errors.clientUnavailable'],
+    ['client_required', 'errors.clientRequired'],
+    ['invalid_merge', 'errors.invalidInput'],
+    ['clients_company_email_uidx', 'errors.clientEmailExists'],
+    ['clients_company_phone_uidx', 'errors.clientPhoneExists'],
+    ['confirmation_required', 'errors.confirmationMismatch'],
   ]
   for (const [needle, key] of business) if (msg.includes(needle)) return key
   if (msg.includes('company_limit_reached')) return 'errors.companyLimit'
