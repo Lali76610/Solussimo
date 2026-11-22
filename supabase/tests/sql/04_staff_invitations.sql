@@ -14,6 +14,9 @@ select tests.clear_authentication();
 -- ------------------------------------------------------------- owner (Alice) --
 set local role authenticated;
 select tests.authenticate_as('alice');
+-- Comme l'application (PostgREST) : INSERT … RETURNING exige que la nouvelle ligne soit lisible.
+select tests.lives(format($$insert into public.staff_members (company_id, establishment_id, display_name, job) values (%L, %L, 'Créé avec retour', 'stylist') returning id$$,
+  tests.company('Salon A'), tests.establishment('Salon A')), 'owner : création avec RETURNING (comme l''API)');
 select tests.lives(format($$insert into public.staff_establishments (staff_id, establishment_id, company_id) values (%L, %L, %L)$$,
   tests.staff('Collaborateur A1'), tests.establishment_named('Salon A Nord'), tests.company('Salon A')),
   'owner : affecte un collaborateur à un second établissement');
@@ -47,7 +50,7 @@ select tests.ok(tests.count(format('select * from public.staff_members where id 
   'manager : collaborateur d''un autre établissement invisible');
 select tests.throws(format($$insert into public.staff_members (company_id, establishment_id, display_name, job) values (%L, %L, 'Intrus', 'stylist')$$,
   tests.company('Salon A'), tests.establishment_named('Salon A Nord')), 'manager : création dans un établissement non affecté refusée', '42501');
-select tests.lives(format($$insert into public.staff_members (company_id, establishment_id, display_name, job) values (%L, %L, 'Recrue Centre', 'apprentice')$$,
+select tests.lives(format($$insert into public.staff_members (company_id, establishment_id, display_name, job) values (%L, %L, 'Recrue Centre', 'apprentice') returning id$$,
   tests.company('Salon A'), tests.establishment('Salon A')), 'manager : crée un collaborateur dans son établissement');
 select tests.lives(format($$select public.set_staff_week_schedule(%L, %L, '[{"weekday":3,"start":"10:00","end":"18:00"}]')$$,
   tests.staff('Recrue Centre'), tests.establishment('Salon A')), 'manager : définit les horaires dans son établissement');
