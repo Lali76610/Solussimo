@@ -7,7 +7,7 @@ select tests.seed();
 set local role authenticated;
 select tests.authenticate_as('carol');
 select tests.ok(tests.count('select * from public.companies') = 1, 'staff : voit son entreprise');
-select tests.ok(tests.count('select * from public.staff_members') = 2, 'staff : voit l''équipe');
+select tests.ok(tests.count('select * from public.staff_members') = 5, 'staff : voit l''équipe de son établissement');
 select tests.ok(tests.count('select * from public.audit_log') = 0, 'staff : pas d''accès au journal d''audit');
 select tests.ok(tests.affected(format($$update public.companies set name = 'X' where id = %L$$, tests.company('Salon A'))) = 0,
   'staff : ne peut pas modifier l''entreprise');
@@ -15,7 +15,7 @@ select tests.throws(format($$insert into public.staff_members (company_id, estab
   tests.company('Salon A'), tests.establishment('Salon A')), 'staff : ne peut pas ajouter de collaborateur', '42501');
 select tests.ok(tests.affected(format($$update public.memberships set role = 'admin' where user_id = %L$$, tests.uid('carol'))) = 0,
   'staff : ne peut pas s''auto-promouvoir (0 ligne modifiée)');
-select tests.ok(public.my_permissions(tests.company('Salon A')) = '{company.read}', 'staff : permissions = lecture seule');
+select tests.ok(public.my_permissions(tests.company('Salon A')) = '{appointment.write,company.read}', 'staff : lecture + gestion des rendez-vous de ses établissements uniquement');
 reset role;
 
 -- ---------------------------------------------------------- manager (Erin) --

@@ -60,7 +60,7 @@ select tests.throws(format($$insert into public.staff_members (company_id, estab
   'Bob : ajout d''un collaborateur dans A refusé', '42501');
 select tests.throws(format($$insert into public.staff_members (company_id, establishment_id, display_name, job) values (%L, %L, 'Intrus', 'stylist')$$,
   tests.company('Salon B'), tests.establishment('Salon A')),
-  'Bob : collaborateur de B rattaché à un établissement de A refusé (FK composite)', '23503');
+  'Bob : collaborateur de B rattaché à un établissement de A refusé (RLS par établissement)', '42501');
 select tests.throws(format($$insert into public.memberships (company_id, user_id, role) values (%L, %L, 'owner')$$,
   tests.company('Salon A'), tests.uid('bob')),
   'Bob : auto-adhésion à A refusée', '42501');
@@ -78,7 +78,7 @@ reset role;
 
 -- Vérification finale côté serveur : A est intacte.
 select tests.ok((select name from public.companies where id = tests.company('Salon A')) = 'Salon A', 'A : nom inchangé');
-select tests.ok((select count(*) from public.staff_members where company_id = tests.company('Salon A')) = 2, 'A : collaborateurs intacts');
+select tests.ok((select count(*) from public.staff_members where company_id = tests.company('Salon A')) = 5, 'A : collaborateurs intacts');
 select tests.ok((select count(*) from public.memberships where company_id = tests.company('Salon A')) = 4, 'A : membres intacts');
 select tests.ok((select count(*) from public.establishments where company_id = tests.company('Salon A')) = 1, 'A : établissement intact');
 

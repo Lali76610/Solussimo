@@ -13,8 +13,8 @@ grant usage on sequence tests.counter to anon, authenticated;
 -- Utilisateur fictif (domaine réservé .example, RFC 2606).
 create function tests.create_user(p_key text, p_display_name text)
 returns uuid language sql security definer set search_path = '' as $$
-  insert into auth.users (id, aud, role, email, raw_user_meta_data)
-  values (gen_random_uuid(), 'authenticated', 'authenticated', p_key || '@test.example', jsonb_build_object('display_name', p_display_name, 'locale', 'fr'))
+  insert into auth.users (id, aud, role, email, email_confirmed_at, raw_user_meta_data)
+  values (gen_random_uuid(), 'authenticated', 'authenticated', p_key || '@test.example', now(), jsonb_build_object('display_name', p_display_name, 'locale', 'fr'))
   returning id;
 $$;
 
@@ -32,6 +32,26 @@ create function tests.establishment(p_company_name text)
 returns uuid language sql stable security definer set search_path = '' as $$
   select e.id from public.establishments e join public.companies c on c.id = e.company_id
   where c.name = p_company_name order by e.created_at limit 1;
+$$;
+
+create function tests.staff(p_display_name text)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select id from public.staff_members where display_name = p_display_name;
+$$;
+
+create function tests.establishment_named(p_name text)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select id from public.establishments where name = p_name;
+$$;
+
+create function tests.service(p_name text)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select id from public.services where name = p_name;
+$$;
+
+create function tests.appointment(p_label text)
+returns uuid language sql stable security definer set search_path = '' as $$
+  select id from public.appointments where client_label = p_label;
 $$;
 
 -- Simule le JWT transmis par PostgREST (doit être suivi de SET LOCAL ROLE dans le script).
@@ -145,6 +165,12 @@ begin
   insert into public.staff_members (company_id, establishment_id, display_name, job) values
     (tests.company('Salon A'), tests.establishment('Salon A'), 'Collaborateur A1', 'stylist'),
     (tests.company('Salon B'), tests.establishment('Salon B'), 'Collaborateur B1', 'beautician');
+
+  -- Fiches liées aux comptes de l'équipe A (affectées à l'établissement A).
+  insert into public.staff_members (company_id, establishment_id, user_id, display_name, job) values
+    (tests.company('Salon A'), tests.establishment('Salon A'), tests.uid('dave'),  'Dave',  'manager'),
+    (tests.company('Salon A'), tests.establishment('Salon A'), tests.uid('erin'),  'Erin',  'manager'),
+    (tests.company('Salon A'), tests.establishment('Salon A'), tests.uid('carol'), 'Carol', 'stylist');
 end;
 $$;
 
