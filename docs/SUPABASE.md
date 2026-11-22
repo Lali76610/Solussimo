@@ -110,9 +110,9 @@ Exécutées automatiquement en CI (job « Base de données »).
 | Élément | Valeur |
 | --- | --- |
 | Projet | `solussimo-dev` — ref `iipymibdmazppggymvwn` — région `eu-west-1` (Irlande, UE) |
-| Migrations | 11/11 appliquées (`npm run db:migrate -- iipymibdmazppggymvwn`) |
-| Tests SQL sur le projet réel | 195/195 (transactions annulées, aucune donnée conservée) ; concurrence : local + CI |
-| Tests API de bout en bout | 39/39 (`npm run test:api -- iipymibdmazppggymvwn`) |
+| Migrations | 16/16 appliquées (`npm run db:migrate -- iipymibdmazppggymvwn`) |
+| Tests SQL sur le projet réel | 298/298 (transactions annulées, aucune donnée conservée) ; concurrence : local + CI |
+| Tests API de bout en bout | 57/57 (dont chiffrement santé avec le Vault réel) (`npm run test:api -- iipymibdmazppggymvwn`) |
 | Security / Performance Advisor | 0 alerte |
 | Auth | confirmation e-mail, mot de passe ≥ 10 (a-z, A-Z, 0-9), ré-authentification pour changer de mot de passe, inscriptions anonymes désactivées |
 | Site Netlify associé | `solussimo-dev.netlify.app` (projet Netlify distinct de la démo, protection d'accès active) |
