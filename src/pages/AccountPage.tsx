@@ -55,8 +55,11 @@ export function AccountPage() {
     const a = document.createElement('a')
     a.href = url
     a.download = `solussimo-mes-donnees-${new Date().toISOString().slice(0, 10)}.json`
+    // Safari iOS : le lien doit être dans le document, et l'URL libérée après coup.
+    document.body.appendChild(a)
     a.click()
-    URL.revokeObjectURL(url)
+    a.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 10_000)
   }
 
   async function deleteAccount(e: FormEvent) {
