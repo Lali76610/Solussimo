@@ -71,7 +71,7 @@ select tests.authenticate_as('alice');
 select tests.ok(public.reschedule_appointment((select id from appt), '2026-12-07 15:00', 1) = 2, 'déplacement : nouvelle version');
 select tests.ok((select starts_at from public.appointments where id = (select id from appt)) = '2026-12-07 14:00+00', 'déplacement : heure mise à jour');
 select tests.throws(format($$select public.reschedule_appointment(%L, '2026-12-07 16:00', 1)$$, (select id from appt)),
-  'concurrence optimiste : version périmée refusée', '40001');
+  'concurrence optimiste : version périmée refusée (sans boucle de réessai)', 'P0001');
 select tests.throws(format($$select public.reschedule_appointment(%L, '2026-12-07 10:30', 2)$$, (select id from appt)),
   'déplacement sur un créneau occupé refusé', '23P01');
 select tests.ok(public.reschedule_appointment((select id from appt), '2026-12-07 15:00', 2, tests.staff('Erin')) = 3,

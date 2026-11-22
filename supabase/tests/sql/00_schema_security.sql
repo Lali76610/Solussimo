@@ -88,4 +88,10 @@ select tests.ok(
     where n.nspname = 'public' and p.prosecdef),
   'aucune fonction SECURITY DEFINER exposée par l''API (schéma public)');
 
+select tests.ok(
+  not exists (
+    select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname in ('public', 'private') and p.prosrc ~ 'errcode\s*=\s*''(40001|40P01)'''),
+  'aucune erreur métier levée avec un code réessayé automatiquement par PostgREST (40001/40P01)');
+
 rollback;

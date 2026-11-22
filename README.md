@@ -35,7 +35,7 @@ npm run dev:mobile   # exposé sur le réseau local (test sur téléphone)
 
 ```bash
 npm run verify       # types + lint + tests unitaires + build + détection de secrets
-npm run test:db      # migrations + 196 tests SQL (sécurité, planning, concurrence) (PostgreSQL requis, DATABASE_URL)
+npm run test:db      # migrations + 197 tests SQL (sécurité, planning, concurrence) (PostgreSQL requis, DATABASE_URL)
 ```
 
 Ces vérifications tournent aussi en CI (GitHub Actions) sur chaque Pull Request.

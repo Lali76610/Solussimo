@@ -32,7 +32,7 @@ describe('authErrorKey — messages génériques', () => {
   })
   it('traduit les refus du planning et des invitations', () => {
     expect(authErrorKey({ code: '23P01', message: 'slot_unavailable' })).toBe('errors.slotUnavailable')
-    expect(authErrorKey({ code: '40001', message: 'version_conflict' })).toBe('errors.versionConflict')
+    expect(authErrorKey({ code: 'P0001', message: 'version_conflict' })).toBe('errors.versionConflict')
     expect(authErrorKey({ code: '42501', message: 'forbidden_role' })).toBe('errors.forbiddenRole')
     expect(authErrorKey({ code: '42501', message: 'invitation_email_mismatch' })).toBe('errors.invitationEmailMismatch')
     expect(authErrorKey({ code: '23P01', message: 'conflicting key value violates exclusion constraint "staff_working_hours_no_overlap"' })).toBe('errors.hoursOverlap')
