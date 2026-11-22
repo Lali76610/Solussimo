@@ -1,0 +1,77 @@
+{
+  "app": { "name": "SOLUSSIMO", "tagline": "Elegant management for beauty salons" },
+  "nav": {
+    "home": "Home", "dashboard": "Dashboard", "planning": "Schedule", "clients": "Clients", "staff": "Staff",
+    "checkout": "Checkout", "stock": "Inventory", "logout": "Sign out", "openMenu": "Open menu",
+    "closeMenu": "Close menu", "mainNav": "Main navigation", "more": "More"
+  },
+  "login": {
+    "title": "Sign in", "subtitle": "Access your salon's management workspace.",
+    "email": "Email address", "password": "Password", "showPassword": "Show password",
+    "hidePassword": "Hide password", "submit": "Sign in", "submitting": "Signing in…",
+    "forgot": "Forgot your password?", "demo": "Use the demo account",
+    "demoHint": "Demo version: all data shown is fictitious.",
+    "secure": "Encrypted connection · Data hosted in the EU",
+    "privacy": "Your data is processed in accordance with the GDPR. No advertising trackers are used.",
+    "heroTitle": "Your salon, orchestrated with elegance.",
+    "heroText": "Schedule, clients, staff, checkout and inventory in a single app, on desktop and mobile.",
+    "errors": {
+      "invalidEmail": "Please enter a valid email address.",
+      "passwordLength": "Password must be at least 8 characters long.",
+      "credentials": "Incorrect credentials.",
+      "locked": "Too many attempts. Try again in {{seconds}} s."
+    }
+  },
+  "dashboard": {
+    "greeting": "Hello {{name}}", "summary": "Here is today's activity at {{salon}}.",
+    "kpi": { "revenue": "Revenue", "appointments": "Appointments", "newClients": "New clients", "occupancy": "Occupancy rate" },
+    "vsLastWeek": "vs last week", "upcoming": "Upcoming appointments", "seeAll": "See all",
+    "weekRevenue": "Revenue — last 7 days", "stockAlerts": "Stock alerts",
+    "teamToday": "Today's team", "present": "Present", "absent": "Absent", "noAlerts": "No alerts.",
+    "quickActions": "Quick actions", "newAppointment": "New booking", "newSale": "New sale", "newClient": "New client",
+    "remaining": "{{count}} remaining", "noUpcoming": "No more appointments today."
+  },
+  "status": { "confirmed": "Confirmed", "pending": "Pending", "done": "Completed" },
+  "roles": { "manager": "Manager", "stylist": "Stylist", "colorist": "Colourist", "beautician": "Beautician", "apprentice": "Apprentice" },
+  "services": {
+    "cut": "Haircut", "cutBlowdry": "Cut & blow-dry", "color": "Colour", "highlights": "Highlights / balayage",
+    "beard": "Beard trim", "manicure": "Manicure", "facial": "Facial", "kidsCut": "Kids' haircut"
+  },
+  "products": {
+    "shampoo": "Repair shampoo 1 L", "conditioner": "Conditioner 1 L", "mask": "Nourishing mask 500 ml",
+    "colorTube": "Hair colour tube 60 ml", "oxidant": "Developer 20 vol. 1 L", "serum": "Ends serum 100 ml",
+    "nailPolish": "Nail polish", "gloves": "Nitrile gloves (box)"
+  },
+  "categories": { "hair": "Hair care", "color": "Colour", "care": "Treatments", "consumable": "Consumables" },
+  "payment": { "card": "Card", "cash": "Cash", "contactless": "Contactless" },
+  "segments": { "vip": "Loyal", "regular": "Regular", "new": "New" },
+  "planning": {
+    "title": "Schedule", "subtitle": "Today's appointments by team member.", "today": "Today",
+    "day": "Day", "week": "Week", "newAppointment": "New appointment", "previous": "Previous day", "next": "Next day"
+  },
+  "clients": {
+    "title": "Clients", "subtitle": "Client records and history.", "search": "Search clients…",
+    "visits": "Visits", "lastVisit": "Last visit", "totalSpent": "Total spent",
+    "daysAgo": "{{count}} d ago", "today": "Today", "newClient": "New client",
+    "privacyNote": "Data minimisation: only information needed to provide the service is kept. Right of access, rectification and erasure on request.",
+    "noResult": "No clients found."
+  },
+  "staff": {
+    "title": "Staff", "subtitle": "Team, roles and attendance.", "addMember": "Add member",
+    "appointmentsToday": "{{count}} bookings today", "role": "Role", "status": "Status"
+  },
+  "checkout": {
+    "title": "Checkout", "subtitle": "Today's payments.", "todayTotal": "Total collected", "transactions": "Transactions",
+    "average": "Average ticket", "newSale": "New sale", "time": "Time", "service": "Service",
+    "method": "Payment", "amount": "Amount", "closeRegister": "Close register", "byMethod": "Breakdown by payment method"
+  },
+  "stock": {
+    "title": "Inventory", "subtitle": "Products, thresholds and restocking.", "product": "Product", "category": "Category",
+    "quantity": "Quantity", "minimum": "Threshold", "status": "Status", "low": "Reorder", "ok": "OK",
+    "order": "Order", "totalValue": "Stock value", "lowCount": "Products below threshold", "references": "Items"
+  },
+  "common": {
+    "demoData": "Fictitious data", "moduleInDev": "Module under development — base structure.",
+    "language": "Language", "minutes": "{{count}} min", "salon": "Salon", "privacy": "Privacy & GDPR"
+  }
+}

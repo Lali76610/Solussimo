@@ -1,0 +1,77 @@
+{
+  "app": { "name": "SOLUSSIMO", "tagline": "Elegante Verwaltung für Beauty-Salons" },
+  "nav": {
+    "home": "Start", "dashboard": "Übersicht", "planning": "Terminplan", "clients": "Kunden", "staff": "Personal",
+    "checkout": "Kasse", "stock": "Lager", "logout": "Abmelden", "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen", "mainNav": "Hauptnavigation", "more": "Mehr"
+  },
+  "login": {
+    "title": "Anmelden", "subtitle": "Zugang zum Verwaltungsbereich Ihres Salons.",
+    "email": "E-Mail-Adresse", "password": "Passwort", "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen", "submit": "Anmelden", "submitting": "Anmeldung…",
+    "forgot": "Passwort vergessen?", "demo": "Demo-Konto verwenden",
+    "demoHint": "Demoversion: Alle angezeigten Daten sind fiktiv.",
+    "secure": "Verschlüsselte Verbindung · Daten in der EU gehostet",
+    "privacy": "Ihre Daten werden gemäß DSGVO verarbeitet. Es werden keine Werbe-Tracker eingesetzt.",
+    "heroTitle": "Ihr Salon, elegant organisiert.",
+    "heroText": "Terminplan, Kunden, Personal, Kasse und Lager in einer einzigen App – am Computer und auf dem Smartphone.",
+    "errors": {
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "passwordLength": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "credentials": "Ungültige Zugangsdaten.",
+      "locked": "Zu viele Versuche. Bitte in {{seconds}} s erneut versuchen."
+    }
+  },
+  "dashboard": {
+    "greeting": "Hallo {{name}}", "summary": "Das ist die heutige Aktivität von {{salon}}.",
+    "kpi": { "revenue": "Umsatz", "appointments": "Termine", "newClients": "Neukunden", "occupancy": "Auslastung" },
+    "vsLastWeek": "ggü. Vorwoche", "upcoming": "Nächste Termine", "seeAll": "Alle anzeigen",
+    "weekRevenue": "Umsatz — letzte 7 Tage", "stockAlerts": "Lagerwarnungen",
+    "teamToday": "Team heute", "present": "Anwesend", "absent": "Abwesend", "noAlerts": "Keine Warnungen.",
+    "quickActions": "Schnellaktionen", "newAppointment": "Neuer Termin", "newSale": "Kassieren", "newClient": "Neuer Kunde",
+    "remaining": "{{count}} verbleibend", "noUpcoming": "Heute keine weiteren Termine."
+  },
+  "status": { "confirmed": "Bestätigt", "pending": "Ausstehend", "done": "Erledigt" },
+  "roles": { "manager": "Salonleitung", "stylist": "Friseur", "colorist": "Coloristin", "beautician": "Kosmetikerin", "apprentice": "Auszubildender" },
+  "services": {
+    "cut": "Haarschnitt", "cutBlowdry": "Schnitt & Föhnen", "color": "Färben", "highlights": "Strähnen / Balayage",
+    "beard": "Bartpflege", "manicure": "Maniküre", "facial": "Gesichtsbehandlung", "kidsCut": "Kinderhaarschnitt"
+  },
+  "products": {
+    "shampoo": "Reparatur-Shampoo 1 L", "conditioner": "Spülung 1 L", "mask": "Pflegemaske 500 ml",
+    "colorTube": "Haarfarbe Tube 60 ml", "oxidant": "Entwickler 20 Vol. 1 L", "serum": "Spitzenserum 100 ml",
+    "nailPolish": "Nagellack", "gloves": "Nitrilhandschuhe (Box)"
+  },
+  "categories": { "hair": "Haarpflege", "color": "Färben", "care": "Pflege", "consumable": "Verbrauchsmaterial" },
+  "payment": { "card": "Karte", "cash": "Bar", "contactless": "Kontaktlos" },
+  "segments": { "vip": "Stammkunde", "regular": "Regelmäßig", "new": "Neu" },
+  "planning": {
+    "title": "Terminplan", "subtitle": "Heutige Termine pro Mitarbeiter.", "today": "Heute",
+    "day": "Tag", "week": "Woche", "newAppointment": "Neuer Termin", "previous": "Vorheriger Tag", "next": "Nächster Tag"
+  },
+  "clients": {
+    "title": "Kunden", "subtitle": "Kundenkartei und Verlauf.", "search": "Kunden suchen…",
+    "visits": "Besuche", "lastVisit": "Letzter Besuch", "totalSpent": "Gesamtumsatz",
+    "daysAgo": "vor {{count}} T.", "today": "Heute", "newClient": "Neuer Kunde",
+    "privacyNote": "Datenminimierung: Es werden nur die für die Leistung erforderlichen Daten gespeichert. Recht auf Auskunft, Berichtigung und Löschung auf Anfrage.",
+    "noResult": "Keine Kunden gefunden."
+  },
+  "staff": {
+    "title": "Personal", "subtitle": "Team, Rollen und Anwesenheit.", "addMember": "Mitglied hinzufügen",
+    "appointmentsToday": "{{count}} Termine heute", "role": "Rolle", "status": "Status"
+  },
+  "checkout": {
+    "title": "Kasse", "subtitle": "Heutige Zahlungen.", "todayTotal": "Gesamt kassiert", "transactions": "Transaktionen",
+    "average": "Durchschnittsbon", "newSale": "Neuer Verkauf", "time": "Uhrzeit", "service": "Leistung",
+    "method": "Zahlung", "amount": "Betrag", "closeRegister": "Kassenabschluss", "byMethod": "Aufteilung nach Zahlungsart"
+  },
+  "stock": {
+    "title": "Lager", "subtitle": "Produkte, Mindestbestände und Nachbestellung.", "product": "Produkt", "category": "Kategorie",
+    "quantity": "Menge", "minimum": "Mindestbestand", "status": "Status", "low": "Nachbestellen", "ok": "OK",
+    "order": "Bestellen", "totalValue": "Lagerwert", "lowCount": "Produkte unter Mindestbestand", "references": "Artikel"
+  },
+  "common": {
+    "demoData": "Fiktive Daten", "moduleInDev": "Modul in Entwicklung — Grundstruktur.",
+    "language": "Sprache", "minutes": "{{count}} Min.", "salon": "Salon", "privacy": "Datenschutz & DSGVO"
+  }
+}
