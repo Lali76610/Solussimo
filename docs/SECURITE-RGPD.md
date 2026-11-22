@@ -50,10 +50,22 @@
 | Rendez-vous | Écriture uniquement par RPC serveur (permissions, horaires, congés) ; contraintes d'exclusion contre la double réservation ; journal d'audit. |
 | Clients | Libellé minimal (80 caractères), aucune coordonnée, en attendant le module Clients. |
 
+### Clients (V0.4)
+| Mesure | Mise en œuvre |
+| --- | --- |
+| Masquage des coordonnées (D2) | `email` / `phone_e164` non lisibles via l'API ; versions masquées seules ; affichage complet par `reveal_client_contact` (owner/admin/manager), **journalisé** |
+| Minimisation (D4, D5) | Prénom OU nom suffit ; contacts facultatifs ; jour/mois de naissance sans année ; clients de passage sans fiche |
+| Consentements | Par finalité et canal, **ajout seul** (aucune modification/suppression), méthode et version du texte, cases non cochées par défaut |
+| Données de santé (D1, D3) | Désactivées par défaut ; activation par le propriétaire après 3 confirmations légales ; habilitation (owner/admin ou praticien désigné par eux) ; consentement explicite ; **AES-256** (pgcrypto) avec clé dans **Supabase Vault** ; aucune lecture directe ; chaque accès journalisé ; effacement au retrait du consentement ou à la désactivation |
+| Droits RGPD | Export JSON (partage iOS), rectification tracée, anonymisation (rendez-vous conservés pour la comptabilité) |
+| Conservation (D6) | Réexamen des fiches inactives (36 mois par défaut, paramétrable), **jamais de suppression automatique** ; durée comptable par pays |
+| Anti-aspiration | Recherche limitée à 50 résultats ; pas de liste complète pour le rôle collaborateur |
+| Fusion (D7) | Responsables dans leurs établissements, verrous ordonnés (concurrence testée), consentement le plus restrictif conservé, journal |
+
 ## Reste à faire avant des données clients réelles
 - Projet Supabase en **région UE**, DPA Supabase signé, SMTP personnalisé.
 - Envoi automatique des invitations par e-mail (SMTP personnalisé / fonction serveur) — aujourd'hui partagé par l'appli Mail du gérant.
 - **MFA** (TOTP) pour owners/admins.
 - Textes juridiques définitifs (responsable de traitement, DPO, durées de conservation) et registre des traitements.
 - Purge automatique des comptes inactifs / journaux d'audit au-delà de la durée de conservation.
-- AIPD si des données sensibles (allergies, contre-indications) sont collectées dans le module Clients.
+- **AIPD** à réaliser avant d'activer les données de santé ; validation juridique du point HDS (France) / § 22 BDSG (Allemagne).

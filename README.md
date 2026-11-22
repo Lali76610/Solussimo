@@ -2,7 +2,7 @@
 
 Plateforme SaaS internationale de gestion pour salons de coiffure et instituts d'esthétique.
 
-> **Statut : V0.3 — Personnel & Planning.** (Socle V0.2 : Authentification réelle (Supabase Auth), architecture multi-tenant protégée par RLS, et **mode démonstration** séparé (salon fictif « Maison Élégance »).) V0.3 : fiches collaborateurs, horaires, absences, invitations sécurisées, planning de réservation réel. Aucune donnée client réelle.
+> **Statut : V0.4 — Clients.** (V0.3 — Personnel & Planning.) (Socle V0.2 : Authentification réelle (Supabase Auth), architecture multi-tenant protégée par RLS, et **mode démonstration** séparé (salon fictif « Maison Élégance »).) V0.3 : fiches collaborateurs, horaires, absences, invitations sécurisées, planning de réservation réel. Aucune donnée client réelle.
 
 ## Stack
 
@@ -35,7 +35,7 @@ npm run dev:mobile   # exposé sur le réseau local (test sur téléphone)
 
 ```bash
 npm run verify       # types + lint + tests unitaires + build + détection de secrets
-npm run test:db      # migrations + 198 tests SQL (sécurité, planning, concurrence) (PostgreSQL requis, DATABASE_URL)
+npm run test:db      # migrations + 303 tests SQL (sécurité, planning, concurrence) (PostgreSQL requis, DATABASE_URL)
 ```
 
 Ces vérifications tournent aussi en CI (GitHub Actions) sur chaque Pull Request.

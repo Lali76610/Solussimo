@@ -47,23 +47,28 @@ export function AppointmentSheet({ target, establishmentId, establishment, timez
   const [resourceId, setResourceId] = useState(appt?.resource_id ?? '')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
-  const service = services.find((s) => s.id === serviceId)
+  // Valeurs effectives : la feuille peut s'ouvrir avant la fin du chargement des listes
+  // (ex. « Prendre RDV » depuis une fiche client) ; on retient alors la première option.
+  const effServiceId = serviceId || activeServices[0]?.id || ''
+  const effStaffId = staffId || staff[0]?.id || ''
+  const service = services.find((s) => s.id === effServiceId)
 
   async function submit(e: FormEvent) {
     e.preventDefault()
     if (!supabase || busy) return
     setError(null)
-    if ((!client.id && !client.label.trim()) || !serviceId || !staffId) return setError(t('errors.clientRequired'))
+    if (!client.id && !client.label.trim()) return setError(t('errors.clientRequired'))
+    if (!effServiceId || !effStaffId) return setError(t('errors.invalidInput'))
     const start = localTimestamp(date, hhmmToMinutes(time))
     setBusy(true)
     const { error: err } = appt
       ? await supabase.rpc('reschedule_appointment', {
           p_appointment_id: appt.id, p_start_local: start, p_expected_version: appt.version,
-          p_staff_id: staffId, p_service_id: serviceId, p_resource_id: resourceId || null,
+          p_staff_id: effStaffId, p_service_id: effServiceId, p_resource_id: resourceId || null,
           p_client_label: client.id ? null : client.label.trim(), p_client_id: client.id,
         })
       : await supabase.rpc('book_appointment', {
-          p_establishment_id: establishmentId, p_staff_id: staffId, p_service_id: serviceId,
+          p_establishment_id: establishmentId, p_staff_id: effStaffId, p_service_id: effServiceId,
           p_start_local: start, p_client_label: client.id ? null : client.label.trim(), p_resource_id: resourceId || null,
           p_client_id: client.id,
         })
@@ -95,7 +100,7 @@ export function AppointmentSheet({ target, establishmentId, establishment, timez
           <ClientPicker value={client} onChange={setClient} establishment={establishment} disabled={!canWrite} />
         </div>
         <Field id="apService" label={t('planningLive.service')}>
-          <select id="apService" value={serviceId} onChange={(e) => setServiceId(e.target.value)} disabled={!canWrite} className="input">
+          <select id="apService" value={effServiceId} onChange={(e) => setServiceId(e.target.value)} disabled={!canWrite} className="input">
             {activeServices.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.name} · {t('common.minutes', { count: s.duration_minutes })} · {formatCurrency(s.price_cents / 100, lang, currency)}
@@ -104,7 +109,7 @@ export function AppointmentSheet({ target, establishmentId, establishment, timez
           </select>
         </Field>
         <Field id="apStaff" label={t('planningLive.staff')}>
-          <select id="apStaff" value={staffId} onChange={(e) => setStaffId(e.target.value)} disabled={!canWrite} className="input">
+          <select id="apStaff" value={effStaffId} onChange={(e) => setStaffId(e.target.value)} disabled={!canWrite} className="input">
             {staff.map((s) => <option key={s.id} value={s.id}>{s.display_name}</option>)}
             {appt && !staff.some((s) => s.id === appt.staff_id) && <option value={appt.staff_id} disabled>—</option>}
           </select>

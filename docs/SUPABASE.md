@@ -38,6 +38,13 @@ audit_log (qui / quoi / quand — sans données personnelles)
 | `membership.manage`    |   ✔   |   ✔¹  |         |       |
 | `staff.write`          |   ✔   |   ✔   |    ✔    |       |
 | `audit.read`           |   ✔   |   ✔   |         |       |
+| `client.read` / `client.write` / `consent.write` | ✔ | ✔ | ✔³ | ✔³ |
+| `client.contact.read` (coordonnées complètes, journalisé) | ✔ | ✔ | ✔³ | |
+| `client.merge`         |   ✔   |   ✔   |   ✔³    |       |
+| `client.export` / `client.erase` | ✔ | ✔ | | |
+| `settings.health`      |   ✔   |       |         |       |
+| `settings.retention`   |   ✔   |   ✔   |         |       |
+| données de santé       | ✔⁴ | ✔⁴ | ✔⁴ | ✔⁴ |
 | `invitation.manage`    |   ✔   |   ✔²  |         |       |
 | `schedule.write`       |   ✔   |   ✔   |   ✔³    |       |
 | `service.write`        |   ✔   |   ✔   |         |       |
@@ -49,6 +56,12 @@ Une entreprise garde toujours au moins un owner.
 ² Un admin invite uniquement des managers et des collaborateurs.
 ³ **Cloisonnement par établissement (V0.3)** : managers et collaborateurs ne voient et
 n'agissent que dans les établissements auxquels leur fiche est affectée. Owner/admin : tous.
+⁴ Seulement si la fonction est activée par le propriétaire, pour les owner/admin et les collaborateurs marqués « praticien de soins », avec consentement explicite actif du client.
+
+### Clé de chiffrement des données de santé
+- Générée **côté serveur** par la migration `…_client_health.sql` (`gen_random_bytes(32)`), stockée dans **Supabase Vault** sous le nom `solussimo_health_key_v1` ; jamais dans le dépôt.
+- Rotation : créer `solussimo_health_key_v2` dans le Vault, re-chiffrer (fonction à ajouter le moment venu), puis retirer la v1. Chaque ligne mémorise sa clé (`key_name`).
+- Ne jamais exporter ni afficher la valeur de la clé.
 
 Source unique : `private.permission_roles()` (SQL). L'interface lit les permissions
 effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
@@ -66,6 +79,11 @@ effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
 | `20261123100000_staff_scheduling.sql` | V0.3 — fonctions multiples, réservable, affectations multi-établissements, horaires, absences, RLS par établissement |
 | `20261123100100_invitations.sql` | V0.3 — invitations à usage unique (72 h, jeton haché, e-mail confirmé) |
 | `20261123100200_planning.sql` | V0.3 — prestations, ressources (cabines), rendez-vous par RPC, contraintes d'exclusion, fuseaux / DST |
+| `20261124100000_clients_core.sql` | V0.4 — fiches clients (coordonnées non lisibles via l'API), préférences, fiche technique, journal des accès, conservation par pays, praticiens |
+| `20261124100100_client_consents.sql` | V0.4 — consentements en ajout seul, état courant |
+| `20261124100200_client_health.sql` | V0.4 — données de santé chiffrées (AES-256, clé dans Supabase Vault), activation légale, accès journalisés |
+| `20261124100300_appointments_clients.sql` | V0.4 — rendez-vous liés aux fiches, clients de passage |
+| `20261124100400_client_search_merge_gdpr.sql` | V0.4 — recherche, doublons, fusion, coordonnées complètes journalisées, export, anonymisation, réexamen |
 | `20261123100400_staff_select_policy_returning.sql` | V0.3 — lecture des fiches compatible `INSERT … RETURNING` (constaté sur Supabase : création refusée) |
 | `20261123100300_conflict_errcode_and_indexes.sql` | V0.3 — conflit de version signalé sans code réessayé par PostgREST (constaté sur Supabase : boucle → HTTP 504) ; index |
 
@@ -76,7 +94,7 @@ effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres npm run test:db
 ```
 
-198 assertions : RLS sur toutes les tables, aucun privilège `anon`, isolation complète
+303 assertions : RLS sur toutes les tables, aucun privilège `anon`, isolation complète
 entre deux entreprises et entre établissements, matrice des rôles, création de salon,
 RGPD, Personnel (affectations, horaires, absences), invitations (usage unique,
 expiration, révocation, mauvais compte), Planning (disponibilités, pauses, congés,
