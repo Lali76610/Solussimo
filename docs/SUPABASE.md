@@ -1,0 +1,92 @@
+# Socle Supabase — SOLUSSIMO V0.2
+
+## Architecture multi-tenant
+
+```
+auth.users (Supabase Auth)
+   │ 1–1
+   ▼
+profiles ──────────────┐            (nom affiché, langue — rien d'autre)
+                       │
+companies  ◄── memberships (user_id, role) ──► profiles      ← TENANT = companies
+   │  1–n                                                    (frontière d'isolation)
+   ▼
+establishments ◄── staff_members (company_id, establishment_id, user_id?)
+   │
+audit_log (qui / quoi / quand — sans données personnelles)
+```
+
+- **Tenant = `companies`.** Toute table métier porte `company_id`.
+- **Rôles** (`company_role`) : `owner` > `admin` > `manager` > `staff`.
+- **Intégrité inter-tenant** : clé étrangère composite `(establishment_id, company_id)`,
+  `company_id` immuable (trigger + privilèges colonne), lien `staff_members.user_id`
+  autorisé uniquement vers un membre de la même entreprise.
+- **Création d'entreprise** : uniquement via `create_company_with_establishment()`
+  (atomique : entreprise + établissement + owner + fiche collaborateur).
+- **Adhésions** : pas d'`INSERT` direct depuis l'API. Le futur flux d'invitation
+  (avec acceptation par l'invité) passera par une fonction contrôlée.
+
+### Matrice des permissions
+
+| Permission             | owner | admin | manager | staff |
+| ---------------------- | :---: | :---: | :-----: | :---: |
+| `company.read`         |   ✔   |   ✔   |    ✔    |   ✔   |
+| `company.update`       |   ✔   |   ✔   |         |       |
+| `company.delete`       |   ✔   |       |         |       |
+| `establishment.write`  |   ✔   |   ✔   |         |       |
+| `establishment.delete` |   ✔   |       |         |       |
+| `membership.manage`    |   ✔   |   ✔¹  |         |       |
+| `staff.write`          |   ✔   |   ✔   |    ✔    |       |
+| `audit.read`           |   ✔   |   ✔   |         |       |
+
+¹ Un admin ne peut jamais créer, modifier ou retirer un owner, ni changer son propre rôle.
+Une entreprise garde toujours au moins un owner.
+
+Source unique : `private.permission_roles()` (SQL). L'interface lit les permissions
+effectives via `rpc('my_permissions')` ; **la base reste seule juge** (RLS).
+
+## Migrations versionnées
+
+| Fichier | Contenu |
+| --- | --- |
+| `20261122100000_foundation.sql` | schéma `private`, types, utilitaires |
+| `20261122100100_tenancy_tables.sql` | tables multi-tenant, trigger de création de profil |
+| `20261122100200_permissions_and_rls.sql` | fonctions d'autorisation, garde-fous, RLS, privilèges |
+| `20261122100300_audit_log.sql` | journal d'audit non falsifiable |
+| `20261122100400_onboarding_and_gdpr_rpc.sql` | création de salon, export / effacement RGPD |
+
+## Tests de sécurité
+
+```bash
+# PostgreSQL local jetable (le script installe un stub Supabase minimal si besoin)
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres npm run test:db
+```
+
+94 assertions : RLS sur toutes les tables, aucun privilège `anon`, isolation complète
+entre deux entreprises (lecture, modification, suppression, insertion, transfert,
+élévation de privilèges), matrice des rôles, création de salon, RGPD.
+Exécutées automatiquement en CI (job « Base de données »).
+
+> ⚠️ Ne jamais pointer `DATABASE_URL` vers une base de production : le script recrée une base `solussimo_test`.
+
+## Mise en service (à réaliser avec le titulaire du compte)
+
+1. **Créer le projet** sur supabase.com — région **UE** (ex. Francfort `eu-central-1` ou Paris `eu-west-3`).
+   Un projet distinct par environnement : `solussimo-demo` / `solussimo-staging` / `solussimo-prod`.
+2. **Appliquer les migrations** :
+   ```bash
+   npx supabase login
+   npx supabase link --project-ref <ref>
+   npx supabase db push
+   ```
+3. **Auth → URL Configuration** : Site URL + Redirect URLs (`https://<domaine>/**`).
+   **Auth → Providers → Email** : confirmation d'e-mail activée, mot de passe ≥ 10 caractères
+   (majuscule, minuscule, chiffre), protection contre les mots de passe compromis (offre Pro).
+4. **SMTP personnalisé** (Auth → SMTP) avant toute ouverture : l'expéditeur par défaut de Supabase est limité.
+5. **Variables d'environnement** (Netlify → Site configuration → Environment variables) :
+   `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` (**clé publique** anon/publishable uniquement).
+   Le build échoue volontairement si une clé `service_role` / `sb_secret_` est fournie.
+6. Régénérer les types : `npx supabase gen types typescript --linked > src/lib/database.types.ts`.
+
+La clé `service_role` ne doit **jamais** quitter le tableau de bord Supabase ni
+apparaître dans le dépôt, Netlify (variables `VITE_*`) ou le navigateur.

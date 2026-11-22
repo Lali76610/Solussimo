@@ -2,13 +2,14 @@
 
 Plateforme SaaS internationale de gestion pour salons de coiffure et instituts d'esthétique.
 
-> **Statut : prototype front-end.** Toutes les données affichées (salon « Maison Élégance », clients, personnel, ventes, stock) sont **fictives**.
+> **Statut : V0.2 — socle Supabase.** Authentification réelle (Supabase Auth), architecture multi-tenant protégée par RLS, et **mode démonstration** séparé (salon fictif « Maison Élégance »). Aucune donnée client réelle.
 
 ## Stack
 
 - React 19 + TypeScript (strict) + Vite
 - Tailwind CSS v4 (thème aux couleurs SOLUSSIMO)
 - React Router · i18next (FR, EN, ES, DE) · lucide-react
+- Supabase : PostgreSQL + Auth + Row Level Security — voir [docs/SUPABASE.md](docs/SUPABASE.md)
 
 ## Identité graphique
 
@@ -27,14 +28,14 @@ npm run dev          # http://localhost:5173
 npm run dev:mobile   # exposé sur le réseau local (test sur téléphone)
 ```
 
-Compte de démonstration : bouton « Utiliser le compte de démonstration » sur la page de connexion.
+- **Sans configuration** : seul le mode démonstration est disponible (bouton « Explorer la démonstration »).
+- **Avec Supabase** : copier `.env.example` vers `.env.local` et renseigner l'URL et la **clé publique** (anon). Voir [docs/SUPABASE.md](docs/SUPABASE.md).
 
 ## Vérifications
 
 ```bash
-npm run typecheck
-npm run lint
-npm run build
+npm run verify       # types + lint + tests unitaires + build + détection de secrets
+npm run test:db      # migrations + 94 tests de sécurité SQL (PostgreSQL requis, DATABASE_URL)
 ```
 
 Ces vérifications tournent aussi en CI (GitHub Actions) sur chaque Pull Request.
@@ -42,14 +43,18 @@ Ces vérifications tournent aussi en CI (GitHub Actions) sur chaque Pull Request
 ## Structure
 
 ```
+supabase/
+  migrations/  migrations SQL versionnées (schéma, RLS, RPC)
+  tests/       tests de sécurité SQL (isolation multi-tenant, rôles, RGPD)
 src/
-  auth/        session (prototype), contexte d'authentification, garde de routes
+  auth/        Supabase Auth + mode démo séparé, gardes de routes
+  tenant/      entreprise active et permissions (multi-tenant)
   components/  composants UI partagés (Logo, StatCard, LanguageSwitcher…)
   data/        données de démonstration fictives
   i18n/        configuration i18next + fichiers de traduction fr/en/es/de
   layouts/     mise en page (barre latérale, tiroir et onglets mobiles)
   lib/         formatage localisé (devise, dates)
-  pages/       Connexion, Tableau de bord, Planning, Clients, Personnel, Caisse, Stock
+  pages/       écrans démo (données fictives) + live/ (données Supabase), inscription, création de salon, compte
 ```
 
 ## Ajouter une langue

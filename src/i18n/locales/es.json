@@ -1,16 +1,35 @@
 {
-  "app": { "name": "SOLUSSIMO", "tagline": "La gestión elegante de los salones de belleza" },
+  "app": {
+    "name": "SOLUSSIMO",
+    "tagline": "La gestión elegante de los salones de belleza"
+  },
   "nav": {
-    "home": "Inicio", "dashboard": "Panel", "planning": "Agenda", "clients": "Clientes", "staff": "Personal",
-    "checkout": "Caja", "stock": "Inventario", "logout": "Cerrar sesión", "openMenu": "Abrir el menú",
-    "closeMenu": "Cerrar el menú", "mainNav": "Navegación principal", "more": "Más"
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "planning": "Agenda",
+    "clients": "Clientes",
+    "staff": "Personal",
+    "checkout": "Caja",
+    "stock": "Inventario",
+    "logout": "Cerrar sesión",
+    "openMenu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú",
+    "mainNav": "Navegación principal",
+    "more": "Más",
+    "account": "Mi cuenta",
+    "activeCompany": "Empresa activa"
   },
   "login": {
-    "title": "Iniciar sesión", "subtitle": "Accede al espacio de gestión de tu establecimiento.",
-    "email": "Correo electrónico", "password": "Contraseña", "showPassword": "Mostrar la contraseña",
-    "hidePassword": "Ocultar la contraseña", "submit": "Iniciar sesión", "submitting": "Conectando…",
-    "forgot": "¿Has olvidado tu contraseña?", "demo": "Usar la cuenta de demostración",
-    "demoHint": "Versión de demostración: todos los datos mostrados son ficticios.",
+    "title": "Iniciar sesión",
+    "subtitle": "Accede al espacio de gestión de tu establecimiento.",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "showPassword": "Mostrar la contraseña",
+    "hidePassword": "Ocultar la contraseña",
+    "submit": "Iniciar sesión",
+    "forgot": "¿Has olvidado tu contraseña?",
+    "demo": "Explorar la demostración",
+    "demoHint": "Descubre SOLUSSIMO con un salón ficticio. No se guarda ningún dato.",
     "secure": "Conexión cifrada · Datos alojados en la UE",
     "privacy": "Tus datos se tratan conforme al RGPD. No se utiliza ningún rastreador publicitario.",
     "heroTitle": "Tu salón, orquestado con elegancia.",
@@ -18,60 +37,303 @@
     "errors": {
       "invalidEmail": "Introduce un correo electrónico válido.",
       "passwordLength": "La contraseña debe tener al menos 8 caracteres.",
-      "credentials": "Credenciales incorrectas.",
       "locked": "Demasiados intentos. Inténtalo de nuevo en {{seconds}} s."
-    }
+    },
+    "demoTitle": "Modo demostración",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "createAccount": "Crear una cuenta",
+    "notConfigured": "El acceso a cuentas reales aún no está activado en este entorno. Usa el modo demostración.",
+    "submitting": "Conectando…"
   },
   "dashboard": {
-    "greeting": "Hola {{name}}", "summary": "Esta es la actividad de {{salon}} hoy.",
-    "kpi": { "revenue": "Facturación", "appointments": "Citas", "newClients": "Clientes nuevos", "occupancy": "Tasa de ocupación" },
-    "vsLastWeek": "vs semana pasada", "upcoming": "Próximas citas", "seeAll": "Ver todo",
-    "weekRevenue": "Facturación — últimos 7 días", "stockAlerts": "Alertas de inventario",
-    "teamToday": "Equipo de hoy", "present": "Presente", "absent": "Ausente", "noAlerts": "Sin alertas.",
-    "quickActions": "Acciones rápidas", "newAppointment": "Nueva cita", "newSale": "Cobrar", "newClient": "Nuevo cliente",
-    "remaining": "{{count}} pendiente(s)", "noUpcoming": "No quedan citas hoy."
+    "greeting": "Hola {{name}}",
+    "summary": "Esta es la actividad de {{salon}} hoy.",
+    "kpi": {
+      "revenue": "Facturación",
+      "appointments": "Citas",
+      "newClients": "Clientes nuevos",
+      "occupancy": "Tasa de ocupación"
+    },
+    "vsLastWeek": "vs semana pasada",
+    "upcoming": "Próximas citas",
+    "seeAll": "Ver todo",
+    "weekRevenue": "Facturación — últimos 7 días",
+    "stockAlerts": "Alertas de inventario",
+    "teamToday": "Equipo de hoy",
+    "present": "Presente",
+    "absent": "Ausente",
+    "noAlerts": "Sin alertas.",
+    "quickActions": "Acciones rápidas",
+    "newAppointment": "Nueva cita",
+    "newSale": "Cobrar",
+    "newClient": "Nuevo cliente",
+    "remaining": "{{count}} pendiente(s)",
+    "noUpcoming": "No quedan citas hoy."
   },
-  "status": { "confirmed": "Confirmada", "pending": "Pendiente", "done": "Finalizada" },
-  "roles": { "manager": "Gerente", "stylist": "Peluquero", "colorist": "Colorista", "beautician": "Esteticista", "apprentice": "Aprendiz" },
+  "status": {
+    "confirmed": "Confirmada",
+    "pending": "Pendiente",
+    "done": "Finalizada"
+  },
+  "roles": {
+    "manager": "Gerente",
+    "stylist": "Peluquero",
+    "colorist": "Colorista",
+    "beautician": "Esteticista",
+    "apprentice": "Aprendiz",
+    "barber": "Barbero",
+    "receptionist": "Recepcionista"
+  },
   "services": {
-    "cut": "Corte", "cutBlowdry": "Corte y peinado", "color": "Coloración", "highlights": "Mechas / balayage",
-    "beard": "Arreglo de barba", "manicure": "Manicura", "facial": "Tratamiento facial", "kidsCut": "Corte infantil"
+    "cut": "Corte",
+    "cutBlowdry": "Corte y peinado",
+    "color": "Coloración",
+    "highlights": "Mechas / balayage",
+    "beard": "Arreglo de barba",
+    "manicure": "Manicura",
+    "facial": "Tratamiento facial",
+    "kidsCut": "Corte infantil"
   },
   "products": {
-    "shampoo": "Champú reparador 1 L", "conditioner": "Acondicionador 1 L", "mask": "Mascarilla nutritiva 500 ml",
-    "colorTube": "Tubo de tinte 60 ml", "oxidant": "Oxidante 20 vol. 1 L", "serum": "Sérum para puntas 100 ml",
-    "nailPolish": "Esmalte de uñas", "gloves": "Guantes de nitrilo (caja)"
+    "shampoo": "Champú reparador 1 L",
+    "conditioner": "Acondicionador 1 L",
+    "mask": "Mascarilla nutritiva 500 ml",
+    "colorTube": "Tubo de tinte 60 ml",
+    "oxidant": "Oxidante 20 vol. 1 L",
+    "serum": "Sérum para puntas 100 ml",
+    "nailPolish": "Esmalte de uñas",
+    "gloves": "Guantes de nitrilo (caja)"
   },
-  "categories": { "hair": "Capilar", "color": "Coloración", "care": "Tratamientos", "consumable": "Consumibles" },
-  "payment": { "card": "Tarjeta", "cash": "Efectivo", "contactless": "Sin contacto" },
-  "segments": { "vip": "Fiel", "regular": "Habitual", "new": "Nuevo" },
+  "categories": {
+    "hair": "Capilar",
+    "color": "Coloración",
+    "care": "Tratamientos",
+    "consumable": "Consumibles"
+  },
+  "payment": {
+    "card": "Tarjeta",
+    "cash": "Efectivo",
+    "contactless": "Sin contacto"
+  },
+  "segments": {
+    "vip": "Fiel",
+    "regular": "Habitual",
+    "new": "Nuevo"
+  },
   "planning": {
-    "title": "Agenda", "subtitle": "Citas del día por profesional.", "today": "Hoy",
-    "day": "Día", "week": "Semana", "newAppointment": "Nueva cita", "previous": "Día anterior", "next": "Día siguiente"
+    "title": "Agenda",
+    "subtitle": "Citas del día por profesional.",
+    "today": "Hoy",
+    "day": "Día",
+    "week": "Semana",
+    "newAppointment": "Nueva cita",
+    "previous": "Día anterior",
+    "next": "Día siguiente"
   },
   "clients": {
-    "title": "Clientes", "subtitle": "Fichero de clientes e historial.", "search": "Buscar un cliente…",
-    "visits": "Visitas", "lastVisit": "Última visita", "totalSpent": "Total gastado",
-    "daysAgo": "hace {{count}} d", "today": "Hoy", "newClient": "Nuevo cliente",
+    "title": "Clientes",
+    "subtitle": "Fichero de clientes e historial.",
+    "search": "Buscar un cliente…",
+    "visits": "Visitas",
+    "lastVisit": "Última visita",
+    "totalSpent": "Total gastado",
+    "daysAgo": "hace {{count}} d",
+    "today": "Hoy",
+    "newClient": "Nuevo cliente",
     "privacyNote": "Datos minimizados: solo se conserva la información necesaria para el servicio. Derecho de acceso, rectificación y supresión previa solicitud.",
     "noResult": "No se ha encontrado ningún cliente."
   },
   "staff": {
-    "title": "Personal", "subtitle": "Equipo, funciones y asistencia.", "addMember": "Añadir miembro",
-    "appointmentsToday": "{{count}} citas hoy", "role": "Función", "status": "Estado"
+    "title": "Personal",
+    "subtitle": "Equipo, funciones y asistencia.",
+    "addMember": "Añadir miembro",
+    "appointmentsToday": "{{count}} citas hoy",
+    "role": "Función",
+    "status": "Estado"
   },
   "checkout": {
-    "title": "Caja", "subtitle": "Cobros del día.", "todayTotal": "Total cobrado", "transactions": "Transacciones",
-    "average": "Ticket medio", "newSale": "Nuevo cobro", "time": "Hora", "service": "Servicio",
-    "method": "Pago", "amount": "Importe", "closeRegister": "Cerrar la caja", "byMethod": "Reparto por medio de pago"
+    "title": "Caja",
+    "subtitle": "Cobros del día.",
+    "todayTotal": "Total cobrado",
+    "transactions": "Transacciones",
+    "average": "Ticket medio",
+    "newSale": "Nuevo cobro",
+    "time": "Hora",
+    "service": "Servicio",
+    "method": "Pago",
+    "amount": "Importe",
+    "closeRegister": "Cerrar la caja",
+    "byMethod": "Reparto por medio de pago"
   },
   "stock": {
-    "title": "Inventario", "subtitle": "Productos, umbrales y reposición.", "product": "Producto", "category": "Categoría",
-    "quantity": "Cantidad", "minimum": "Umbral", "status": "Estado", "low": "Reponer", "ok": "OK",
-    "order": "Pedir", "totalValue": "Valor del inventario", "lowCount": "Productos bajo el umbral", "references": "Referencias"
+    "title": "Inventario",
+    "subtitle": "Productos, umbrales y reposición.",
+    "product": "Producto",
+    "category": "Categoría",
+    "quantity": "Cantidad",
+    "minimum": "Umbral",
+    "status": "Estado",
+    "low": "Reponer",
+    "ok": "OK",
+    "order": "Pedir",
+    "totalValue": "Valor del inventario",
+    "lowCount": "Productos bajo el umbral",
+    "references": "Referencias"
   },
   "common": {
-    "demoData": "Datos ficticios", "moduleInDev": "Módulo en desarrollo — estructura básica.",
-    "language": "Idioma", "minutes": "{{count}} min", "salon": "Salón", "privacy": "Privacidad y RGPD"
+    "demoData": "Datos ficticios",
+    "moduleInDev": "Módulo en desarrollo — estructura básica.",
+    "language": "Idioma",
+    "minutes": "{{count}} min",
+    "salon": "Salón",
+    "privacy": "Privacidad y RGPD",
+    "loading": "Cargando…",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "back": "Volver",
+    "optional": "opcional",
+    "retry": "Reintentar",
+    "saved": "Cambios guardados."
+  },
+  "companyRoles": {
+    "owner": "Propietario",
+    "admin": "Administrador",
+    "manager": "Responsable",
+    "staff": "Colaborador"
+  },
+  "kinds": {
+    "hair_salon": "Peluquería",
+    "beauty_institute": "Centro de estética",
+    "barbershop": "Barbería",
+    "nail_salon": "Salón de uñas",
+    "spa": "Spa"
+  },
+  "signup": {
+    "title": "Crear una cuenta",
+    "subtitle": "Gestiona tu salón en pocos minutos.",
+    "displayName": "Tu nombre o nombre visible",
+    "passwordHint": "Mínimo 10 caracteres, con una mayúscula, una minúscula y un número.",
+    "consent": "He leído la {{link}} y acepto el tratamiento de mis datos para la gestión de mi cuenta.",
+    "consentLink": "política de privacidad",
+    "submit": "Crear mi cuenta",
+    "submitting": "Creando…",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "signIn": "Iniciar sesión",
+    "checkEmailTitle": "Revisa tu correo",
+    "checkEmailText": "Si esta dirección puede utilizarse, se acaba de enviar un enlace de confirmación. Haz clic en él para activar tu cuenta y después crea tu salón.",
+    "errors": {
+      "passwordRules": "La contraseña debe tener al menos 10 caracteres, con una mayúscula, una minúscula y un número.",
+      "consent": "Se necesita tu consentimiento para crear una cuenta.",
+      "displayName": "Indica un nombre visible (máximo 80 caracteres)."
+    }
+  },
+  "forgot": {
+    "title": "Contraseña olvidada",
+    "subtitle": "Introduce tu dirección: si existe una cuenta, recibirás un enlace de restablecimiento.",
+    "submit": "Enviar el enlace",
+    "sent": "Si una cuenta corresponde a esta dirección, se acaba de enviar un correo.",
+    "back": "Volver al inicio de sesión"
+  },
+  "resetPassword": {
+    "title": "Nueva contraseña",
+    "subtitle": "Elige una nueva contraseña para tu cuenta.",
+    "newPassword": "Nueva contraseña",
+    "submit": "Actualizar",
+    "done": "Contraseña actualizada.",
+    "invalidLink": "Este enlace ya no es válido. Solicita un nuevo restablecimiento."
+  },
+  "onboarding": {
+    "title": "Crea tu salón",
+    "subtitle": "Esta información configura tu espacio. Serás su propietario.",
+    "companyName": "Nombre de la empresa",
+    "companyHint": "Razón social o nombre comercial.",
+    "establishmentName": "Nombre del establecimiento",
+    "kind": "Tipo de establecimiento",
+    "country": "País",
+    "city": "Ciudad",
+    "timezone": "Zona horaria",
+    "language": "Idioma por defecto",
+    "currency": "Moneda",
+    "submit": "Crear mi salón",
+    "submitting": "Creando…",
+    "privacy": "Tu espacio está estrictamente aislado: ninguna otra empresa puede acceder a tus datos."
+  },
+  "live": {
+    "yourRole": "Tu función: {{role}}",
+    "establishments": "Establecimientos",
+    "team": "Equipo",
+    "teamCount": "{{count}} colaborador(es)",
+    "modulesTitle": "Avance de los módulos",
+    "connected": "Conectado",
+    "soon": "Próximamente",
+    "emptyModuleTitle": "Módulo disponible próximamente",
+    "emptyModuleText": "Este módulo se conectará a tus datos en una próxima versión. Mientras tanto, puedes explorarlo en modo demostración.",
+    "loadError": "No se pudieron cargar los datos. Comprueba tu conexión.",
+    "securityNote": "Tus datos están aislados: ninguna otra empresa puede acceder a ellos."
+  },
+  "staffLive": {
+    "addTitle": "Nuevo colaborador",
+    "name": "Nombre visible",
+    "job": "Oficio",
+    "establishment": "Establecimiento",
+    "color": "Color en la agenda",
+    "add": "Añadir",
+    "adding": "Añadiendo…",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "deactivate": "Desactivar",
+    "reactivate": "Reactivar",
+    "empty": "Todavía no hay colaboradores.",
+    "readOnly": "Puedes consultar el equipo; las modificaciones están reservadas a los responsables.",
+    "linkedAccount": "Cuenta vinculada",
+    "minimization": "Solo se pide un nombre visible: no se necesitan datos de contacto personales."
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "subtitle": "Perfil, privacidad y datos personales.",
+    "profileTitle": "Perfil",
+    "email": "Correo electrónico",
+    "language": "Idioma de la interfaz",
+    "privacyTitle": "Mis datos (RGPD)",
+    "exportTitle": "Descargar mis datos",
+    "exportText": "Obtén una copia de tus datos personales en formato JSON (derecho de acceso y portabilidad).",
+    "exportButton": "Descargar",
+    "deleteTitle": "Eliminar mi cuenta",
+    "deleteText": "Eliminación definitiva de tu cuenta y tu perfil. Si eres el único propietario de una empresa, transfiérela o elimínala antes.",
+    "deleteConfirmLabel": "Escribe {{word}} para confirmar",
+    "deleteWord": "ELIMINAR",
+    "deleteButton": "Eliminar definitivamente",
+    "demoUnavailable": "La gestión de la cuenta no está disponible en modo demostración."
+  },
+  "demo": {
+    "banner": "Modo demostración — datos ficticios, no se guarda nada.",
+    "exit": "Salir de la demo"
+  },
+  "privacy": {
+    "title": "Privacidad y RGPD",
+    "intro": "SOLUSSIMO aplica la protección de datos desde el diseño.",
+    "data": "Datos tratados: correo electrónico y contraseña (gestionados por el servicio de autenticación, contraseña cifrada), nombre visible, idioma y los datos de gestión de tu establecimiento.",
+    "purpose": "Finalidad: prestar el servicio de gestión del salón. Sin reventa, sin rastreadores publicitarios, sin elaboración de perfiles.",
+    "isolation": "Aislamiento: cada empresa dispone de un espacio separado; las reglas de acceso se aplican directamente en la base de datos.",
+    "storage": "Almacenamiento: alojamiento previsto en la Unión Europea. Los datos se conservan mientras la cuenta esté activa y después se eliminan.",
+    "rights": "Tus derechos: acceso, rectificación, exportación y supresión directamente desde «Mi cuenta»; oposición y limitación previa solicitud.",
+    "draft": "Versión preliminar: el texto definitivo (responsable del tratamiento, contacto del DPD, plazos exactos) se validará antes del lanzamiento comercial."
+  },
+  "errors": {
+    "credentials": "Credenciales incorrectas.",
+    "emailNotConfirmed": "Confirma primero tu correo con el enlace recibido.",
+    "weakPassword": "Esta contraseña es demasiado débil.",
+    "rateLimited": "Demasiados intentos. Espera unos instantes.",
+    "samePassword": "Elige una contraseña distinta de la actual.",
+    "companyLimit": "Se ha alcanzado el número máximo de empresas para esta cuenta.",
+    "invalidTimezone": "Zona horaria no válida.",
+    "soleOwner": "Eres el único propietario de una empresa: transfiérela o elimínala antes.",
+    "confirmationMismatch": "La confirmación no coincide.",
+    "forbidden": "No tienes permiso para realizar esta acción.",
+    "invalidInput": "Algunos datos no son válidos.",
+    "network": "No se puede conectar. Comprueba tu red.",
+    "generic": "Se ha producido un error. Inténtalo de nuevo.",
+    "notConfigured": "Servicio de cuentas no configurado."
   }
 }

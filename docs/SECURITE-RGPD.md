@@ -1,26 +1,50 @@
 # Sécurité & protection des données (RGPD)
 
-## Ce qui est déjà en place (prototype)
+## Mesures en place (V0.2)
 
+### Isolation multi-tenant
+| Mesure | Mise en œuvre |
+| --- | --- |
+| RLS sur toutes les tables | Politiques par entreprise via `private.is_company_member()` / `private.can()` (testé). |
+| Visiteur non connecté | Le rôle `anon` n'a **aucun** privilège sur les tables ni les fonctions (testé). |
+| Moindre privilège | Privilèges par colonne : `company_id`, `user_id`, `created_by` non modifiables via l'API. |
+| Pas d'auto-rattachement | Aucun `INSERT` direct dans `memberships` ; création d'entreprise uniquement via RPC. |
+| Anti-escalade | Un admin ne gère jamais un owner ; personne ne change son propre rôle ; ≥ 1 owner garanti. |
+| Fonctions sûres | `SECURITY DEFINER` + `search_path` vide ; schéma `private` non exposé par l'API. |
+| Traçabilité | `audit_log` alimenté par triggers, lecture owner/admin, non falsifiable, sans donnée personnelle. |
+| Tests | 94 assertions SQL + test de mutation (une politique affaiblie fait échouer la CI). |
+
+### Authentification
+| Mesure | Mise en œuvre |
+| --- | --- |
+| Supabase Auth | Mots de passe hachés côté serveur, confirmation d'e-mail, flux PKCE, rotation des jetons. |
+| Politique de mot de passe | ≥ 10 caractères, majuscule, minuscule, chiffre (client + `config.toml`). |
+| Anti-énumération | Messages génériques (connexion, inscription, mot de passe oublié). |
+| Anti-force brute | Verrouillage client après 5 échecs + limitation de débit Supabase côté serveur. |
+| Redirections | Uniquement vers des chemins internes (pas de redirection ouverte). |
+| Mode démo | Séparé : aucune requête réseau, données fictives locales, bandeau permanent. |
+
+### Secrets
+| Mesure | Mise en œuvre |
+| --- | --- |
+| Aucune clé dans le dépôt | `.env*` ignorés, `.env.example` sans valeur. |
+| Pas de `service_role` dans le navigateur | Vérification au build (échec) + à l'exécution + `npm run check:secrets` sur le dépôt et `dist/` (CI). |
+| CSP | `connect-src` limité à `'self'` et `*.supabase.co`. |
+
+### RGPD
 | Principe | Mise en œuvre |
 | --- | --- |
-| Aucune donnée réelle | Données de démonstration fictives (`src/data/demo.ts`), e-mail démo sur domaine réservé `.example` (RFC 2606). |
-| Minimisation | Clients identifiés par prénom + initiale ; aucun téléphone, e-mail, date de naissance ni note de santé. |
-| Pas de traceurs | Aucun outil d'analyse, pixel publicitaire ni cookie. Pas de bannière cookies nécessaire à ce stade. |
-| Pas de transfert à des tiers | Polices système uniquement (pas de Google Fonts), aucune ressource externe chargée. |
-| Stockage local limité | `sessionStorage` : profil d'affichage non sensible, expiré après 30 min d'inactivité. `localStorage` : préférence de langue uniquement. Le mot de passe n'est jamais stocké. |
-| Authentification | Messages d'erreur génériques, verrouillage temporaire après 5 échecs, déconnexion automatique, champs `autocomplete` corrects pour les gestionnaires de mots de passe. |
-| En-têtes HTTP | `public/_headers` : CSP stricte, HSTS, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`. |
-| XSS | Rendu via React (échappement automatique), aucun `dangerouslySetInnerHTML`, règle ESLint `no-eval`. |
-| Build | Pas de source maps en production ; `noindex` tant que l'application n'est pas publique. |
+| Minimisation | Profil = nom affiché + langue. Collaborateurs = nom affiché + métier. Aucune coordonnée. |
+| Consentement / information | Case à cocher à l'inscription + page « Confidentialité » (4 langues). |
+| Droit d'accès / portabilité | `export_my_data()` → téléchargement JSON depuis « Mon compte ». |
+| Droit à l'effacement | `delete_my_account()` (cascade) et `delete_company()` (owner, confirmation par le nom). |
+| Pas de traceurs | Aucun outil d'analyse, polices système, aucune ressource tierce. |
+| Données fictives | Démo et tests : domaine réservé `.example`, aucun client réel. |
 
-## À réaliser avant toute donnée réelle (backend)
-
-- Authentification côté serveur : mots de passe hachés (Argon2id), MFA, limitation de débit, cookie de session `HttpOnly; Secure; SameSite=Strict`.
-- Isolation stricte des données par salon (multi-tenant) et contrôle d'accès par rôle.
-- Hébergement des données dans l'UE, chiffrement au repos et en transit, sauvegardes chiffrées.
-- Registre des traitements, base légale par traitement, durées de conservation et purge automatique.
-- Exercice des droits (accès, rectification, effacement, portabilité) depuis l'interface.
-- Contrat de sous-traitance (art. 28) avec chaque salon client et avec les hébergeurs.
-- Journalisation des accès aux données personnelles, sans données personnelles dans les logs.
-- AIPD si des données sensibles (ex. allergies, contre-indications esthétiques) sont collectées.
+## Reste à faire avant des données clients réelles
+- Projet Supabase en **région UE**, DPA Supabase signé, SMTP personnalisé.
+- Flux d'**invitation** de membres (avec acceptation explicite).
+- **MFA** (TOTP) pour owners/admins.
+- Textes juridiques définitifs (responsable de traitement, DPO, durées de conservation) et registre des traitements.
+- Purge automatique des comptes inactifs / journaux d'audit au-delà de la durée de conservation.
+- AIPD si des données sensibles (allergies, contre-indications) sont collectées dans le module Clients.

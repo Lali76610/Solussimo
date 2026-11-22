@@ -11,7 +11,7 @@ import { capitalizeFirst, formatCurrency, formatDate } from '../lib/format'
 
 export function DashboardPage() {
   const { t, i18n } = useTranslation()
-  const { user } = useAuth()
+  const { displayName } = useAuth()
   const lang = i18n.resolvedLanguage ?? 'fr'
 
   const revenue = transactions.reduce((s, tr) => s + tr.amount, 0)
@@ -31,7 +31,7 @@ export function DashboardPage() {
           {capitalizeFirst(formatDate(today, lang, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))}
         </p>
         <h1 className="mt-1 font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
-          {t('dashboard.greeting', { name: user?.displayName })}
+          {t('dashboard.greeting', { name: displayName })}
         </h1>
         <p className="mt-1 text-sm text-slate-500">{t('dashboard.summary', { salon: SALON.name })}</p>
       </div>

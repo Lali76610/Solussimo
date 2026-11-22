@@ -1,25 +1,62 @@
-import { LogOut, Menu, MoreHorizontal, ShieldCheck, X } from 'lucide-react'
+import { FlaskConical, LogOut, Menu, MoreHorizontal, Settings, ShieldCheck, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { NavLink, Outlet, useLocation } from 'react-router'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 import { Avatar } from '../components/Avatar'
 import { LanguageSwitcher } from '../components/LanguageSwitcher'
 import { Logo } from '../components/Logo'
+import { SALON } from '../data/demo'
+import { useTenant } from '../tenant/useTenant'
 import { NAV_ITEMS } from './navigation'
+
+function useSignOut() {
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
+  return async () => {
+    await signOut()
+    navigate('/connexion', { replace: true })
+  }
+}
+
+function SalonCard() {
+  const { t } = useTranslation()
+  const { isDemo } = useAuth()
+  const { memberships, active, setActiveCompany } = useTenant()
+  return (
+    <div className="mx-4 mb-4 rounded-xl bg-brand-50 px-3 py-3">
+      <p className="text-[11px] font-semibold tracking-wider text-gold-dark uppercase">{t('common.salon')}</p>
+      {!isDemo && memberships.length > 1 ? (
+        <label className="block">
+          <span className="sr-only">{t('nav.activeCompany')}</span>
+          <select
+            value={active?.company.id}
+            onChange={(e) => setActiveCompany(e.target.value)}
+            className="mt-0.5 w-full cursor-pointer rounded-md bg-transparent font-display text-base font-semibold text-brand-dark focus:outline-none"
+          >
+            {memberships.map((m) => (
+              <option key={m.company.id} value={m.company.id}>{m.company.name}</option>
+            ))}
+          </select>
+        </label>
+      ) : (
+        <p className="truncate font-display text-base font-semibold text-brand-dark">{isDemo ? SALON.name : active?.company.name}</p>
+      )}
+      {!isDemo && active && <p className="mt-0.5 text-[11px] text-slate-500">{t(`companyRoles.${active.role}`)}</p>}
+    </div>
+  )
+}
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { t } = useTranslation()
-  const { user, logout } = useAuth()
+  const { displayName } = useAuth()
+  const handleSignOut = useSignOut()
   return (
     <div className="flex h-full flex-col">
       <div className="px-5 py-6">
         <Logo />
       </div>
-      <div className="mx-4 mb-4 rounded-xl bg-brand-50 px-3 py-3">
-        <p className="text-[11px] font-semibold tracking-wider text-gold-dark uppercase">{t('common.salon')}</p>
-        <p className="font-display text-base font-semibold text-brand-dark">{user?.salonName}</p>
-      </div>
+      <SalonCard />
       <nav aria-label={t('nav.mainNav')} className="flex-1 space-y-1 px-3">
         {NAV_ITEMS.map(({ to, labelKey, icon: Icon }) => (
           <NavLink
@@ -43,12 +80,21 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           <ShieldCheck className="size-3.5 text-brand" aria-hidden="true" />
           {t('common.privacy')}
         </p>
-        <div className="flex items-center gap-3">
-          <Avatar name={user?.displayName ?? '?'} size="sm" />
-          <span className="flex-1 truncate text-sm font-medium text-slate-700">{user?.displayName}</span>
+        <div className="flex items-center gap-2">
+          <Avatar name={displayName || '?'} size="sm" />
+          <span className="flex-1 truncate text-sm font-medium text-slate-700">{displayName}</span>
+          <Link
+            to="/compte"
+            onClick={onNavigate}
+            className="grid size-10 place-items-center rounded-lg text-slate-500 hover:bg-brand-50 hover:text-brand"
+            aria-label={t('nav.account')}
+            title={t('nav.account')}
+          >
+            <Settings className="size-5" aria-hidden="true" />
+          </Link>
           <button
             type="button"
-            onClick={logout}
+            onClick={() => void handleSignOut()}
             className="grid size-10 place-items-center rounded-lg text-slate-500 hover:bg-rose-50 hover:text-rose-600"
             aria-label={t('nav.logout')}
             title={t('nav.logout')}
@@ -61,8 +107,23 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   )
 }
 
+function DemoBanner() {
+  const { t } = useTranslation()
+  const handleSignOut = useSignOut()
+  return (
+    <div className="flex items-center gap-2 bg-gold px-4 py-1.5 text-xs font-medium text-white sm:px-6" role="status" data-testid="demo-banner">
+      <FlaskConical className="size-4 shrink-0" aria-hidden="true" />
+      <span className="flex-1">{t('demo.banner')}</span>
+      <button type="button" onClick={() => void handleSignOut()} className="shrink-0 rounded-md px-2 py-1 font-semibold underline-offset-2 hover:underline">
+        {t('demo.exit')}
+      </button>
+    </div>
+  )
+}
+
 export function AppLayout() {
   const { t } = useTranslation()
+  const { isDemo } = useAuth()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const location = useLocation()
 
@@ -82,7 +143,7 @@ export function AppLayout() {
     }
   }, [drawerOpen])
 
-  const currentLabel = NAV_ITEMS.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
+  const currentLabel = location.pathname === '/compte' ? { labelKey: 'nav.account' } : NAV_ITEMS.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
 
   return (
     <div className="min-h-dvh bg-slate-50/60">
@@ -117,6 +178,7 @@ export function AppLayout() {
       <div className="lg:pl-64">
         {/* En-tête */}
         <header className="pt-safe sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
+          {isDemo && <DemoBanner />}
           <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
             <button
               type="button"
